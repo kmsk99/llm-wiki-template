@@ -3,7 +3,8 @@
 #
 # 라우팅:
 #   PDF        → pdftotext (poppler)
-#   그 외 파일  → MarkItDown (xlsx, docx, pptx, 이미지, html, epub 등)
+#   이미지      → 로컬 OCR + 메타데이터 파서
+#   그 외 파일  → MarkItDown (xlsx, docx, pptx, html, epub 등)
 #
 # 사용법:
 #   ./scripts/parse-raw.sh                               # raw/ 전체 스캔
@@ -11,6 +12,7 @@
 #
 # 의존성:
 #   PDF: poppler (pdftotext) — brew install poppler / apt install poppler-utils
+#   이미지: tesseract + exiftool (선택) — brew install tesseract tesseract-lang exiftool
 #   그 외: pip install 'markitdown[all]'
 
 set -euo pipefail
@@ -54,6 +56,23 @@ parse_with_markitdown() {
   markitdown "$src" -o "$out"
 }
 
+parse_image_with_ocr() {
+  local src="$1"
+  local out="$2"
+
+  if ! command -v python3 &>/dev/null && ! command -v python &>/dev/null; then
+    echo "[ERROR] Python이 설치되어 있지 않습니다."
+    return 1
+  fi
+
+  local py_bin="${PYTHON:-python3}"
+  if ! command -v "$py_bin" &>/dev/null; then
+    py_bin="python"
+  fi
+
+  "$py_bin" "$REPO_ROOT/scripts/parse-image.py" "$src" "$out"
+}
+
 parse_file() {
   local src="$1"
   local basename="${src%.*}"
@@ -78,6 +97,10 @@ parse_file() {
     pdf)
       echo "[ENGINE] pdftotext"
       parse_with_pdftotext "$src" "$out"
+      ;;
+    png|jpg|jpeg|gif|tiff|bmp)
+      echo "[ENGINE] local image OCR"
+      parse_image_with_ocr "$src" "$out"
       ;;
     *)
       echo "[ENGINE] MarkItDown"

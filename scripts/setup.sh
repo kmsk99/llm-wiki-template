@@ -10,7 +10,7 @@
 # 지원 플랫폼: macOS, Linux (Ubuntu/Debian, Fedora/RHEL), Windows (WSL/Git Bash/MSYS2)
 #
 # 설치 항목:
-#   1. 시스템 의존성 (poppler, ffmpeg 등)
+#   1. 시스템 의존성 (poppler, ffmpeg, tesseract, exiftool 등)
 #   2. Python venv + markitdown (비텍스트 파싱, PDF 제외)
 #   3. QMD 검색 엔진 (모델 다운로드 + collection 생성 + 인덱싱)
 #   4. 디렉토리 구조 확인/생성
@@ -193,6 +193,34 @@ else
   fi
 fi
 
+# tesseract (이미지 OCR에 필요)
+if command -v tesseract &>/dev/null; then
+  echo "  [OK] tesseract: $(tesseract --version 2>&1 | head -1 | awk '{print $2}')"
+else
+  echo "  [INSTALL] tesseract 설치 중..."
+  if pkg_install tesseract tesseract tesseract-ocr; then
+    echo "  [OK] tesseract 설치 완료"
+  else
+    echo "  [WARN] tesseract 수동 설치 필요"
+    echo "    macOS: brew install tesseract tesseract-lang"
+    echo "    Linux: apt install tesseract-ocr tesseract-ocr-kor"
+  fi
+fi
+
+# exiftool (이미지/오디오 메타데이터 추출에 유용)
+if command -v exiftool &>/dev/null; then
+  echo "  [OK] exiftool: $(exiftool -ver)"
+else
+  echo "  [INSTALL] exiftool 설치 중..."
+  if pkg_install exiftool libimage-exiftool-perl exiftool; then
+    echo "  [OK] exiftool 설치 완료"
+  else
+    echo "  [WARN] exiftool 수동 설치 필요"
+    echo "    macOS: brew install exiftool"
+    echo "    Linux: apt install libimage-exiftool-perl"
+  fi
+fi
+
 # Node.js (QMD에 필요)
 if command -v node &>/dev/null; then
   echo "  [OK] Node.js: $(node --version)"
@@ -350,7 +378,7 @@ else
   venv_activate
   "$(venv_python)" -m pip install --upgrade pip --quiet
 
-  # markitdown (DOCX, PPTX, XLSX, 이미지, HTML, 오디오 등 변환)
+  # markitdown (DOCX, PPTX, XLSX, HTML, 오디오 등 변환)
   if "$(venv_python)" -c "import markitdown" &>/dev/null; then
     INSTALLED_VERSION=$("$(venv_python)" -m pip show markitdown 2>/dev/null | grep "^Version:" | awk '{print $2}')
     echo "  [OK] markitdown v${INSTALLED_VERSION}"
