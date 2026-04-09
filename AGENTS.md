@@ -13,9 +13,15 @@ Karpathy LLM Wiki 패턴(raw → wiki → output)으로 운영한다.
 - 정보 변경 시 안전하게 대체하고 이력을 보존한다 (Supersede).
 
 ## 스킬
-11개 운영 스킬이 `.claude/commands/`에 정의되어 있다.
-Claude Code에서 `/project:<스킬명>`으로 호출한다.
-상세 명세는 [SCHEMA.md](SCHEMA.md) 참조.
+
+11개 운영 스킬이 두 에이전트 시스템에서 사용 가능하다.
+
+| 에이전트 | 스킬 위치 | 호출 방식 |
+|----------|-----------|-----------|
+| Claude Code | `.claude/commands/*.md` | `/project:<스킬명>` |
+| Codex CLI | `.agents/skills/<스킬명>/SKILL.md` | `$<스킬명>` 또는 자동 매칭 |
+
+두 시스템의 스킬 내용은 동일하다. 상세 명세는 [SCHEMA.md](SCHEMA.md) 참조.
 
 ## 절대 규칙
 1. **모르면 쓰지 말 것.** 근거가 불충분하면 `TODO` 또는 `Open question`으로 남긴다.
@@ -40,7 +46,9 @@ Claude Code에서 `/project:<스킬명>`으로 호출한다.
 원자료 저장소. 회의록, 슬랙 발췌, 전사, 초안, 링크 덤프, PDF/Excel/PPTX 등 바이너리 파일 포함.
 - `.manifest.md`로 전체 소스와 인제스트 상태를 추적한다.
   - 인제스트 상태: `완료` | `미정` | `부분` | `보류` (이 4가지만 사용).
-- 비텍스트 파일은 Marker(`marker-pdf`)로 파싱하여 `.parsed.md`를 생성한 후 인제스트한다.
+- 비텍스트 파일은 Marker(`marker-pdf`) 또는 MarkItDown으로 파싱하여 `.parsed.md`를 생성한 후 인제스트한다.
+  - PDF → Marker (CLIProxyAPI + LLM 보정)
+  - 그 외 (XLSX, DOCX, PPTX, 이미지, HTML, 오디오 등) → MarkItDown
 - `.parsed.md`는 파생물이므로 원본과 동일하게 수정·삭제 금지 대상은 아니지만, 재파싱으로 재생성할 수 있다.
 
 ### wiki/ — 정제 문서 전체
@@ -60,13 +68,26 @@ Claude Code에서 `/project:<스킬명>`으로 호출한다.
 ### output/ — 파생물
 위키 지식 기반의 행동 지향 문서. briefs, onboarding, action-items, reports.
 
+## 환경 셋업
+
+`./scripts/setup.sh` 하나로 모든 의존성이 설치된다 (macOS, Linux, Windows 지원).
+
+설치 항목:
+1. 시스템 의존성 (ffmpeg, Node.js, curl)
+2. Python 3.12 + marker-pdf + markitdown (자동 설치)
+3. marker-pdf ML 모델 (surya OCR/layout/table 7종)
+4. CLIProxyAPI (LLM 보정 프록시)
+5. QMD 검색 엔진 (GGUF 모델 3종 + collection + 인덱싱)
+6. 디렉토리 구조
+7. 설정 파일 (Claude Code MCP, manifest, index)
+
 ## 권장 작업 흐름
 
-각 작업은 `.claude/commands/`의 스킬로 실행한다.
+각 작업은 스킬로 실행한다.
 
 ### Catalog + Ingest (raw → wiki)
-1. `/project:catalog <파일>` — raw 소스를 manifest에 등록, 비텍스트 파일 Marker 파싱.
-2. `/project:ingest <파일>` — wiki로 승격:
+1. `catalog <파일>` — raw 소스를 manifest에 등록, 비텍스트 파일 파싱.
+2. `ingest <파일>` — wiki로 승격:
    - 기존 `wiki/` 문서와 중복/모순 확인.
    - 새 문서 생성 또는 기존 문서 갱신 (템플릿 사용).
    - frontmatter `source:`에 원본 파일 경로 기록 (`.parsed.md` 아님).
@@ -74,16 +95,16 @@ Claude Code에서 `/project:<스킬명>`으로 호출한다.
    - `raw/.manifest.md` 인제스트 상태를 `완료` 또는 `부분`으로 갱신.
 
 ### Supersede (정보 변경)
-- `/project:supersede <소스> [wiki 문서]` — 변경된 부분만 갱신, `## Change log` 테이블에 이력 보존, 파급 효과 추적.
+- `supersede <소스> [wiki 문서]` — 변경된 부분만 갱신, `## Change log` 테이블에 이력 보존, 파급 효과 추적.
 
 ### Generate (wiki → output)
-- `/project:generate <유형> [주제]` — wiki 지식 기반 output 생성.
+- `generate <유형> [주제]` — wiki 지식 기반 output 생성.
 - frontmatter `source:`에 기반 wiki 페이지를 명시한다.
 
 ### Lint / Score / Audit
-- `/project:lint [--fix]` — 구조적 건강도 점검 (주 1회).
-- `/project:score [문서]` — 신뢰도 평가, frontmatter에 `confidence:` 추가.
-- `/project:audit` — 종합 감사 (월 1회).
+- `lint [--fix]` — 구조적 건강도 점검 (주 1회).
+- `score [문서]` — 신뢰도 평가, frontmatter에 `confidence:` 추가.
+- `audit` — 종합 감사 (월 1회).
 
 ## 금지 사항
 - 출처 없는 정책/수치/역할 정의를 사실처럼 쓰지 말 것
