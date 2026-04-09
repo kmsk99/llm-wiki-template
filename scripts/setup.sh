@@ -6,12 +6,16 @@
 #   ./scripts/setup.sh --full   # 전체 설치 (PDF + DOCX, XLSX, PPTX, 이미지, EPUB)
 #   ./scripts/setup.sh --skip-python   # Python/marker 설치 생략 (QMD만 셋업)
 #   ./scripts/setup.sh --skip-qmd      # QMD 셋업 생략
+#   ./scripts/setup.sh --skip-models   # 모델 다운로드 생략 (빠른 셋업)
 #
 # 설치 항목:
-#   1. Python venv + marker-pdf + markitdown (비텍스트 파싱)
-#   2. CLIProxyAPI (LLM 보정용 프록시)
-#   3. QMD 검색 엔진 (collection 생성 + 인덱싱 + 임베딩)
-#   4. 디렉토리 구조 확인/생성
+#   1. 시스템 의존성 (ffmpeg 등)
+#   2. Python venv + marker-pdf + markitdown (비텍스트 파싱)
+#   3. marker-pdf ML 모델 다운로드 (surya OCR/layout/table)
+#   4. CLIProxyAPI (LLM 보정용 프록시 + OAuth 안내)
+#   5. QMD 검색 엔진 (모델 다운로드 + collection 생성 + 인덱싱)
+#   6. 디렉토리 구조 확인/생성
+#   7. 설정 파일 확인 (Claude Code MCP, manifest, index)
 
 set -euo pipefail
 
@@ -19,14 +23,16 @@ set -euo pipefail
 FULL=false
 SKIP_PYTHON=false
 SKIP_QMD=false
+SKIP_MODELS=false
 
 for arg in "$@"; do
   case "$arg" in
-    --full)        FULL=true ;;
-    --skip-python) SKIP_PYTHON=true ;;
-    --skip-qmd)    SKIP_QMD=true ;;
+    --full)          FULL=true ;;
+    --skip-python)   SKIP_PYTHON=true ;;
+    --skip-qmd)      SKIP_QMD=true ;;
+    --skip-models)   SKIP_MODELS=true ;;
     -h|--help)
-      sed -n '2,12p' "$0"
+      sed -n '2,14p' "$0"
       exit 0
       ;;
   esac
@@ -37,42 +43,46 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 VENV_DIR="$REPO_ROOT/.venv"
 TOOLS_DIR="$REPO_ROOT/tools"
 
+TOTAL_STEPS=7
+STEP=0
+next_step() { STEP=$((STEP + 1)); echo ""; echo "── ${STEP}/${TOTAL_STEPS} $1 ──"; }
+
 echo "=== LLM Wiki 환경 셋업 ==="
-echo ""
 
-# ── 1. 디렉토리 구조 확인 ─────────────────────────────
-echo "── 1/5 디렉토리 구조 ──"
-DIRS=(
-  "raw/meetings" "raw/briefs" "raw/slack" "raw/transcripts" "raw/links" "raw/files"
-  "wiki/systems" "wiki/processes" "wiki/projects" "wiki/decisions"
-  "wiki/playbooks" "wiki/entities" "wiki/glossary" "wiki/index" "wiki/_meta"
-  "wiki/entities/brands" "wiki/entities/customers" "wiki/entities/data-sources"
-  "wiki/entities/partners" "wiki/entities/systems"
-  "output/briefs" "output/onboarding" "output/action-items" "output/reports"
-  "templates" "prompts"
-)
+# ── 1. 시스템 의존성 ──────────────────────────────────
+next_step "시스템 의존성"
 
-missing=0
-for dir in "${DIRS[@]}"; do
-  if [[ ! -d "$REPO_ROOT/$dir" ]]; then
-    mkdir -p "$REPO_ROOT/$dir"
-    echo "  [CREATE] $dir/"
-    missing=$((missing + 1))
-  fi
-done
-if [[ "$missing" -eq 0 ]]; then
-  echo "  [OK] 디렉토리 구조 정상"
+# ffmpeg (markitdown 오디오 변환에 필요)
+if command -v ffmpeg &>/dev/null; then
+  echo "  [OK] ffmpeg: $(ffmpeg -version 2>&1 | head -1 | awk '{print $3}')"
 else
-  echo "  [OK] ${missing}개 디렉토리 생성 완료"
+  echo "  [INSTALL] ffmpeg 설치 중..."
+  if command -v brew &>/dev/null; then
+    brew install ffmpeg --quiet 2>/dev/null || brew install ffmpeg
+    echo "  [OK] ffmpeg 설치 완료"
+  elif command -v apt-get &>/dev/null; then
+    sudo apt-get install -y ffmpeg -qq
+    echo "  [OK] ffmpeg 설치 완료"
+  else
+    echo "  [WARN] ffmpeg를 자동 설치할 수 없습니다. 수동 설치 필요:"
+    echo "    macOS: brew install ffmpeg"
+    echo "    Ubuntu: sudo apt-get install ffmpeg"
+  fi
+fi
+
+# Node.js (QMD에 필요)
+if command -v node &>/dev/null; then
+  echo "  [OK] Node.js: $(node --version)"
+else
+  echo "  [WARN] Node.js가 없습니다. QMD 설치에 필요합니다."
+  echo "    brew install node 또는 https://nodejs.org"
 fi
 
 # ── 2. Python + marker-pdf + markitdown ────────────────
 if $SKIP_PYTHON; then
-  echo ""
-  echo "── 2/5 Python (건너뜀: --skip-python) ──"
+  next_step "Python (건너뜀: --skip-python)"
 else
-  echo ""
-  echo "── 2/5 Python + 파싱 도구 ──"
+  next_step "Python + 파싱 도구"
 
   # Python 3.10+ 탐색
   PYTHON=""
@@ -94,20 +104,57 @@ else
   if [[ -z "$PYTHON" ]]; then
     if command -v python3 &>/dev/null; then
       PYTHON="python3"
+    fi
+  fi
+
+  # Python 버전 확인 → 3.10 미만이면 자동 설치
+  NEED_INSTALL=false
+  if [[ -z "$PYTHON" ]]; then
+    NEED_INSTALL=true
+  else
+    MINOR=$($PYTHON -c 'import sys; print(sys.version_info.minor)')
+    if [[ "$MINOR" -lt 10 ]]; then
+      NEED_INSTALL=true
+      echo "  [INFO] 현재 Python: $($PYTHON -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")') (3.10+ 필요)"
+    fi
+  fi
+
+  if $NEED_INSTALL; then
+    echo "  [INSTALL] Python 3.12 설치 중..."
+    if command -v brew &>/dev/null; then
+      brew install python@3.12 --quiet 2>/dev/null || brew install python@3.12
+      # 설치 후 재탐색
+      PYTHON=""
+      for candidate in python3.12 python3.13 python3.11 python3.10; do
+        if command -v "$candidate" &>/dev/null; then
+          PYTHON="$candidate"
+          break
+        fi
+      done
+      if [[ -z "$PYTHON" ]]; then
+        bp="/opt/homebrew/opt/python@3.12/libexec/bin/python3"
+        if [[ -x "$bp" ]]; then
+          PYTHON="$bp"
+        fi
+      fi
+      if [[ -z "$PYTHON" ]]; then
+        echo "  [ERROR] Python 3.12 설치 후에도 찾을 수 없습니다."
+        exit 1
+      fi
+      echo "  [OK] Python 3.12 설치 완료"
+    elif command -v apt-get &>/dev/null; then
+      sudo apt-get update -qq && sudo apt-get install -y python3.12 python3.12-venv python3-pip -qq
+      PYTHON="python3.12"
+      echo "  [OK] Python 3.12 설치 완료"
     else
-      echo "  [ERROR] python3이 설치되어 있지 않습니다."
+      echo "  [ERROR] Python 3.10+를 자동 설치할 수 없습니다."
       echo "    macOS: brew install python@3.12"
-      echo "    Ubuntu: sudo apt install python3 python3-pip"
+      echo "    Ubuntu: sudo apt install python3.12 python3.12-venv"
       exit 1
     fi
   fi
 
   PYTHON_VERSION=$($PYTHON -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
-  MINOR=$($PYTHON -c 'import sys; print(sys.version_info.minor)')
-  if [[ "$MINOR" -lt 10 ]]; then
-    echo "  [ERROR] Python 3.10 이상이 필요합니다 (현재: $PYTHON_VERSION)"
-    exit 1
-  fi
   echo "  [OK] Python $PYTHON_VERSION ($PYTHON)"
 
   # venv
@@ -152,13 +199,41 @@ else
   fi
 fi
 
-# ── 3. CLIProxyAPI ─────────────────────────────────────
-if $SKIP_PYTHON; then
-  echo ""
-  echo "── 3/5 CLIProxyAPI (건너뜀: --skip-python) ──"
+# ── 3. marker-pdf ML 모델 다운로드 ────────────────────
+if $SKIP_PYTHON || $SKIP_MODELS; then
+  next_step "marker 모델 (건너뜀)"
 else
-  echo ""
-  echo "── 3/5 CLIProxyAPI (LLM 보정 프록시) ──"
+  next_step "marker-pdf ML 모델 다운로드"
+
+  # surya OCR/layout/table 모델 7종 사전 다운로드
+  # 캐시 위치: ~/Library/Caches/datalab/models (macOS), ~/.cache/datalab/models (Linux)
+  MARKER_CACHE_DIR="${HOME}/Library/Caches/datalab/models"
+  if [[ "$(uname -s)" == "Linux" ]]; then
+    MARKER_CACHE_DIR="${HOME}/.cache/datalab/models"
+  fi
+
+  if [[ -d "$MARKER_CACHE_DIR" ]] && [[ $(find "$MARKER_CACHE_DIR" -type f 2>/dev/null | wc -l | tr -d ' ') -gt 5 ]]; then
+    echo "  [OK] marker 모델 캐시 존재: $MARKER_CACHE_DIR"
+  else
+    echo "  [DOWNLOAD] surya OCR/layout/table 모델 다운로드 중..."
+    echo "  (첫 실행 시 ~2GB 다운로드, 몇 분 소요)"
+    if python3 -c "
+from marker.models import create_model_dict
+create_model_dict()
+print('OK')
+" 2>/dev/null | grep -q "OK"; then
+      echo "  [OK] marker 모델 다운로드 완료"
+    else
+      echo "  [WARN] marker 모델 다운로드 실패. 첫 파싱 시 자동 다운로드됩니다."
+    fi
+  fi
+fi
+
+# ── 4. CLIProxyAPI ─────────────────────────────────────
+if $SKIP_PYTHON; then
+  next_step "CLIProxyAPI (건너뜀: --skip-python)"
+else
+  next_step "CLIProxyAPI (LLM 보정 프록시)"
 
   CLIPROXY_BIN="$TOOLS_DIR/cli-proxy-api"
   CLIPROXY_VERSION="v6.9.18"
@@ -212,27 +287,33 @@ debug: false
 request-retry: 1
 YAML
     echo "  [CREATE] config.yaml 생성"
-    echo "  [INFO] Codex OAuth 로그인 필요: cd tools && ./cli-proxy-api -codex-login"
+  fi
+
+  # Codex OAuth 로그인 상태 확인
+  CLIPROXY_AUTH_DIR="${HOME}/.cli-proxy-api"
+  if [[ -d "$CLIPROXY_AUTH_DIR" ]] && [[ -n "$(ls -A "$CLIPROXY_AUTH_DIR" 2>/dev/null)" ]]; then
+    echo "  [OK] Codex OAuth 인증 정보 존재"
+  else
+    echo "  [ACTION] Codex OAuth 로그인이 필요합니다 (최초 1회):"
+    echo "    cd tools && ./cli-proxy-api -codex-login"
   fi
 fi
 
-# ── 4. QMD 검색 엔진 ──────────────────────────────────
+# ── 5. QMD 검색 엔진 ──────────────────────────────────
 if $SKIP_QMD; then
-  echo ""
-  echo "── 4/5 QMD (건너뜀: --skip-qmd) ──"
+  next_step "QMD (건너뜀: --skip-qmd)"
 else
-  echo ""
-  echo "── 4/5 QMD 검색 엔진 ──"
+  next_step "QMD 검색 엔진"
 
   # qmd CLI 확인
   if ! command -v qmd &>/dev/null; then
     echo "  [INSTALL] qmd 설치 중 (npm)..."
     if command -v npm &>/dev/null; then
-      npm install -g @nicepkg/qmd --quiet 2>/dev/null || npm install -g @nicepkg/qmd
+      npm install -g @tobilu/qmd --quiet 2>/dev/null || npm install -g @tobilu/qmd
       echo "  [OK] qmd 설치 완료"
     else
       echo "  [ERROR] npm이 설치되어 있지 않습니다. qmd를 설치할 수 없습니다."
-      echo "    brew install node && npm install -g @nicepkg/qmd"
+      echo "    brew install node && npm install -g @tobilu/qmd"
       SKIP_QMD=true
     fi
   else
@@ -240,6 +321,20 @@ else
   fi
 
   if ! $SKIP_QMD; then
+    # QMD 모델 다운로드 (embedding + reranking + generation, ~2GB)
+    if $SKIP_MODELS; then
+      echo "  [SKIP] QMD 모델 다운로드 (--skip-models)"
+    else
+      QMD_MODEL_DIR="${HOME}/.cache/qmd/models"
+      if [[ -d "$QMD_MODEL_DIR" ]] && [[ $(find "$QMD_MODEL_DIR" -name "*.gguf" -type f 2>/dev/null | wc -l | tr -d ' ') -ge 3 ]]; then
+        echo "  [OK] QMD 모델 캐시 존재 (3/3 GGUF)"
+      else
+        echo "  [DOWNLOAD] QMD 모델 다운로드 중 (embedding + reranking + generation)..."
+        echo "  (첫 실행 시 ~2GB 다운로드, 몇 분 소요)"
+        qmd pull 2>&1 | sed 's/^/  /' || echo "  [WARN] QMD 모델 다운로드 실패. qmd pull로 수동 다운로드하세요."
+      fi
+    fi
+
     # wiki collection
     if qmd collection show wiki 2>/dev/null | grep -q "Path:"; then
       echo "  [OK] collection 'wiki' 존재"
@@ -276,9 +371,34 @@ else
   fi
 fi
 
-# ── 5. 스크립트 권한 + Claude Code 설정 확인 ──────────
-echo ""
-echo "── 5/5 최종 확인 ──"
+# ── 6. 디렉토리 구조 확인 ─────────────────────────────
+next_step "디렉토리 구조"
+DIRS=(
+  "raw/meetings" "raw/briefs" "raw/slack" "raw/transcripts" "raw/links" "raw/files"
+  "wiki/systems" "wiki/processes" "wiki/projects" "wiki/decisions"
+  "wiki/playbooks" "wiki/entities" "wiki/glossary" "wiki/index" "wiki/_meta"
+  "wiki/entities/brands" "wiki/entities/customers" "wiki/entities/data-sources"
+  "wiki/entities/partners" "wiki/entities/systems"
+  "output/briefs" "output/onboarding" "output/action-items" "output/reports"
+  "templates" "prompts"
+)
+
+missing=0
+for dir in "${DIRS[@]}"; do
+  if [[ ! -d "$REPO_ROOT/$dir" ]]; then
+    mkdir -p "$REPO_ROOT/$dir"
+    echo "  [CREATE] $dir/"
+    missing=$((missing + 1))
+  fi
+done
+if [[ "$missing" -eq 0 ]]; then
+  echo "  [OK] 디렉토리 구조 정상"
+else
+  echo "  [OK] ${missing}개 디렉토리 생성 완료"
+fi
+
+# ── 7. 설정 파일 확인 ─────────────────────────────────
+next_step "최종 확인"
 
 # parse-raw.sh 실행 권한
 if [[ -f "$SCRIPT_DIR/parse-raw.sh" ]] && [[ ! -x "$SCRIPT_DIR/parse-raw.sh" ]]; then
