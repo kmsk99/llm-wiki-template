@@ -22,9 +22,7 @@ $ARGUMENTS
    - 인자가 없으면 `raw/.manifest.md`에서 인제스트 상태가 `미정` 또는 `부분`인 소스를 수집한다.
 2. `raw/.manifest.md`에 등록되지 않은 소스이면 먼저 `/project:catalog`을 안내한다.
 3. **비텍스트 파일(PDF, XLSX, DOCX, PPTX, 이미지 등)이면**:
-   - `scripts/parse-raw.sh <파일>`로 Marker 파싱하여 `.parsed.md`를 생성한다.
-   - 기본으로 CLIProxyAPI + `gpt-5.4-mini` LLM 보정 모드를 사용한다 (테이블/폼 정확도 향상).
-   - LLM 없이 실행하려면 `--no-llm` 플래그를 사용한다.
+   - `scripts/parse-raw.sh <파일>`로 파싱하여 `.parsed.md`를 생성한다 (PDF → pdftotext, 그 외 → MarkItDown).
 4. 파싱된 `.parsed.md` 또는 원본 텍스트를 읽는다.
 
 ### Phase 2: 분석

@@ -46,8 +46,8 @@ Karpathy LLM Wiki 패턴(raw → wiki → output)으로 운영한다.
 원자료 저장소. 회의록, 슬랙 발췌, 전사, 초안, 링크 덤프, PDF/Excel/PPTX 등 바이너리 파일 포함.
 - `.manifest.md`로 전체 소스와 인제스트 상태를 추적한다.
   - 인제스트 상태: `완료` | `미정` | `부분` | `보류` (이 4가지만 사용).
-- 비텍스트 파일은 Marker(`marker-pdf`) 또는 MarkItDown으로 파싱하여 `.parsed.md`를 생성한 후 인제스트한다.
-  - PDF → Marker (CLIProxyAPI + LLM 보정)
+- 비텍스트 파일은 pdftotext 또는 MarkItDown으로 파싱하여 `.parsed.md`를 생성한 후 인제스트한다.
+  - PDF → pdftotext (poppler)
   - 그 외 (XLSX, DOCX, PPTX, 이미지, HTML, 오디오 등) → MarkItDown
 - `.parsed.md`는 파생물이므로 원본과 동일하게 수정·삭제 금지 대상은 아니지만, 재파싱으로 재생성할 수 있다.
 
@@ -73,13 +73,11 @@ Karpathy LLM Wiki 패턴(raw → wiki → output)으로 운영한다.
 `./scripts/setup.sh` 하나로 모든 의존성이 설치된다 (macOS, Linux, Windows 지원).
 
 설치 항목:
-1. 시스템 의존성 (ffmpeg, Node.js, curl)
-2. Python 3.12 + marker-pdf + markitdown (자동 설치)
-3. marker-pdf ML 모델 (surya OCR/layout/table 7종)
-4. CLIProxyAPI (LLM 보정 프록시)
-5. QMD 검색 엔진 (GGUF 모델 3종 + collection + 인덱싱)
-6. 디렉토리 구조
-7. 설정 파일 (Claude Code MCP, manifest, index)
+1. 시스템 의존성 (poppler, ffmpeg, Node.js, curl)
+2. Python 3.12 + markitdown (자동 설치)
+3. QMD 검색 엔진 (GGUF 모델 3종 + collection + 인덱싱)
+4. 디렉토리 구조
+5. 설정 파일 (Claude Code MCP, manifest, index)
 
 ## 권장 작업 흐름
 

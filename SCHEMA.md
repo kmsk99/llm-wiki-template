@@ -32,7 +32,7 @@ raw/  ──→  Ingest  ──→  wiki/  ──→  Generate  ──→  outpu
 | **Lint** | `/project:lint` | 위키 건강검진. 고아 페이지, 깨진 링크, frontmatter 누락, 모순, 구조 위반, 지식 공백 탐지 |
 
 **Ingest의 하위 동작:**
-- **Read/Parse**: 소스 읽기. 비텍스트 파일은 Marker로 파싱 (`scripts/parse-raw.sh`)
+- **Read/Parse**: 소스 읽기. 비텍스트 파일은 파싱 (`scripts/parse-raw.sh`, PDF → pdftotext, 그 외 → MarkItDown)
 - **Create/Update Page**: 템플릿 기반 문서 생성 또는 기존 문서 갱신
 - **Cross-link**: 관련 문서 간 양방향 링크 생성
 - **Reindex**: `wiki/index.md`와 주제별 맵 갱신 (`/project:reindex`)
@@ -69,7 +69,7 @@ raw/  ──→  Ingest  ──→  wiki/  ──→  Generate  ──→  outpu
 새 소스 도착
     │
     ▼
-  Catalog  ──→  raw/.manifest.md 등록 + Marker 파싱
+  Catalog  ──→  raw/.manifest.md 등록 + 비텍스트 파싱
     │
     ▼
   Ingest   ──→  wiki 문서 생성/갱신 + Cross-link + Reindex

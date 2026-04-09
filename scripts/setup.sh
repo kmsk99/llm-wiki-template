@@ -2,22 +2,19 @@
 # setup.sh — LLM Wiki 원스톱 환경 셋업
 #
 # 사용법:
-#   ./scripts/setup.sh          # 기본 설치 (PDF 지원)
-#   ./scripts/setup.sh --full   # 전체 설치 (PDF + DOCX, XLSX, PPTX, 이미지, EPUB)
-#   ./scripts/setup.sh --skip-python   # Python/marker 설치 생략 (QMD만 셋업)
+#   ./scripts/setup.sh          # 기본 설치
+#   ./scripts/setup.sh --skip-python   # Python/markitdown 설치 생략 (QMD만 셋업)
 #   ./scripts/setup.sh --skip-qmd      # QMD 셋업 생략
 #   ./scripts/setup.sh --skip-models   # 모델 다운로드 생략 (빠른 셋업)
 #
 # 지원 플랫폼: macOS, Linux (Ubuntu/Debian, Fedora/RHEL), Windows (WSL/Git Bash/MSYS2)
 #
 # 설치 항목:
-#   1. 시스템 의존성 (ffmpeg 등)
-#   2. Python venv + marker-pdf + markitdown (비텍스트 파싱)
-#   3. marker-pdf ML 모델 다운로드 (surya OCR/layout/table)
-#   4. CLIProxyAPI (LLM 보정용 프록시 + OAuth 안내)
-#   5. QMD 검색 엔진 (모델 다운로드 + collection 생성 + 인덱싱)
-#   6. 디렉토리 구조 확인/생성
-#   7. 설정 파일 확인 (Claude Code MCP, manifest, index)
+#   1. 시스템 의존성 (poppler, ffmpeg 등)
+#   2. Python venv + markitdown (비텍스트 파싱, PDF 제외)
+#   3. QMD 검색 엔진 (모델 다운로드 + collection 생성 + 인덱싱)
+#   4. 디렉토리 구조 확인/생성
+#   5. 설정 파일 확인 (Claude Code MCP, manifest, index)
 
 set -euo pipefail
 
@@ -142,38 +139,18 @@ venv_python() {
   fi
 }
 
-# ── marker 모델 캐시 경로 ─────────────────────────────
-marker_cache_dir() {
-  case "$OS_TYPE" in
-    macos)           echo "${HOME}/Library/Caches/datalab/models" ;;
-    windows)         echo "${LOCALAPPDATA:-$HOME/AppData/Local}/datalab/models/Cache" ;;
-    *)               echo "${HOME}/.cache/datalab/models" ;;
-  esac
-}
-
-# ── CLIProxyAPI 바이너리명 ────────────────────────────
-cliproxy_binary_name() {
-  if [[ "$OS_TYPE" == "windows" ]]; then
-    echo "cli-proxy-api.exe"
-  else
-    echo "cli-proxy-api"
-  fi
-}
-
 # ── Flags ──────────────────────────────────────────────
-FULL=false
 SKIP_PYTHON=false
 SKIP_QMD=false
 SKIP_MODELS=false
 
 for arg in "$@"; do
   case "$arg" in
-    --full)          FULL=true ;;
     --skip-python)   SKIP_PYTHON=true ;;
     --skip-qmd)      SKIP_QMD=true ;;
     --skip-models)   SKIP_MODELS=true ;;
     -h|--help)
-      sed -n '2,16p' "$0"
+      sed -n '2,12p' "$0"
       exit 0
       ;;
   esac
@@ -182,14 +159,27 @@ done
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 VENV_DIR="$REPO_ROOT/.venv"
-TOOLS_DIR="$REPO_ROOT/tools"
 
-TOTAL_STEPS=7
+TOTAL_STEPS=5
 STEP=0
 next_step() { STEP=$((STEP + 1)); echo ""; echo "── ${STEP}/${TOTAL_STEPS} $1 ──"; }
 
 # ── 1. 시스템 의존성 ──────────────────────────────────
 next_step "시스템 의존성"
+
+# poppler (pdftotext — PDF 파싱에 필요)
+if command -v pdftotext &>/dev/null; then
+  echo "  [OK] pdftotext (poppler): $(pdftotext -v 2>&1 | head -1)"
+else
+  echo "  [INSTALL] poppler 설치 중..."
+  if pkg_install poppler poppler-utils poppler-utils; then
+    echo "  [OK] poppler 설치 완료"
+  else
+    echo "  [WARN] poppler 수동 설치 필요"
+    echo "    macOS: brew install poppler"
+    echo "    Linux: apt install poppler-utils"
+  fi
+fi
 
 # ffmpeg (markitdown 오디오 변환에 필요)
 if command -v ffmpeg &>/dev/null; then
@@ -229,11 +219,11 @@ if ! command -v curl &>/dev/null; then
   pkg_install curl curl curl || echo "  [WARN] curl 수동 설치 필요"
 fi
 
-# ── 2. Python + marker-pdf + markitdown ────────────────
+# ── 2. Python + markitdown ────────────────────────────
 if $SKIP_PYTHON; then
   next_step "Python (건너뜀: --skip-python)"
 else
-  next_step "Python + 파싱 도구"
+  next_step "Python + markitdown"
 
   # Python 3.10+ 탐색
   PYTHON=""
@@ -290,7 +280,6 @@ else
         case "$PKG_MANAGER" in
           apt)
             sudo apt-get update -qq
-            # deadsnakes PPA for Ubuntu (python3.12가 기본 제공되지 않는 경우)
             if ! apt-cache show python3.12 &>/dev/null; then
               sudo apt-get install -y software-properties-common -qq
               sudo add-apt-repository -y ppa:deadsnakes/ppa
@@ -361,21 +350,7 @@ else
   venv_activate
   "$(venv_python)" -m pip install --upgrade pip --quiet
 
-  # marker-pdf
-  if "$(venv_python)" -c "import marker" &>/dev/null; then
-    INSTALLED_VERSION=$("$(venv_python)" -m pip show marker-pdf 2>/dev/null | grep "^Version:" | awk '{print $2}')
-    echo "  [OK] marker-pdf v${INSTALLED_VERSION}"
-  else
-    echo "  [INSTALL] marker-pdf 설치 중..."
-    if $FULL; then
-      "$(venv_python)" -m pip install "marker-pdf[full]" --quiet
-    else
-      "$(venv_python)" -m pip install marker-pdf --quiet
-    fi
-    echo "  [OK] marker-pdf 설치 완료"
-  fi
-
-  # markitdown
+  # markitdown (DOCX, PPTX, XLSX, 이미지, HTML, 오디오 등 변환)
   if "$(venv_python)" -c "import markitdown" &>/dev/null; then
     INSTALLED_VERSION=$("$(venv_python)" -m pip show markitdown 2>/dev/null | grep "^Version:" | awk '{print $2}')
     echo "  [OK] markitdown v${INSTALLED_VERSION}"
@@ -384,139 +359,9 @@ else
     "$(venv_python)" -m pip install "markitdown[all]" --quiet
     echo "  [OK] markitdown 설치 완료"
   fi
-
-  # marker_single CLI 확인
-  MARKER_CLI="$(venv_bin_dir)/marker_single"
-  if [[ "$OS_TYPE" == "windows" ]]; then
-    MARKER_CLI="$(venv_bin_dir)/marker_single.exe"
-  fi
-  if [[ -f "$MARKER_CLI" ]]; then
-    echo "  [OK] marker_single CLI"
-  else
-    echo "  [WARN] marker_single을 찾을 수 없습니다"
-  fi
 fi
 
-# ── 3. marker-pdf ML 모델 다운로드 ────────────────────
-if $SKIP_PYTHON || $SKIP_MODELS; then
-  next_step "marker 모델 (건너뜀)"
-else
-  next_step "marker-pdf ML 모델 다운로드"
-
-  MARKER_CACHE_DIR="$(marker_cache_dir)"
-
-  if [[ -d "$MARKER_CACHE_DIR" ]] && [[ $(find "$MARKER_CACHE_DIR" -type f 2>/dev/null | wc -l | tr -d ' ') -gt 5 ]]; then
-    echo "  [OK] marker 모델 캐시 존재: $MARKER_CACHE_DIR"
-  else
-    echo "  [DOWNLOAD] surya OCR/layout/table 모델 다운로드 중..."
-    echo "  (첫 실행 시 ~2GB 다운로드, 몇 분 소요)"
-    if "$(venv_python)" -c "
-from marker.models import create_model_dict
-create_model_dict()
-print('OK')
-" 2>/dev/null | grep -q "OK"; then
-      echo "  [OK] marker 모델 다운로드 완료"
-    else
-      echo "  [WARN] marker 모델 다운로드 실패. 첫 파싱 시 자동 다운로드됩니다."
-    fi
-  fi
-fi
-
-# ── 4. CLIProxyAPI ─────────────────────────────────────
-if $SKIP_PYTHON; then
-  next_step "CLIProxyAPI (건너뜀: --skip-python)"
-else
-  next_step "CLIProxyAPI (LLM 보정 프록시)"
-
-  CLIPROXY_BIN_NAME="$(cliproxy_binary_name)"
-  CLIPROXY_BIN="$TOOLS_DIR/$CLIPROXY_BIN_NAME"
-  CLIPROXY_VERSION="v6.9.18"
-
-  if [[ -f "$CLIPROXY_BIN" ]]; then
-    echo "  [OK] CLIProxyAPI 이미 설치됨"
-  else
-    echo "  [INSTALL] CLIProxyAPI 다운로드 중 ($CLIPROXY_VERSION)..."
-    mkdir -p "$TOOLS_DIR"
-
-    DL_OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-    DL_ARCH=$(uname -m)
-    case "$DL_ARCH" in
-      x86_64)        DL_ARCH="amd64" ;;
-      aarch64|arm64) DL_ARCH="arm64" ;;
-      i686|i386)     DL_ARCH="386" ;;
-    esac
-
-    # Windows 감지 (MINGW/MSYS에서 uname -s가 MINGW64_NT 등을 반환)
-    if [[ "$OS_TYPE" == "windows" ]]; then
-      DL_OS="windows"
-    fi
-
-    if [[ "$OS_TYPE" == "windows" ]]; then
-      ARCHIVE="CLIProxyAPI_${CLIPROXY_VERSION#v}_${DL_OS}_${DL_ARCH}.zip"
-    else
-      ARCHIVE="CLIProxyAPI_${CLIPROXY_VERSION#v}_${DL_OS}_${DL_ARCH}.tar.gz"
-    fi
-    URL="https://github.com/router-for-me/CLIProxyAPI/releases/download/${CLIPROXY_VERSION}/${ARCHIVE}"
-
-    TMPFILE="${TMPDIR:-/tmp}/$ARCHIVE"
-    if curl -sL "$URL" -o "$TMPFILE"; then
-      if [[ "$OS_TYPE" == "windows" ]]; then
-        if command -v unzip &>/dev/null; then
-          unzip -qo "$TMPFILE" -d "$TOOLS_DIR"
-        elif command -v powershell &>/dev/null; then
-          powershell -Command "Expand-Archive -Force '$TMPFILE' '$TOOLS_DIR'"
-        fi
-      else
-        tar xzf "$TMPFILE" -C "$TOOLS_DIR"
-        chmod +x "$CLIPROXY_BIN"
-      fi
-      rm -f "$TMPFILE"
-      echo "  [OK] CLIProxyAPI 설치 완료"
-    else
-      echo "  [WARN] CLIProxyAPI 다운로드 실패. LLM 보정 없이 사용 가능합니다."
-      echo "    수동 다운로드: $URL"
-    fi
-  fi
-
-  # config.yaml
-  CLIPROXY_CONFIG="$TOOLS_DIR/config.yaml"
-  if [[ -f "$CLIPROXY_CONFIG" ]]; then
-    echo "  [OK] config.yaml 존재"
-  else
-    cat > "$CLIPROXY_CONFIG" <<'YAML'
-host: "127.0.0.1"
-port: 8317
-
-remote-management:
-  allow-remote: false
-  secret-key: ""
-
-auth-dir: "~/.cli-proxy-api"
-
-api-keys:
-  - "marker-local"
-
-debug: false
-request-retry: 1
-YAML
-    echo "  [CREATE] config.yaml 생성"
-  fi
-
-  # Codex OAuth 로그인 상태 확인
-  CLIPROXY_AUTH_DIR="${HOME}/.cli-proxy-api"
-  if [[ -d "$CLIPROXY_AUTH_DIR" ]] && [[ -n "$(ls -A "$CLIPROXY_AUTH_DIR" 2>/dev/null)" ]]; then
-    echo "  [OK] Codex OAuth 인증 정보 존재"
-  else
-    echo "  [ACTION] Codex OAuth 로그인이 필요합니다 (최초 1회):"
-    if [[ "$OS_TYPE" == "windows" ]]; then
-      echo "    cd tools && .\\cli-proxy-api.exe -codex-login"
-    else
-      echo "    cd tools && ./cli-proxy-api -codex-login"
-    fi
-  fi
-fi
-
-# ── 5. QMD 검색 엔진 ──────────────────────────────────
+# ── 3. QMD 검색 엔진 ──────────────────────────────────
 if $SKIP_QMD; then
   next_step "QMD (건너뜀: --skip-qmd)"
 else
@@ -592,15 +437,12 @@ else
   fi
 fi
 
-# ── 6. 디렉토리 구조 확인 ─────────────────────────────
+# ── 4. 디렉토리 구조 확인 ─────────────────────────────
 next_step "디렉토리 구조"
 DIRS=(
-  "raw/meetings" "raw/briefs" "raw/slack" "raw/transcripts" "raw/links" "raw/files"
-  "wiki/systems" "wiki/processes" "wiki/projects" "wiki/decisions"
-  "wiki/playbooks" "wiki/entities" "wiki/glossary" "wiki/index" "wiki/_meta"
-  "wiki/entities/brands" "wiki/entities/customers" "wiki/entities/data-sources"
-  "wiki/entities/partners" "wiki/entities/systems"
-  "output/briefs" "output/onboarding" "output/action-items" "output/reports"
+  "raw"
+  "wiki" "wiki/_meta"
+  "output"
   "templates" "prompts"
 )
 
@@ -618,7 +460,7 @@ else
   echo "  [OK] ${missing}개 디렉토리 생성 완료"
 fi
 
-# ── 7. 설정 파일 확인 ─────────────────────────────────
+# ── 5. 설정 파일 확인 ─────────────────────────────────
 next_step "최종 확인"
 
 # parse-raw.sh 실행 권한 (Unix only)
@@ -662,8 +504,14 @@ else
   cat > "$REPO_ROOT/raw/.manifest.md" <<'MD'
 # Raw Source Manifest
 
-| 파일 | 유형 | 인제스트 상태 | 비고 |
-|------|------|-------------|------|
+모든 raw 소스의 목록과 인제스트 상태를 추적한다.
+
+## 소스 목록
+
+| 파일 | 유형 | 날짜 | 인제스트 상태 | 비고 |
+|------|------|------|---------------|------|
+
+<!-- 인제스트 상태: 완료 | 미정 | 부분 | 보류 -->
 MD
   echo "  [CREATE] raw/.manifest.md 생성"
 fi
@@ -677,31 +525,11 @@ fi
 echo ""
 echo "=== 셋업 완료 ($OS_TYPE) ==="
 echo ""
-
-if $FULL; then
-  echo "설치 모드: full (PDF, DOCX, XLSX, PPTX, 이미지, EPUB)"
-else
-  echo "설치 모드: 기본 (PDF만)"
-  echo "  전체 포맷 지원: ./scripts/setup.sh --full"
-fi
-
-echo ""
 echo "다음 단계:"
-if ! $SKIP_PYTHON; then
-  if [[ "$OS_TYPE" == "windows" ]]; then
-    echo "  .venv\\Scripts\\activate                       # venv 활성화"
-    echo "  cd tools && .\\cli-proxy-api.exe -codex-login  # Codex OAuth 로그인 (최초 1회)"
-    echo "  cd tools && start cli-proxy-api.exe            # CLIProxyAPI 서버 시작"
-  else
-    echo "  source .venv/bin/activate                    # venv 활성화"
-    echo "  cd tools && ./cli-proxy-api -codex-login     # Codex OAuth 로그인 (최초 1회)"
-    echo "  cd tools && ./cli-proxy-api &                # CLIProxyAPI 서버 시작"
-  fi
-fi
 echo "  ./scripts/parse-raw.sh                       # raw/ 비텍스트 파일 파싱"
 echo ""
 echo "위키 운영:"
-echo "  /project:catalog raw/meetings/파일.md         # raw 소스 등록"
-echo "  /project:ingest raw/meetings/파일.md          # wiki로 승격"
+echo "  /project:catalog raw/파일.md                  # raw 소스 등록"
+echo "  /project:ingest raw/파일.md                   # wiki로 승격"
 echo "  /project:query 질문                           # 위키에 질문"
 echo "  /project:lint                                # 건강검진"

@@ -2,16 +2,16 @@
 # parse-raw.sh — raw/ 내 비텍스트 파일을 파싱하여 .parsed.md를 생성한다.
 #
 # 라우팅:
-#   PDF        → Marker (CLIProxyAPI + gpt-5.4-mini LLM 보정)
+#   PDF        → pdftotext (poppler)
 #   그 외 파일  → MarkItDown (xlsx, docx, pptx, 이미지, html, epub 등)
 #
 # 사용법:
 #   ./scripts/parse-raw.sh                               # raw/ 전체 스캔
 #   ./scripts/parse-raw.sh raw/files/file.pdf             # 단일 파일 파싱
-#   ./scripts/parse-raw.sh --no-llm raw/files/file.pdf    # PDF를 LLM 없이 파싱
 #
-# 의존성: pip install marker-pdf[full] 'markitdown[all]'
-# LLM 모드 의존성: CLIProxyAPI (tools/cli-proxy-api)
+# 의존성:
+#   PDF: poppler (pdftotext) — brew install poppler / apt install poppler-utils
+#   그 외: pip install 'markitdown[all]'
 
 set -euo pipefail
 
@@ -19,87 +19,37 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 RAW_DIR="$REPO_ROOT/raw"
 VENV_DIR="$REPO_ROOT/.venv"
 
-# LLM 설정 (CLIProxyAPI + gpt-5.4-mini, PDF 전용)
-USE_LLM=true
-OPENAI_MODEL="${MARKER_OPENAI_MODEL:-gpt-5.4-mini}"
-OPENAI_BASE_URL="${MARKER_OPENAI_BASE_URL:-http://127.0.0.1:8317/v1}"
-OPENAI_API_KEY="${MARKER_OPENAI_API_KEY:-marker-local}"
-LLM_TIMEOUT="${MARKER_LLM_TIMEOUT:-300}"
-
-# --no-llm 플래그 처리
-ARGS=()
-for arg in "$@"; do
-  if [[ "$arg" == "--no-llm" ]]; then
-    USE_LLM=false
-  else
-    ARGS+=("$arg")
-  fi
-done
-set -- "${ARGS[@]+"${ARGS[@]}"}"
-
-# venv 자동 활성화
+# venv 자동 활성화 (markitdown용)
 if [[ -f "$VENV_DIR/bin/activate" ]]; then
   source "$VENV_DIR/bin/activate"
-elif ! command -v marker_single &>/dev/null || ! command -v markitdown &>/dev/null; then
-  echo "[ERROR] marker_single 또는 markitdown을 찾을 수 없습니다."
-  echo "  먼저 ./scripts/setup.sh --full 를 실행하세요."
-  exit 1
 fi
 
 # 지원 확장자
 SUPPORTED_EXTS="pdf|pptx|docx|xlsx|xls|png|jpg|jpeg|gif|tiff|bmp|epub|html|csv|json|xml|wav|mp3"
 
-parse_with_marker() {
+parse_with_pdftotext() {
   local src="$1"
   local out="$2"
-  local basename="${src%.*}"
-  local marker_out_dir="${basename}"
 
-  local llm_args=()
-  if $USE_LLM; then
-    llm_args=(
-      --use_llm
-      --llm_service marker.services.openai.OpenAIService
-      --openai_base_url "$OPENAI_BASE_URL"
-      --openai_api_key "$OPENAI_API_KEY"
-      --openai_model "$OPENAI_MODEL"
-      --config_json <(echo "{\"timeout\": $LLM_TIMEOUT}")
-    )
-    echo "[LLM] $OPENAI_MODEL via $OPENAI_BASE_URL"
-  fi
-
-  marker_single "$src" --output_format markdown --output_dir "$(dirname "$src")" "${llm_args[@]}"
-
-  # marker 출력을 .parsed.md로 이동 + 이미지 경로 보정
-  local marker_out_file
-  marker_out_file=$(find "$marker_out_dir" -name "*.md" -type f 2>/dev/null | head -1)
-
-  if [[ -n "$marker_out_file" ]]; then
-    local dir_name
-    dir_name=$(basename "$marker_out_dir")
-    sed "s|!\[\([^]]*\)\](\([^/)][^)]*\))|![\1](${dir_name}/\2)|g" "$marker_out_file" > "$out"
-    rm "$marker_out_file"
-
-    # _meta.json 정리
-    find "$marker_out_dir" -name "*_meta.json" -delete 2>/dev/null
-
-    # 빈 디렉토리면 삭제, 이미지가 있으면 보존
-    local file_count
-    file_count=$(find "$marker_out_dir" -type f 2>/dev/null | wc -l | tr -d ' ')
-    if [[ "$file_count" -eq 0 ]]; then
-      rm -rf "$marker_out_dir"
-    else
-      echo "[INFO] 추출된 이미지 보존: $marker_out_dir/ (${file_count}개 파일)"
-    fi
-  else
-    echo "[WARN] marker 출력을 찾을 수 없음: $src"
+  if ! command -v pdftotext &>/dev/null; then
+    echo "[ERROR] pdftotext가 설치되어 있지 않습니다."
+    echo "  macOS: brew install poppler"
+    echo "  Linux: apt install poppler-utils"
     return 1
   fi
+
+  pdftotext "$src" "$out"
 }
 
 parse_with_markitdown() {
   local src="$1"
   local out="$2"
+
+  if ! command -v markitdown &>/dev/null; then
+    echo "[ERROR] markitdown이 설치되어 있지 않습니다."
+    echo "  pip install 'markitdown[all]'"
+    return 1
+  fi
 
   markitdown "$src" -o "$out"
 }
@@ -116,7 +66,6 @@ parse_file() {
     if [[ "$src" -nt "$out" ]]; then
       echo "[REPARSE] 원본이 갱신됨: $src"
       rm -f "$out"
-      rm -rf "${basename}" 2>/dev/null
     else
       echo "[SKIP] 이미 파싱됨: $out"
       return 0
@@ -127,8 +76,8 @@ parse_file() {
 
   case "$ext" in
     pdf)
-      echo "[ENGINE] Marker"
-      parse_with_marker "$src" "$out"
+      echo "[ENGINE] pdftotext"
+      parse_with_pdftotext "$src" "$out"
       ;;
     *)
       echo "[ENGINE] MarkItDown"

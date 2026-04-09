@@ -24,7 +24,7 @@ $ARGUMENTS
 5. `raw/.manifest.md`에 항목을 추가한다. 기존 테이블 형식에 맞춘다:
    `| 파일경로 | 유형 | 날짜 | 인제스트 상태 | 비고 |`
 6. 비텍스트 파일(PDF, XLSX, DOCX, PPTX 등)이면:
-   - `scripts/parse-raw.sh <파일>`로 Marker 파싱을 실행한다.
+   - `scripts/parse-raw.sh <파일>`로 파싱을 실행한다 (PDF → pdftotext, 그 외 → MarkItDown).
    - 파싱 성공 시 비고에 `parsed` 표시를 추가한다.
 
 ## 출력
@@ -49,6 +49,6 @@ $ARGUMENTS
 - manifest 테이블 형식을 기존과 동일하게 유지한다: `| 파일 | 유형 | 날짜 | 인제스트 상태 | 비고 |`
 - 다음 파일은 manifest에 등록하지 않는다:
   - `.parsed.md` 파일 (파싱 파생물)
-  - Marker가 생성한 이미지 디렉토리 (예: `260204_사업자등록증명(브랜더스)/`)
+  - 파싱 과정에서 생성된 부산물 디렉토리
   - `.DS_Store`, `.gitkeep`, `README.md` 등 시스템/안내 파일
 - 인제스트 상태는 반드시 `완료`, `미정`, `부분`, `보류` 중 하나를 사용한다.

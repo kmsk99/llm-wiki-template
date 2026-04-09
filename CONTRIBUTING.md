@@ -5,7 +5,7 @@
 ## 문서 수명주기
 1. **수집**: 아직 정리되지 않은 정보는 먼저 `raw/`에 넣고 `raw/.manifest.md`를 갱신합니다.
    - PDF, Excel, DOCX, PPTX 등 비텍스트 파일도 `raw/`에 저장합니다.
-2. **파싱**: 비텍스트 파일은 `scripts/parse-raw.sh`로 Marker 파싱하여 `.parsed.md`를 생성합니다.
+2. **파싱**: 비텍스트 파일은 `scripts/parse-raw.sh`로 파싱하여 `.parsed.md`를 생성합니다 (PDF → pdftotext, 그 외 → MarkItDown).
 3. **승격(Ingest)**: 검토 가능한 사실만 `wiki/` 하위 디렉토리로 옮깁니다.
 3. **연결**: 관련 문서 링크와 `wiki/index.md`를 갱신합니다.
 4. **검토**: source 누락, 중복, 충돌 여부를 확인합니다.
