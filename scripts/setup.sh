@@ -8,6 +8,8 @@
 #   ./scripts/setup.sh --skip-qmd      # QMD 셋업 생략
 #   ./scripts/setup.sh --skip-models   # 모델 다운로드 생략 (빠른 셋업)
 #
+# 지원 플랫폼: macOS, Linux (Ubuntu/Debian, Fedora/RHEL), Windows (WSL/Git Bash/MSYS2)
+#
 # 설치 항목:
 #   1. 시스템 의존성 (ffmpeg 등)
 #   2. Python venv + marker-pdf + markitdown (비텍스트 파싱)
@@ -18,6 +20,145 @@
 #   7. 설정 파일 확인 (Claude Code MCP, manifest, index)
 
 set -euo pipefail
+
+# ── OS 감지 ────────────────────────────────────────────
+detect_os() {
+  case "$(uname -s)" in
+    Darwin)          OS_TYPE="macos" ;;
+    Linux)
+      if grep -qi microsoft /proc/version 2>/dev/null; then
+        OS_TYPE="wsl"
+      else
+        OS_TYPE="linux"
+      fi
+      ;;
+    MINGW*|MSYS*|CYGWIN*)
+      OS_TYPE="windows"
+      ;;
+    *)
+      OS_TYPE="unknown"
+      ;;
+  esac
+
+  # Linux 패키지 매니저 감지
+  PKG_MANAGER=""
+  if [[ "$OS_TYPE" == "linux" || "$OS_TYPE" == "wsl" ]]; then
+    if command -v apt-get &>/dev/null; then
+      PKG_MANAGER="apt"
+    elif command -v dnf &>/dev/null; then
+      PKG_MANAGER="dnf"
+    elif command -v yum &>/dev/null; then
+      PKG_MANAGER="yum"
+    elif command -v pacman &>/dev/null; then
+      PKG_MANAGER="pacman"
+    fi
+  fi
+
+  # Windows 패키지 매니저 감지
+  if [[ "$OS_TYPE" == "windows" ]]; then
+    if command -v winget &>/dev/null; then
+      PKG_MANAGER="winget"
+    elif command -v choco &>/dev/null; then
+      PKG_MANAGER="choco"
+    elif command -v scoop &>/dev/null; then
+      PKG_MANAGER="scoop"
+    fi
+  fi
+}
+
+detect_os
+echo "=== LLM Wiki 환경 셋업 (${OS_TYPE}) ==="
+
+# ── 패키지 설치 헬퍼 ──────────────────────────────────
+pkg_install() {
+  local pkg="$1"
+  local pkg_apt="${2:-$pkg}"
+  local pkg_dnf="${3:-$pkg_apt}"
+
+  case "$OS_TYPE" in
+    macos)
+      if command -v brew &>/dev/null; then
+        brew install "$pkg" --quiet 2>/dev/null || brew install "$pkg"
+      else
+        echo "  [ERROR] Homebrew가 필요합니다: https://brew.sh"
+        return 1
+      fi
+      ;;
+    linux|wsl)
+      case "$PKG_MANAGER" in
+        apt)    sudo apt-get update -qq && sudo apt-get install -y "$pkg_apt" -qq ;;
+        dnf)    sudo dnf install -y "$pkg_dnf" -q ;;
+        yum)    sudo yum install -y "$pkg_dnf" -q ;;
+        pacman) sudo pacman -S --noconfirm "$pkg_apt" ;;
+        *)
+          echo "  [ERROR] 패키지 매니저를 찾을 수 없습니다."
+          return 1
+          ;;
+      esac
+      ;;
+    windows)
+      case "$PKG_MANAGER" in
+        winget) winget install --silent "$pkg" ;;
+        choco)  choco install "$pkg" -y --no-progress ;;
+        scoop)  scoop install "$pkg" ;;
+        *)
+          echo "  [ERROR] winget, choco, 또는 scoop이 필요합니다."
+          return 1
+          ;;
+      esac
+      ;;
+  esac
+}
+
+# ── venv 경로 헬퍼 (Windows vs Unix) ──────────────────
+venv_bin_dir() {
+  if [[ "$OS_TYPE" == "windows" ]]; then
+    echo "$VENV_DIR/Scripts"
+  else
+    echo "$VENV_DIR/bin"
+  fi
+}
+
+venv_activate() {
+  local bin_dir
+  bin_dir="$(venv_bin_dir)"
+  if [[ -f "$bin_dir/activate" ]]; then
+    source "$bin_dir/activate"
+  else
+    echo "  [ERROR] venv activate를 찾을 수 없습니다: $bin_dir/activate"
+    exit 1
+  fi
+}
+
+venv_python() {
+  local bin_dir
+  bin_dir="$(venv_bin_dir)"
+  if [[ -x "$bin_dir/python3" ]]; then
+    echo "$bin_dir/python3"
+  elif [[ -x "$bin_dir/python" ]]; then
+    echo "$bin_dir/python"
+  else
+    echo "python3"
+  fi
+}
+
+# ── marker 모델 캐시 경로 ─────────────────────────────
+marker_cache_dir() {
+  case "$OS_TYPE" in
+    macos)           echo "${HOME}/Library/Caches/datalab/models" ;;
+    windows)         echo "${LOCALAPPDATA:-$HOME/AppData/Local}/datalab/models/Cache" ;;
+    *)               echo "${HOME}/.cache/datalab/models" ;;
+  esac
+}
+
+# ── CLIProxyAPI 바이너리명 ────────────────────────────
+cliproxy_binary_name() {
+  if [[ "$OS_TYPE" == "windows" ]]; then
+    echo "cli-proxy-api.exe"
+  else
+    echo "cli-proxy-api"
+  fi
+}
 
 # ── Flags ──────────────────────────────────────────────
 FULL=false
@@ -32,7 +173,7 @@ for arg in "$@"; do
     --skip-qmd)      SKIP_QMD=true ;;
     --skip-models)   SKIP_MODELS=true ;;
     -h|--help)
-      sed -n '2,14p' "$0"
+      sed -n '2,16p' "$0"
       exit 0
       ;;
   esac
@@ -47,8 +188,6 @@ TOTAL_STEPS=7
 STEP=0
 next_step() { STEP=$((STEP + 1)); echo ""; echo "── ${STEP}/${TOTAL_STEPS} $1 ──"; }
 
-echo "=== LLM Wiki 환경 셋업 ==="
-
 # ── 1. 시스템 의존성 ──────────────────────────────────
 next_step "시스템 의존성"
 
@@ -57,16 +196,10 @@ if command -v ffmpeg &>/dev/null; then
   echo "  [OK] ffmpeg: $(ffmpeg -version 2>&1 | head -1 | awk '{print $3}')"
 else
   echo "  [INSTALL] ffmpeg 설치 중..."
-  if command -v brew &>/dev/null; then
-    brew install ffmpeg --quiet 2>/dev/null || brew install ffmpeg
-    echo "  [OK] ffmpeg 설치 완료"
-  elif command -v apt-get &>/dev/null; then
-    sudo apt-get install -y ffmpeg -qq
+  if pkg_install ffmpeg ffmpeg ffmpeg; then
     echo "  [OK] ffmpeg 설치 완료"
   else
-    echo "  [WARN] ffmpeg를 자동 설치할 수 없습니다. 수동 설치 필요:"
-    echo "    macOS: brew install ffmpeg"
-    echo "    Ubuntu: sudo apt-get install ffmpeg"
+    echo "  [WARN] ffmpeg 수동 설치 필요: https://ffmpeg.org/download.html"
   fi
 fi
 
@@ -74,8 +207,26 @@ fi
 if command -v node &>/dev/null; then
   echo "  [OK] Node.js: $(node --version)"
 else
-  echo "  [WARN] Node.js가 없습니다. QMD 설치에 필요합니다."
-  echo "    brew install node 또는 https://nodejs.org"
+  echo "  [INSTALL] Node.js 설치 중..."
+  if [[ "$OS_TYPE" == "windows" ]]; then
+    if pkg_install Node.js nodejs nodejs; then
+      echo "  [OK] Node.js 설치 완료"
+    else
+      echo "  [WARN] Node.js 수동 설치 필요: https://nodejs.org"
+    fi
+  else
+    if pkg_install node nodejs nodejs; then
+      echo "  [OK] Node.js 설치 완료"
+    else
+      echo "  [WARN] Node.js 수동 설치 필요: https://nodejs.org"
+    fi
+  fi
+fi
+
+# curl 확인 (Windows에서 없을 수 있음)
+if ! command -v curl &>/dev/null; then
+  echo "  [INSTALL] curl 설치 중..."
+  pkg_install curl curl curl || echo "  [WARN] curl 수동 설치 필요"
 fi
 
 # ── 2. Python + marker-pdf + markitdown ────────────────
@@ -92,7 +243,8 @@ else
       break
     fi
   done
-  if [[ -z "$PYTHON" ]]; then
+  # macOS Homebrew libexec 경로
+  if [[ -z "$PYTHON" && "$OS_TYPE" == "macos" ]]; then
     for ver in 3.13 3.12 3.11 3.10; do
       bp="/opt/homebrew/opt/python@${ver}/libexec/bin/python3"
       if [[ -x "$bp" ]]; then
@@ -101,9 +253,12 @@ else
       fi
     done
   fi
+  # Windows: python3이 없을 수 있으므로 python도 탐색
   if [[ -z "$PYTHON" ]]; then
     if command -v python3 &>/dev/null; then
       PYTHON="python3"
+    elif command -v python &>/dev/null; then
+      PYTHON="python"
     fi
   fi
 
@@ -113,7 +268,8 @@ else
     NEED_INSTALL=true
   else
     MINOR=$($PYTHON -c 'import sys; print(sys.version_info.minor)')
-    if [[ "$MINOR" -lt 10 ]]; then
+    MAJOR=$($PYTHON -c 'import sys; print(sys.version_info.major)')
+    if [[ "$MAJOR" -lt 3 || "$MINOR" -lt 10 ]]; then
       NEED_INSTALL=true
       echo "  [INFO] 현재 Python: $($PYTHON -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")') (3.10+ 필요)"
     fi
@@ -121,37 +277,75 @@ else
 
   if $NEED_INSTALL; then
     echo "  [INSTALL] Python 3.12 설치 중..."
-    if command -v brew &>/dev/null; then
-      brew install python@3.12 --quiet 2>/dev/null || brew install python@3.12
-      # 설치 후 재탐색
-      PYTHON=""
-      for candidate in python3.12 python3.13 python3.11 python3.10; do
-        if command -v "$candidate" &>/dev/null; then
+    case "$OS_TYPE" in
+      macos)
+        if command -v brew &>/dev/null; then
+          brew install python@3.12 --quiet 2>/dev/null || brew install python@3.12
+        else
+          echo "  [ERROR] Homebrew가 필요합니다: https://brew.sh"
+          exit 1
+        fi
+        ;;
+      linux|wsl)
+        case "$PKG_MANAGER" in
+          apt)
+            sudo apt-get update -qq
+            # deadsnakes PPA for Ubuntu (python3.12가 기본 제공되지 않는 경우)
+            if ! apt-cache show python3.12 &>/dev/null; then
+              sudo apt-get install -y software-properties-common -qq
+              sudo add-apt-repository -y ppa:deadsnakes/ppa
+              sudo apt-get update -qq
+            fi
+            sudo apt-get install -y python3.12 python3.12-venv python3.12-dev -qq
+            ;;
+          dnf)    sudo dnf install -y python3.12 python3.12-devel -q ;;
+          yum)    sudo yum install -y python3.12 python3.12-devel -q ;;
+          pacman) sudo pacman -S --noconfirm python ;;
+          *)
+            echo "  [ERROR] Python 3.12를 자동 설치할 수 없습니다."
+            exit 1
+            ;;
+        esac
+        ;;
+      windows)
+        if [[ "$PKG_MANAGER" == "winget" ]]; then
+          winget install --silent Python.Python.3.12
+        elif [[ "$PKG_MANAGER" == "choco" ]]; then
+          choco install python312 -y --no-progress
+        elif [[ "$PKG_MANAGER" == "scoop" ]]; then
+          scoop install python
+        else
+          echo "  [ERROR] Python 3.12를 자동 설치할 수 없습니다."
+          echo "    https://www.python.org/downloads/ 에서 다운로드하세요."
+          exit 1
+        fi
+        ;;
+    esac
+
+    # 설치 후 재탐색
+    PYTHON=""
+    for candidate in python3.12 python3.13 python3.11 python3.10 python3 python; do
+      if command -v "$candidate" &>/dev/null; then
+        PY_MINOR=$($candidate -c 'import sys; print(sys.version_info.minor)' 2>/dev/null || echo "0")
+        PY_MAJOR=$($candidate -c 'import sys; print(sys.version_info.major)' 2>/dev/null || echo "0")
+        if [[ "$PY_MAJOR" -ge 3 && "$PY_MINOR" -ge 10 ]]; then
           PYTHON="$candidate"
           break
         fi
-      done
-      if [[ -z "$PYTHON" ]]; then
-        bp="/opt/homebrew/opt/python@3.12/libexec/bin/python3"
-        if [[ -x "$bp" ]]; then
-          PYTHON="$bp"
-        fi
       fi
-      if [[ -z "$PYTHON" ]]; then
-        echo "  [ERROR] Python 3.12 설치 후에도 찾을 수 없습니다."
-        exit 1
+    done
+    # macOS Homebrew fallback
+    if [[ -z "$PYTHON" && "$OS_TYPE" == "macos" ]]; then
+      bp="/opt/homebrew/opt/python@3.12/libexec/bin/python3"
+      if [[ -x "$bp" ]]; then
+        PYTHON="$bp"
       fi
-      echo "  [OK] Python 3.12 설치 완료"
-    elif command -v apt-get &>/dev/null; then
-      sudo apt-get update -qq && sudo apt-get install -y python3.12 python3.12-venv python3-pip -qq
-      PYTHON="python3.12"
-      echo "  [OK] Python 3.12 설치 완료"
-    else
-      echo "  [ERROR] Python 3.10+를 자동 설치할 수 없습니다."
-      echo "    macOS: brew install python@3.12"
-      echo "    Ubuntu: sudo apt install python3.12 python3.12-venv"
+    fi
+    if [[ -z "$PYTHON" ]]; then
+      echo "  [ERROR] Python 3.12 설치 후에도 찾을 수 없습니다."
       exit 1
     fi
+    echo "  [OK] Python 3.12 설치 완료"
   fi
 
   PYTHON_VERSION=$($PYTHON -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
@@ -164,35 +358,39 @@ else
     echo "  [CREATE] venv 생성 중..."
     $PYTHON -m venv "$VENV_DIR"
   fi
-  source "$VENV_DIR/bin/activate"
-  python3 -m pip install --upgrade pip --quiet
+  venv_activate
+  "$(venv_python)" -m pip install --upgrade pip --quiet
 
   # marker-pdf
-  if python3 -c "import marker" &>/dev/null; then
-    INSTALLED_VERSION=$(python3 -m pip show marker-pdf 2>/dev/null | grep "^Version:" | awk '{print $2}')
+  if "$(venv_python)" -c "import marker" &>/dev/null; then
+    INSTALLED_VERSION=$("$(venv_python)" -m pip show marker-pdf 2>/dev/null | grep "^Version:" | awk '{print $2}')
     echo "  [OK] marker-pdf v${INSTALLED_VERSION}"
   else
     echo "  [INSTALL] marker-pdf 설치 중..."
     if $FULL; then
-      python3 -m pip install "marker-pdf[full]" --quiet
+      "$(venv_python)" -m pip install "marker-pdf[full]" --quiet
     else
-      python3 -m pip install marker-pdf --quiet
+      "$(venv_python)" -m pip install marker-pdf --quiet
     fi
     echo "  [OK] marker-pdf 설치 완료"
   fi
 
   # markitdown
-  if python3 -c "import markitdown" &>/dev/null; then
-    INSTALLED_VERSION=$(python3 -m pip show markitdown 2>/dev/null | grep "^Version:" | awk '{print $2}')
+  if "$(venv_python)" -c "import markitdown" &>/dev/null; then
+    INSTALLED_VERSION=$("$(venv_python)" -m pip show markitdown 2>/dev/null | grep "^Version:" | awk '{print $2}')
     echo "  [OK] markitdown v${INSTALLED_VERSION}"
   else
     echo "  [INSTALL] markitdown 설치 중..."
-    python3 -m pip install "markitdown[all]" --quiet
+    "$(venv_python)" -m pip install "markitdown[all]" --quiet
     echo "  [OK] markitdown 설치 완료"
   fi
 
   # marker_single CLI 확인
-  if [[ -x "$VENV_DIR/bin/marker_single" ]]; then
+  MARKER_CLI="$(venv_bin_dir)/marker_single"
+  if [[ "$OS_TYPE" == "windows" ]]; then
+    MARKER_CLI="$(venv_bin_dir)/marker_single.exe"
+  fi
+  if [[ -f "$MARKER_CLI" ]]; then
     echo "  [OK] marker_single CLI"
   else
     echo "  [WARN] marker_single을 찾을 수 없습니다"
@@ -205,19 +403,14 @@ if $SKIP_PYTHON || $SKIP_MODELS; then
 else
   next_step "marker-pdf ML 모델 다운로드"
 
-  # surya OCR/layout/table 모델 7종 사전 다운로드
-  # 캐시 위치: ~/Library/Caches/datalab/models (macOS), ~/.cache/datalab/models (Linux)
-  MARKER_CACHE_DIR="${HOME}/Library/Caches/datalab/models"
-  if [[ "$(uname -s)" == "Linux" ]]; then
-    MARKER_CACHE_DIR="${HOME}/.cache/datalab/models"
-  fi
+  MARKER_CACHE_DIR="$(marker_cache_dir)"
 
   if [[ -d "$MARKER_CACHE_DIR" ]] && [[ $(find "$MARKER_CACHE_DIR" -type f 2>/dev/null | wc -l | tr -d ' ') -gt 5 ]]; then
     echo "  [OK] marker 모델 캐시 존재: $MARKER_CACHE_DIR"
   else
     echo "  [DOWNLOAD] surya OCR/layout/table 모델 다운로드 중..."
     echo "  (첫 실행 시 ~2GB 다운로드, 몇 분 소요)"
-    if python3 -c "
+    if "$(venv_python)" -c "
 from marker.models import create_model_dict
 create_model_dict()
 print('OK')
@@ -235,29 +428,49 @@ if $SKIP_PYTHON; then
 else
   next_step "CLIProxyAPI (LLM 보정 프록시)"
 
-  CLIPROXY_BIN="$TOOLS_DIR/cli-proxy-api"
+  CLIPROXY_BIN_NAME="$(cliproxy_binary_name)"
+  CLIPROXY_BIN="$TOOLS_DIR/$CLIPROXY_BIN_NAME"
   CLIPROXY_VERSION="v6.9.18"
 
-  if [[ -x "$CLIPROXY_BIN" ]]; then
+  if [[ -f "$CLIPROXY_BIN" ]]; then
     echo "  [OK] CLIProxyAPI 이미 설치됨"
   else
     echo "  [INSTALL] CLIProxyAPI 다운로드 중 ($CLIPROXY_VERSION)..."
     mkdir -p "$TOOLS_DIR"
 
-    OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-    ARCH=$(uname -m)
-    case "$ARCH" in
-      x86_64)        ARCH="amd64" ;;
-      aarch64|arm64) ARCH="arm64" ;;
+    DL_OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+    DL_ARCH=$(uname -m)
+    case "$DL_ARCH" in
+      x86_64)        DL_ARCH="amd64" ;;
+      aarch64|arm64) DL_ARCH="arm64" ;;
+      i686|i386)     DL_ARCH="386" ;;
     esac
 
-    TARBALL="CLIProxyAPI_${CLIPROXY_VERSION#v}_${OS}_${ARCH}.tar.gz"
-    URL="https://github.com/router-for-me/CLIProxyAPI/releases/download/${CLIPROXY_VERSION}/${TARBALL}"
+    # Windows 감지 (MINGW/MSYS에서 uname -s가 MINGW64_NT 등을 반환)
+    if [[ "$OS_TYPE" == "windows" ]]; then
+      DL_OS="windows"
+    fi
 
-    if curl -sL "$URL" -o "/tmp/$TARBALL"; then
-      tar xzf "/tmp/$TARBALL" -C "$TOOLS_DIR"
-      rm -f "/tmp/$TARBALL"
-      chmod +x "$CLIPROXY_BIN"
+    if [[ "$OS_TYPE" == "windows" ]]; then
+      ARCHIVE="CLIProxyAPI_${CLIPROXY_VERSION#v}_${DL_OS}_${DL_ARCH}.zip"
+    else
+      ARCHIVE="CLIProxyAPI_${CLIPROXY_VERSION#v}_${DL_OS}_${DL_ARCH}.tar.gz"
+    fi
+    URL="https://github.com/router-for-me/CLIProxyAPI/releases/download/${CLIPROXY_VERSION}/${ARCHIVE}"
+
+    TMPFILE="${TMPDIR:-/tmp}/$ARCHIVE"
+    if curl -sL "$URL" -o "$TMPFILE"; then
+      if [[ "$OS_TYPE" == "windows" ]]; then
+        if command -v unzip &>/dev/null; then
+          unzip -qo "$TMPFILE" -d "$TOOLS_DIR"
+        elif command -v powershell &>/dev/null; then
+          powershell -Command "Expand-Archive -Force '$TMPFILE' '$TOOLS_DIR'"
+        fi
+      else
+        tar xzf "$TMPFILE" -C "$TOOLS_DIR"
+        chmod +x "$CLIPROXY_BIN"
+      fi
+      rm -f "$TMPFILE"
       echo "  [OK] CLIProxyAPI 설치 완료"
     else
       echo "  [WARN] CLIProxyAPI 다운로드 실패. LLM 보정 없이 사용 가능합니다."
@@ -295,7 +508,11 @@ YAML
     echo "  [OK] Codex OAuth 인증 정보 존재"
   else
     echo "  [ACTION] Codex OAuth 로그인이 필요합니다 (최초 1회):"
-    echo "    cd tools && ./cli-proxy-api -codex-login"
+    if [[ "$OS_TYPE" == "windows" ]]; then
+      echo "    cd tools && .\\cli-proxy-api.exe -codex-login"
+    else
+      echo "    cd tools && ./cli-proxy-api -codex-login"
+    fi
   fi
 fi
 
@@ -313,11 +530,11 @@ else
       echo "  [OK] qmd 설치 완료"
     else
       echo "  [ERROR] npm이 설치되어 있지 않습니다. qmd를 설치할 수 없습니다."
-      echo "    brew install node && npm install -g @tobilu/qmd"
+      echo "    npm install -g @tobilu/qmd"
       SKIP_QMD=true
     fi
   else
-    echo "  [OK] qmd CLI: $(which qmd)"
+    echo "  [OK] qmd CLI: $(command -v qmd)"
   fi
 
   if ! $SKIP_QMD; then
@@ -326,8 +543,12 @@ else
       echo "  [SKIP] QMD 모델 다운로드 (--skip-models)"
     else
       QMD_MODEL_DIR="${HOME}/.cache/qmd/models"
-      if [[ -d "$QMD_MODEL_DIR" ]] && [[ $(find "$QMD_MODEL_DIR" -name "*.gguf" -type f 2>/dev/null | wc -l | tr -d ' ') -ge 3 ]]; then
-        echo "  [OK] QMD 모델 캐시 존재 (3/3 GGUF)"
+      if [[ "$OS_TYPE" == "windows" ]]; then
+        QMD_MODEL_DIR="${LOCALAPPDATA:-$HOME/AppData/Local}/qmd/models"
+      fi
+      GGUF_COUNT=$(find "$QMD_MODEL_DIR" -name "*.gguf" -type f 2>/dev/null | wc -l | tr -d ' ')
+      if [[ -d "$QMD_MODEL_DIR" ]] && [[ "$GGUF_COUNT" -ge 3 ]]; then
+        echo "  [OK] QMD 모델 캐시 존재 (${GGUF_COUNT}/3 GGUF)"
       else
         echo "  [DOWNLOAD] QMD 모델 다운로드 중 (embedding + reranking + generation)..."
         echo "  (첫 실행 시 ~2GB 다운로드, 몇 분 소요)"
@@ -400,12 +621,14 @@ fi
 # ── 7. 설정 파일 확인 ─────────────────────────────────
 next_step "최종 확인"
 
-# parse-raw.sh 실행 권한
-if [[ -f "$SCRIPT_DIR/parse-raw.sh" ]] && [[ ! -x "$SCRIPT_DIR/parse-raw.sh" ]]; then
-  chmod +x "$SCRIPT_DIR/parse-raw.sh"
-  echo "  [FIX] parse-raw.sh 실행 권한 부여"
-else
-  echo "  [OK] parse-raw.sh 실행 권한"
+# parse-raw.sh 실행 권한 (Unix only)
+if [[ "$OS_TYPE" != "windows" ]]; then
+  if [[ -f "$SCRIPT_DIR/parse-raw.sh" ]] && [[ ! -x "$SCRIPT_DIR/parse-raw.sh" ]]; then
+    chmod +x "$SCRIPT_DIR/parse-raw.sh"
+    echo "  [FIX] parse-raw.sh 실행 권한 부여"
+  else
+    echo "  [OK] parse-raw.sh 실행 권한"
+  fi
 fi
 
 # .claude/settings.json 확인
@@ -452,7 +675,7 @@ fi
 
 # ── 완료 ───────────────────────────────────────────────
 echo ""
-echo "=== 셋업 완료 ==="
+echo "=== 셋업 완료 ($OS_TYPE) ==="
 echo ""
 
 if $FULL; then
@@ -465,9 +688,15 @@ fi
 echo ""
 echo "다음 단계:"
 if ! $SKIP_PYTHON; then
-  echo "  source .venv/bin/activate                    # venv 활성화"
-  echo "  cd tools && ./cli-proxy-api -codex-login     # Codex OAuth 로그인 (최초 1회)"
-  echo "  cd tools && ./cli-proxy-api &                # CLIProxyAPI 서버 시작"
+  if [[ "$OS_TYPE" == "windows" ]]; then
+    echo "  .venv\\Scripts\\activate                       # venv 활성화"
+    echo "  cd tools && .\\cli-proxy-api.exe -codex-login  # Codex OAuth 로그인 (최초 1회)"
+    echo "  cd tools && start cli-proxy-api.exe            # CLIProxyAPI 서버 시작"
+  else
+    echo "  source .venv/bin/activate                    # venv 활성화"
+    echo "  cd tools && ./cli-proxy-api -codex-login     # Codex OAuth 로그인 (최초 1회)"
+    echo "  cd tools && ./cli-proxy-api &                # CLIProxyAPI 서버 시작"
+  fi
 fi
 echo "  ./scripts/parse-raw.sh                       # raw/ 비텍스트 파일 파싱"
 echo ""
