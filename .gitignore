@@ -1,0 +1,24 @@
+# OS
+.DS_Store
+
+# Local editor / vault state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+
+# OMX runtime state
+.omx/
+.omc/
+
+# Python venv
+.venv/
+
+# CLIProxyAPI (config.example.yaml만 커밋)
+tools/*
+!tools/config.example.yaml
+
+# Marker 임시 메타데이터 (재생성 가능)
+*_meta.json
+*_debug*
+
+# Search / indexing scratch
+.qmd/
