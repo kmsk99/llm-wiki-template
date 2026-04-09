@@ -1,19 +1,36 @@
 #!/usr/bin/env bash
-# setup.sh — LLM Wiki 초기 환경 셋업
+# setup.sh — LLM Wiki 원스톱 환경 셋업
 #
 # 사용법:
 #   ./scripts/setup.sh          # 기본 설치 (PDF 지원)
 #   ./scripts/setup.sh --full   # 전체 설치 (PDF + DOCX, XLSX, PPTX, 이미지, EPUB)
+#   ./scripts/setup.sh --skip-python   # Python/marker 설치 생략 (QMD만 셋업)
+#   ./scripts/setup.sh --skip-qmd      # QMD 셋업 생략
 #
-# .venv/ 가상환경을 프로젝트 루트에 생성하고 marker-pdf를 설치한다.
-# tools/ 디렉토리에 CLIProxyAPI를 다운로드한다.
+# 설치 항목:
+#   1. Python venv + marker-pdf + markitdown (비텍스트 파싱)
+#   2. CLIProxyAPI (LLM 보정용 프록시)
+#   3. QMD 검색 엔진 (collection 생성 + 인덱싱 + 임베딩)
+#   4. 디렉토리 구조 확인/생성
 
 set -euo pipefail
 
+# ── Flags ──────────────────────────────────────────────
 FULL=false
-if [[ "${1:-}" == "--full" ]]; then
-  FULL=true
-fi
+SKIP_PYTHON=false
+SKIP_QMD=false
+
+for arg in "$@"; do
+  case "$arg" in
+    --full)        FULL=true ;;
+    --skip-python) SKIP_PYTHON=true ;;
+    --skip-qmd)    SKIP_QMD=true ;;
+    -h|--help)
+      sed -n '2,12p' "$0"
+      exit 0
+      ;;
+  esac
+done
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -21,133 +38,163 @@ VENV_DIR="$REPO_ROOT/.venv"
 TOOLS_DIR="$REPO_ROOT/tools"
 
 echo "=== LLM Wiki 환경 셋업 ==="
+echo ""
 
-# 1. Python 3.10+ 탐색 (Homebrew 버전 우선, 시스템 python3 fallback)
-PYTHON=""
-for candidate in python3.13 python3.12 python3.11 python3.10; do
-  if command -v "$candidate" &>/dev/null; then
-    PYTHON="$candidate"
-    break
+# ── 1. 디렉토리 구조 확인 ─────────────────────────────
+echo "── 1/5 디렉토리 구조 ──"
+DIRS=(
+  "raw/meetings" "raw/briefs" "raw/slack" "raw/transcripts" "raw/links" "raw/files"
+  "wiki/systems" "wiki/processes" "wiki/projects" "wiki/decisions"
+  "wiki/playbooks" "wiki/entities" "wiki/glossary" "wiki/index" "wiki/_meta"
+  "wiki/entities/brands" "wiki/entities/customers" "wiki/entities/data-sources"
+  "wiki/entities/partners" "wiki/entities/systems"
+  "output/briefs" "output/onboarding" "output/action-items" "output/reports"
+  "templates" "prompts"
+)
+
+missing=0
+for dir in "${DIRS[@]}"; do
+  if [[ ! -d "$REPO_ROOT/$dir" ]]; then
+    mkdir -p "$REPO_ROOT/$dir"
+    echo "  [CREATE] $dir/"
+    missing=$((missing + 1))
   fi
 done
-# Homebrew libexec 경로도 탐색
-if [[ -z "$PYTHON" ]]; then
-  for ver in 3.13 3.12 3.11 3.10; do
-    bp="/opt/homebrew/opt/python@${ver}/libexec/bin/python3"
-    if [[ -x "$bp" ]]; then
-      PYTHON="$bp"
+if [[ "$missing" -eq 0 ]]; then
+  echo "  [OK] 디렉토리 구조 정상"
+else
+  echo "  [OK] ${missing}개 디렉토리 생성 완료"
+fi
+
+# ── 2. Python + marker-pdf + markitdown ────────────────
+if $SKIP_PYTHON; then
+  echo ""
+  echo "── 2/5 Python (건너뜀: --skip-python) ──"
+else
+  echo ""
+  echo "── 2/5 Python + 파싱 도구 ──"
+
+  # Python 3.10+ 탐색
+  PYTHON=""
+  for candidate in python3.13 python3.12 python3.11 python3.10; do
+    if command -v "$candidate" &>/dev/null; then
+      PYTHON="$candidate"
       break
     fi
   done
-fi
-# 최종 fallback
-if [[ -z "$PYTHON" ]]; then
-  if command -v python3 &>/dev/null; then
-    PYTHON="python3"
-  else
-    echo "[ERROR] python3이 설치되어 있지 않습니다."
-    echo "  macOS: brew install python@3.12"
-    echo "  Ubuntu: sudo apt install python3 python3-pip"
+  if [[ -z "$PYTHON" ]]; then
+    for ver in 3.13 3.12 3.11 3.10; do
+      bp="/opt/homebrew/opt/python@${ver}/libexec/bin/python3"
+      if [[ -x "$bp" ]]; then
+        PYTHON="$bp"
+        break
+      fi
+    done
+  fi
+  if [[ -z "$PYTHON" ]]; then
+    if command -v python3 &>/dev/null; then
+      PYTHON="python3"
+    else
+      echo "  [ERROR] python3이 설치되어 있지 않습니다."
+      echo "    macOS: brew install python@3.12"
+      echo "    Ubuntu: sudo apt install python3 python3-pip"
+      exit 1
+    fi
+  fi
+
+  PYTHON_VERSION=$($PYTHON -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
+  MINOR=$($PYTHON -c 'import sys; print(sys.version_info.minor)')
+  if [[ "$MINOR" -lt 10 ]]; then
+    echo "  [ERROR] Python 3.10 이상이 필요합니다 (현재: $PYTHON_VERSION)"
     exit 1
   fi
-fi
+  echo "  [OK] Python $PYTHON_VERSION ($PYTHON)"
 
-PYTHON_VERSION=$($PYTHON -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
-echo "[OK] Python $PYTHON_VERSION ($PYTHON)"
-
-# Python 3.10+ 확인
-MINOR=$($PYTHON -c 'import sys; print(sys.version_info.minor)')
-if [[ "$MINOR" -lt 10 ]]; then
-  echo "[ERROR] Python 3.10 이상이 필요합니다 (현재: $PYTHON_VERSION)"
-  echo "  brew install python@3.12"
-  exit 1
-fi
-
-# 2. venv 생성 또는 재사용
-if [[ -d "$VENV_DIR" ]]; then
-  echo "[OK] 기존 venv 발견: $VENV_DIR"
-else
-  echo "[CREATE] venv 생성 중: $VENV_DIR"
-  $PYTHON -m venv "$VENV_DIR"
-fi
-
-# venv 활성화
-source "$VENV_DIR/bin/activate"
-echo "[OK] venv 활성화 ($(python3 --version))"
-
-# 3. pip 업그레이드
-python3 -m pip install --upgrade pip --quiet
-echo "[OK] pip"
-
-# 4. marker-pdf 설치
-if python3 -c "import marker" &>/dev/null; then
-  INSTALLED_VERSION=$(python3 -m pip show marker-pdf 2>/dev/null | grep "^Version:" | awk '{print $2}')
-  echo "[OK] marker-pdf 이미 설치됨 (v${INSTALLED_VERSION})"
-else
-  echo "[INSTALL] marker-pdf 설치 중..."
-  if $FULL; then
-    python3 -m pip install "marker-pdf[full]"
+  # venv
+  if [[ -d "$VENV_DIR" ]]; then
+    echo "  [OK] 기존 venv 발견"
   else
-    python3 -m pip install marker-pdf
+    echo "  [CREATE] venv 생성 중..."
+    $PYTHON -m venv "$VENV_DIR"
   fi
-  echo "[OK] marker-pdf 설치 완료"
-fi
+  source "$VENV_DIR/bin/activate"
+  python3 -m pip install --upgrade pip --quiet
 
-# 4-2. markitdown 설치 (xlsx, docx, pptx 등 비PDF 파일용)
-if python3 -c "import markitdown" &>/dev/null; then
-  INSTALLED_VERSION=$(python3 -m pip show markitdown 2>/dev/null | grep "^Version:" | awk '{print $2}')
-  echo "[OK] markitdown 이미 설치됨 (v${INSTALLED_VERSION})"
-else
-  echo "[INSTALL] markitdown 설치 중..."
-  python3 -m pip install "markitdown[all]"
-  echo "[OK] markitdown 설치 완료"
-fi
-
-# 5. marker_single CLI 확인
-if [[ -x "$VENV_DIR/bin/marker_single" ]]; then
-  echo "[OK] marker_single CLI: $VENV_DIR/bin/marker_single"
-else
-  echo "[WARN] marker_single을 찾을 수 없습니다."
-fi
-
-# 6. CLIProxyAPI 설치 (LLM 보정용)
-CLIPROXY_BIN="$TOOLS_DIR/cli-proxy-api"
-CLIPROXY_VERSION="v6.9.18"
-
-if [[ -x "$CLIPROXY_BIN" ]]; then
-  echo "[OK] CLIProxyAPI 이미 설치됨: $CLIPROXY_BIN"
-else
-  echo "[INSTALL] CLIProxyAPI 다운로드 중 ($CLIPROXY_VERSION)..."
-  mkdir -p "$TOOLS_DIR"
-
-  # OS/아키텍처 감지
-  OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-  ARCH=$(uname -m)
-  case "$ARCH" in
-    x86_64)  ARCH="amd64" ;;
-    aarch64|arm64) ARCH="arm64" ;;
-  esac
-
-  TARBALL="CLIProxyAPI_${CLIPROXY_VERSION#v}_${OS}_${ARCH}.tar.gz"
-  URL="https://github.com/router-for-me/CLIProxyAPI/releases/download/${CLIPROXY_VERSION}/${TARBALL}"
-
-  if curl -sL "$URL" -o "/tmp/$TARBALL"; then
-    tar xzf "/tmp/$TARBALL" -C "$TOOLS_DIR"
-    rm -f "/tmp/$TARBALL"
-    chmod +x "$CLIPROXY_BIN"
-    echo "[OK] CLIProxyAPI 설치 완료: $CLIPROXY_BIN"
+  # marker-pdf
+  if python3 -c "import marker" &>/dev/null; then
+    INSTALLED_VERSION=$(python3 -m pip show marker-pdf 2>/dev/null | grep "^Version:" | awk '{print $2}')
+    echo "  [OK] marker-pdf v${INSTALLED_VERSION}"
   else
-    echo "[WARN] CLIProxyAPI 다운로드 실패. LLM 보정 없이 사용 가능합니다."
-    echo "  수동 다운로드: $URL"
+    echo "  [INSTALL] marker-pdf 설치 중..."
+    if $FULL; then
+      python3 -m pip install "marker-pdf[full]" --quiet
+    else
+      python3 -m pip install marker-pdf --quiet
+    fi
+    echo "  [OK] marker-pdf 설치 완료"
+  fi
+
+  # markitdown
+  if python3 -c "import markitdown" &>/dev/null; then
+    INSTALLED_VERSION=$(python3 -m pip show markitdown 2>/dev/null | grep "^Version:" | awk '{print $2}')
+    echo "  [OK] markitdown v${INSTALLED_VERSION}"
+  else
+    echo "  [INSTALL] markitdown 설치 중..."
+    python3 -m pip install "markitdown[all]" --quiet
+    echo "  [OK] markitdown 설치 완료"
+  fi
+
+  # marker_single CLI 확인
+  if [[ -x "$VENV_DIR/bin/marker_single" ]]; then
+    echo "  [OK] marker_single CLI"
+  else
+    echo "  [WARN] marker_single을 찾을 수 없습니다"
   fi
 fi
 
-# 7. CLIProxyAPI config 생성
-CLIPROXY_CONFIG="$TOOLS_DIR/config.yaml"
-if [[ -f "$CLIPROXY_CONFIG" ]]; then
-  echo "[OK] CLIProxyAPI config 존재: $CLIPROXY_CONFIG"
+# ── 3. CLIProxyAPI ─────────────────────────────────────
+if $SKIP_PYTHON; then
+  echo ""
+  echo "── 3/5 CLIProxyAPI (건너뜀: --skip-python) ──"
 else
-  if [[ -f "$TOOLS_DIR/config.example.yaml" ]]; then
+  echo ""
+  echo "── 3/5 CLIProxyAPI (LLM 보정 프록시) ──"
+
+  CLIPROXY_BIN="$TOOLS_DIR/cli-proxy-api"
+  CLIPROXY_VERSION="v6.9.18"
+
+  if [[ -x "$CLIPROXY_BIN" ]]; then
+    echo "  [OK] CLIProxyAPI 이미 설치됨"
+  else
+    echo "  [INSTALL] CLIProxyAPI 다운로드 중 ($CLIPROXY_VERSION)..."
+    mkdir -p "$TOOLS_DIR"
+
+    OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+    ARCH=$(uname -m)
+    case "$ARCH" in
+      x86_64)        ARCH="amd64" ;;
+      aarch64|arm64) ARCH="arm64" ;;
+    esac
+
+    TARBALL="CLIProxyAPI_${CLIPROXY_VERSION#v}_${OS}_${ARCH}.tar.gz"
+    URL="https://github.com/router-for-me/CLIProxyAPI/releases/download/${CLIPROXY_VERSION}/${TARBALL}"
+
+    if curl -sL "$URL" -o "/tmp/$TARBALL"; then
+      tar xzf "/tmp/$TARBALL" -C "$TOOLS_DIR"
+      rm -f "/tmp/$TARBALL"
+      chmod +x "$CLIPROXY_BIN"
+      echo "  [OK] CLIProxyAPI 설치 완료"
+    else
+      echo "  [WARN] CLIProxyAPI 다운로드 실패. LLM 보정 없이 사용 가능합니다."
+      echo "    수동 다운로드: $URL"
+    fi
+  fi
+
+  # config.yaml
+  CLIPROXY_CONFIG="$TOOLS_DIR/config.yaml"
+  if [[ -f "$CLIPROXY_CONFIG" ]]; then
+    echo "  [OK] config.yaml 존재"
+  else
     cat > "$CLIPROXY_CONFIG" <<'YAML'
 host: "127.0.0.1"
 port: 8317
@@ -164,51 +211,148 @@ api-keys:
 debug: false
 request-retry: 1
 YAML
-    echo "[CREATE] CLIProxyAPI config 생성: $CLIPROXY_CONFIG"
-    echo "[INFO] Codex OAuth 로그인이 필요합니다:"
-    echo "  cd tools && ./cli-proxy-api -codex-login"
+    echo "  [CREATE] config.yaml 생성"
+    echo "  [INFO] Codex OAuth 로그인 필요: cd tools && ./cli-proxy-api -codex-login"
   fi
 fi
 
-# 8. parse-raw.sh 실행 권한 확인
-if [[ -x "$SCRIPT_DIR/parse-raw.sh" ]]; then
-  echo "[OK] parse-raw.sh 실행 권한 확인"
+# ── 4. QMD 검색 엔진 ──────────────────────────────────
+if $SKIP_QMD; then
+  echo ""
+  echo "── 4/5 QMD (건너뜀: --skip-qmd) ──"
 else
-  chmod +x "$SCRIPT_DIR/parse-raw.sh"
-  echo "[FIX] parse-raw.sh 실행 권한 부여"
-fi
+  echo ""
+  echo "── 4/5 QMD 검색 엔진 ──"
 
-# 9. 디렉토리 구조 확인
-DIRS=("raw/meetings" "raw/briefs" "raw/slack" "raw/transcripts" "raw/links" "raw/files"
-      "wiki/systems" "wiki/processes" "wiki/projects" "wiki/decisions"
-      "wiki/playbooks" "wiki/entities" "wiki/glossary" "wiki/index" "wiki/_meta"
-      "output/briefs" "output/onboarding" "output/action-items" "output/reports")
-
-missing=0
-for dir in "${DIRS[@]}"; do
-  if [[ ! -d "$REPO_ROOT/$dir" ]]; then
-    mkdir -p "$REPO_ROOT/$dir"
-    echo "[CREATE] $dir/"
-    missing=$((missing + 1))
+  # qmd CLI 확인
+  if ! command -v qmd &>/dev/null; then
+    echo "  [INSTALL] qmd 설치 중 (npm)..."
+    if command -v npm &>/dev/null; then
+      npm install -g @nicepkg/qmd --quiet 2>/dev/null || npm install -g @nicepkg/qmd
+      echo "  [OK] qmd 설치 완료"
+    else
+      echo "  [ERROR] npm이 설치되어 있지 않습니다. qmd를 설치할 수 없습니다."
+      echo "    brew install node && npm install -g @nicepkg/qmd"
+      SKIP_QMD=true
+    fi
+  else
+    echo "  [OK] qmd CLI: $(which qmd)"
   fi
-done
-if [[ "$missing" -eq 0 ]]; then
-  echo "[OK] 디렉토리 구조 정상"
+
+  if ! $SKIP_QMD; then
+    # wiki collection
+    if qmd collection show wiki 2>/dev/null | grep -q "Path:"; then
+      echo "  [OK] collection 'wiki' 존재"
+    else
+      echo "  [CREATE] collection 'wiki' 생성 중..."
+      qmd collection add wiki "$REPO_ROOT/wiki"
+      echo "  [OK] collection 'wiki' 생성 완료"
+    fi
+
+    # raw collection
+    if qmd collection show raw 2>/dev/null | grep -q "Path:"; then
+      echo "  [OK] collection 'raw' 존재"
+    else
+      echo "  [CREATE] collection 'raw' 생성 중..."
+      qmd collection add raw "$REPO_ROOT/raw"
+      echo "  [OK] collection 'raw' 생성 완료"
+    fi
+
+    # output collection
+    if qmd collection show output 2>/dev/null | grep -q "Path:"; then
+      echo "  [OK] collection 'output' 존재"
+    else
+      echo "  [CREATE] collection 'output' 생성 중..."
+      qmd collection add output "$REPO_ROOT/output"
+      echo "  [OK] collection 'output' 생성 완료"
+    fi
+
+    # 인덱싱 + 임베딩
+    echo "  [INDEX] 인덱스 업데이트 중..."
+    qmd update 2>/dev/null || true
+    echo "  [EMBED] 벡터 임베딩 생성 중..."
+    qmd embed 2>/dev/null || true
+    echo "  [OK] QMD 검색 준비 완료"
+  fi
 fi
 
+# ── 5. 스크립트 권한 + Claude Code 설정 확인 ──────────
+echo ""
+echo "── 5/5 최종 확인 ──"
+
+# parse-raw.sh 실행 권한
+if [[ -f "$SCRIPT_DIR/parse-raw.sh" ]] && [[ ! -x "$SCRIPT_DIR/parse-raw.sh" ]]; then
+  chmod +x "$SCRIPT_DIR/parse-raw.sh"
+  echo "  [FIX] parse-raw.sh 실행 권한 부여"
+else
+  echo "  [OK] parse-raw.sh 실행 권한"
+fi
+
+# .claude/settings.json 확인
+CLAUDE_SETTINGS="$REPO_ROOT/.claude/settings.json"
+if [[ -f "$CLAUDE_SETTINGS" ]]; then
+  if grep -q '"qmd"' "$CLAUDE_SETTINGS"; then
+    echo "  [OK] Claude Code MCP 설정 (qmd)"
+  else
+    echo "  [WARN] .claude/settings.json에 qmd MCP 설정이 없습니다"
+  fi
+else
+  echo "  [CREATE] .claude/settings.json 생성"
+  mkdir -p "$REPO_ROOT/.claude"
+  cat > "$CLAUDE_SETTINGS" <<'JSON'
+{
+  "mcpServers": {
+    "qmd": {
+      "command": "qmd",
+      "args": ["mcp"],
+      "env": {}
+    }
+  }
+}
+JSON
+fi
+
+# raw/.manifest.md 확인
+if [[ -f "$REPO_ROOT/raw/.manifest.md" ]]; then
+  echo "  [OK] raw/.manifest.md 존재"
+else
+  cat > "$REPO_ROOT/raw/.manifest.md" <<'MD'
+# Raw Source Manifest
+
+| 파일 | 유형 | 인제스트 상태 | 비고 |
+|------|------|-------------|------|
+MD
+  echo "  [CREATE] raw/.manifest.md 생성"
+fi
+
+# wiki/index.md 확인
+if [[ -f "$REPO_ROOT/wiki/index.md" ]]; then
+  echo "  [OK] wiki/index.md 존재"
+fi
+
+# ── 완료 ───────────────────────────────────────────────
 echo ""
 echo "=== 셋업 완료 ==="
+echo ""
+
 if $FULL; then
   echo "설치 모드: full (PDF, DOCX, XLSX, PPTX, 이미지, EPUB)"
 else
   echo "설치 모드: 기본 (PDF만)"
-  echo "전체 포맷 지원이 필요하면: ./scripts/setup.sh --full"
+  echo "  전체 포맷 지원: ./scripts/setup.sh --full"
 fi
+
 echo ""
-echo "사용법:"
-echo "  source .venv/bin/activate                    # venv 활성화"
-echo "  cd tools && ./cli-proxy-api -codex-login     # Codex OAuth 로그인 (최초 1회)"
-echo "  cd tools && ./cli-proxy-api &                # CLIProxyAPI 서버 시작"
-echo "  ./scripts/parse-raw.sh                       # raw/ 전체 비텍스트 파일 파싱"
-echo "  ./scripts/parse-raw.sh raw/files/file.pdf    # 단일 파일 파싱"
-echo "  ./scripts/parse-raw.sh --no-llm raw/files/file.pdf  # LLM 없이 파싱"
+echo "다음 단계:"
+if ! $SKIP_PYTHON; then
+  echo "  source .venv/bin/activate                    # venv 활성화"
+  echo "  cd tools && ./cli-proxy-api -codex-login     # Codex OAuth 로그인 (최초 1회)"
+  echo "  cd tools && ./cli-proxy-api &                # CLIProxyAPI 서버 시작"
+fi
+echo "  ./scripts/parse-raw.sh                       # raw/ 비텍스트 파일 파싱"
+echo ""
+echo "위키 운영:"
+echo "  /project:catalog raw/meetings/파일.md         # raw 소스 등록"
+echo "  /project:ingest raw/meetings/파일.md          # wiki로 승격"
+echo "  /project:query 질문                           # 위키에 질문"
+echo "  /project:lint                                # 건강검진"
