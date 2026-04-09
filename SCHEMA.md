@@ -58,6 +58,7 @@ raw/  ──→  Ingest  ──→  wiki/  ──→  Generate  ──→  outpu
 |------|------|------|
 | **Audit** | `/project:audit` | lint + 커버리지 + 신뢰도 + 최신성 + 연결성 + output 정합성 종합 감사 |
 | **Catalog** | `/project:catalog` | raw 소스를 manifest에 등록하고 비텍스트 파일을 파싱 |
+| **Batch Ingest** | `/project:batch-ingest` | 대량 파일 일괄 승격 (promote/merge/selective 모드) |
 | **Reindex** | `/project:reindex` | wiki/index.md와 주제별 맵 재구축 |
 | **Trace Citation** | `/project:trace-citation` | 특정 사실의 근거를 raw 소스까지 역추적 |
 
