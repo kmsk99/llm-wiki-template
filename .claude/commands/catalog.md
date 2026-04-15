@@ -24,7 +24,7 @@ $ARGUMENTS
 5. `raw/.manifest.md`에 항목을 추가한다. 기존 테이블 형식에 맞춘다:
    `| 파일경로 | 유형 | 날짜 | 인제스트 상태 | 비고 |`
 6. 비텍스트 파일(PDF, XLSX, DOCX, PPTX 등)이면:
-   - `scripts/parse-raw.sh <파일>`로 파싱을 실행한다 (PDF → pdftotext, 그 외 → MarkItDown).
+   - `scripts/parse-raw.sh <파일>`로 파싱을 실행한다 (PDF는 텍스트 레이어 감지 시 pdftotext+LLM, HTML/HWP/HWPX/이미지/TXT/DOC는 전용 파서, 그 외는 Docling).
    - 파싱 성공 시 비고에 `parsed` 표시를 추가한다.
 
 ## 출력

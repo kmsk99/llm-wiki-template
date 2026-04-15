@@ -14,7 +14,7 @@ $ARGUMENTS
 ## 실행 절차
 
 ### Phase 1: 변경 범위 파악
-1. 새 소스를 읽는다 (비텍스트면 `scripts/parse-raw.sh`로 파싱 우선).
+1. 새 소스를 읽는다 (비텍스트면 `scripts/parse-raw.sh`로 파싱 우선). 필요 시 `scripts/repair_parsed_artifacts.py`로 stale parsed/중복 파일명을 정리한다.
 2. 기존 wiki 문서 중 동일 주제를 다루는 문서를 찾는다.
 3. **어떤 사실이 변경되었는지** 구체적으로 식별한다:
    - 수치 변경 (가격, 날짜, 수량 등)

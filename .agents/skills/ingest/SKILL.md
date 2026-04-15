@@ -22,7 +22,7 @@ $ARGUMENTS
    - 인자가 없으면 `raw/.manifest.md`에서 인제스트 상태가 `미정` 또는 `부분`인 소스를 수집한다.
 2. `raw/.manifest.md`에 등록되지 않은 소스이면 먼저 `/project:catalog`을 안내한다.
 3. **비텍스트 파일(PDF, XLSX, DOCX, PPTX, 이미지 등)이면**:
-   - `scripts/parse-raw.sh <파일>`로 파싱하여 `.parsed.md`를 생성한다 (PDF → pdftotext, 그 외 → MarkItDown).
+   - `scripts/parse-raw.sh <파일>`로 파싱하여 `.parsed.md`를 생성한다 (PDF는 텍스트 레이어 감지 시 pdftotext+LLM, HTML/HWP/HWPX/이미지/TXT/DOC는 전용 파서, 그 외는 Docling).
 4. 파싱된 `.parsed.md` 또는 원본 텍스트를 읽는다.
 
 ### Phase 2: 분석

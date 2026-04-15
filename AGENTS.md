@@ -46,9 +46,15 @@ Karpathy LLM Wiki 패턴(raw → wiki → output)으로 운영한다.
 원자료 저장소. 회의록, 슬랙 발췌, 전사, 초안, 링크 덤프, PDF/Excel/PPTX 등 바이너리 파일 포함.
 - `.manifest.md`로 전체 소스와 인제스트 상태를 추적한다.
   - 인제스트 상태: `완료` | `미정` | `부분` | `보류` (이 4가지만 사용).
-- 비텍스트 파일은 pdftotext 또는 MarkItDown으로 파싱하여 `.parsed.md`를 생성한 후 인제스트한다.
-  - PDF → pdftotext (poppler)
-  - 그 외 (XLSX, DOCX, PPTX, 이미지, HTML, 오디오 등) → MarkItDown
+- 비텍스트 파일은 하이브리드 파이프라인으로 파싱하여 `.parsed.md`를 생성한 후 인제스트한다.
+  - PDF(텍스트 레이어 있음) → pdftotext + LLM Markdown 정리
+  - PDF(스캔) → Docling OCR(OcrMac) + VLM(PictureDescriptionApi)
+  - HTML → `scripts/parse-html.py`
+  - HWP/HWPX → `scripts/parse-hwp.py`
+  - 이미지 → `scripts/parse-image.py` (GPT Vision 우선, 인증 실패 시 재로그인 안내)
+  - TXT/DOC → `scripts/parse-text.py`
+  - 그 외 (XLSX, DOCX, PPTX 등) → Docling 통합 변환
+  - 필요 시 `scripts/repair_parsed_artifacts.py`로 stale parsed/중복 파일명을 복구한다.
 - `.parsed.md`는 파생물이므로 원본과 동일하게 수정·삭제 금지 대상은 아니지만, 재파싱으로 재생성할 수 있다.
 
 ### wiki/ — 정제 문서 전체
@@ -74,7 +80,7 @@ Karpathy LLM Wiki 패턴(raw → wiki → output)으로 운영한다.
 
 설치 항목:
 1. 시스템 의존성 (poppler, ffmpeg, Node.js, curl)
-2. Python 3.12 + markitdown (자동 설치)
+2. Python 3.12 + Docling + 보조 파서 (자동 설치)
 3. QMD 검색 엔진 (GGUF 모델 3종 + collection + 인덱싱)
 4. 디렉토리 구조
 5. 설정 파일 (Claude Code MCP, manifest, index)
