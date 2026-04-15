@@ -1,137 +1,118 @@
 #!/usr/bin/env bash
-# parse-raw.sh — raw/ 내 비텍스트 파일을 파싱하여 .parsed.md를 생성한다.
+# parse-raw.sh — raw/ 내 비텍스트 파일을 하이브리드 파이프라��으로 파싱하여 .parsed.md를 생성한다.
 #
-# 라우팅:
-#   PDF        → pdftotext (poppler)
-#   이미지      → 로컬 OCR + 메타데이터 파서
-#   그 외 파일  → MarkItDown (xlsx, docx, pptx, html, epub 등)
+# 엔진: Docling + pdftotext + LLM (CLIProxyAPI)
+#   - PDF(텍스트 레이어) → pdftotext + LLM Markdown 정리
+#   - PDF(스캔) → Docling OCR(OcrMac) + VLM(PictureDescriptionApi)
+#   - HTML → scripts/parse-html.py (data.go.kr 본문 추출 전용)
+#   - 그 외 (XLSX, DOCX, PPTX, 이미지 등) → Docling 통합 변환
 #
 # 사용법:
 #   ./scripts/parse-raw.sh                               # raw/ 전체 스캔
 #   ./scripts/parse-raw.sh raw/files/file.pdf             # 단일 파일 파싱
+#   ./scripts/parse-raw.sh --no-llm raw/files/file.pdf    # LLM 없이 파싱
+#   ./scripts/parse-raw.sh --no-ocr raw/files/file.pdf    # OCR 없이 파싱
 #
-# 의존성:
-#   PDF: poppler (pdftotext) — brew install poppler / apt install poppler-utils
-#   이미지: tesseract + exiftool (선택) — brew install tesseract tesseract-lang exiftool
-#   그 외: pip install 'markitdown[all]'
+# 의존성: pip install 'docling[ocrmac]' httpx
+# LLM 모드 의존성: CLIProxyAPI (tools/cli-proxy-api)
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-RAW_DIR="$REPO_ROOT/raw"
 VENV_DIR="$REPO_ROOT/.venv"
+ENV_FILE="$REPO_ROOT/.env"
+SCRIPT="$REPO_ROOT/scripts/parse_docling.py"
+HTML_PARSER="$REPO_ROOT/scripts/parse-html.py"
+IMAGE_PARSER="$REPO_ROOT/scripts/parse-image.py"
+HWP_PARSER="$REPO_ROOT/scripts/parse-hwp.py"
+TEXT_PARSER="$REPO_ROOT/scripts/parse-text.py"
+PYTHON_BIN="python3"
 
-# venv 자동 활성화 (markitdown용)
-if [[ -f "$VENV_DIR/bin/activate" ]]; then
-  source "$VENV_DIR/bin/activate"
-fi
-
-# 지원 확장자
-SUPPORTED_EXTS="pdf|pptx|docx|xlsx|xls|png|jpg|jpeg|gif|tiff|bmp|epub|html|csv|json|xml|wav|mp3"
-
-parse_with_pdftotext() {
-  local src="$1"
-  local out="$2"
-
-  if ! command -v pdftotext &>/dev/null; then
-    echo "[ERROR] pdftotext가 설치되어 있지 않습니다."
-    echo "  macOS: brew install poppler"
-    echo "  Linux: apt install poppler-utils"
-    return 1
-  fi
-
-  pdftotext "$src" "$out"
-}
-
-parse_with_markitdown() {
-  local src="$1"
-  local out="$2"
-
-  if ! command -v markitdown &>/dev/null; then
-    echo "[ERROR] markitdown이 설치되어 있지 않습니다."
-    echo "  pip install 'markitdown[all]'"
-    return 1
-  fi
-
-  markitdown "$src" -o "$out"
-}
-
-parse_image_with_ocr() {
-  local src="$1"
-  local out="$2"
-
-  if ! command -v python3 &>/dev/null && ! command -v python &>/dev/null; then
-    echo "[ERROR] Python이 설치되어 있지 않습니다."
-    return 1
-  fi
-
-  local py_bin="${PYTHON:-python3}"
-  if ! command -v "$py_bin" &>/dev/null; then
-    py_bin="python"
-  fi
-
-  "$py_bin" "$REPO_ROOT/scripts/parse-image.py" "$src" "$out"
-}
-
-parse_file() {
-  local src="$1"
-  local basename="${src%.*}"
-  local out="${basename}.parsed.md"
-  local ext="${src##*.}"
-  ext=$(echo "$ext" | tr '[:upper:]' '[:lower:]')
-
-  # 이미 파싱된 파일 스킵 (원본이 새로우면 재파싱)
-  if [[ -f "$out" ]]; then
-    if [[ "$src" -nt "$out" ]]; then
-      echo "[REPARSE] 원본이 갱신됨: $src"
-      rm -f "$out"
-    else
-      echo "[SKIP] 이미 파싱됨: $out"
-      return 0
-    fi
-  fi
-
-  echo "[PARSE] $src → $out"
-
-  case "$ext" in
-    pdf)
-      echo "[ENGINE] pdftotext"
-      parse_with_pdftotext "$src" "$out"
+# 파일 유형 먼저 판별해서 Docling이 꼭 필요하지 않은 경로는 바로 라우팅
+ARGS=()
+HTML_FILE=""
+IMAGE_FILE=""
+HWP_FILE=""
+TEXT_FILE=""
+for arg in "$@"; do
+  case "$arg" in
+    *.html|*.htm|*.HTML|*.HTM)
+      HTML_FILE="$arg"
       ;;
-    png|jpg|jpeg|gif|tiff|bmp)
-      echo "[ENGINE] local image OCR"
-      parse_image_with_ocr "$src" "$out"
+    *.hwp|*.hwpx|*.HWP|*.HWPX)
+      HWP_FILE="$arg"
+      ;;
+    *.txt|*.TXT|*.doc|*.DOC)
+      TEXT_FILE="$arg"
+      ;;
+    *.png|*.jpg|*.jpeg|*.gif|*.bmp|*.tiff|*.PNG|*.JPG|*.JPEG|*.GIF|*.BMP|*.TIFF)
+      IMAGE_FILE="$arg"
       ;;
     *)
-      echo "[ENGINE] MarkItDown"
-      parse_with_markitdown "$src" "$out"
+      ARGS+=("$arg")
       ;;
   esac
+done
 
-  if [[ -f "$out" ]]; then
-    echo "[DONE] $out"
-  else
-    echo "[WARN] 파싱 실패: $src"
-    return 1
-  fi
-}
+# venv 자동 활성화 (HWP/HWPX, HTML 보조 의존성 포함)
+if [[ -f "$VENV_DIR/bin/activate" ]]; then
+  source "$VENV_DIR/bin/activate"
+  PYTHON_BIN="$VENV_DIR/bin/python"
+elif [[ -n "$HWP_FILE" ]]; then
+  echo "[ERROR] HWP/HWPX 파싱에는 프로젝트 가상환경이 필요합니다."
+  echo "  먼저 ./scripts/setup.sh 를 실행하세요."
+  exit 1
+fi
 
-if [[ $# -ge 1 ]]; then
-  parse_file "$1"
-else
-  echo "=== raw/ 비텍스트 파일 스캔 ==="
-  found=0
-  while IFS= read -r -d '' file; do
-    parse_file "$file" || true
-    found=$((found + 1))
-  done < <(find "$RAW_DIR" -type f \( -iname "*.pdf" -o -iname "*.pptx" -o -iname "*.docx" -o -iname "*.xlsx" -o -iname "*.xls" \
-             -o -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.gif" -o -iname "*.tiff" \
-             -o -iname "*.bmp" -o -iname "*.epub" -o -iname "*.html" -o -iname "*.csv" -o -iname "*.json" \
-             -o -iname "*.xml" -o -iname "*.wav" -o -iname "*.mp3" \) -print0)
+if [[ -f "$ENV_FILE" ]]; then
+  set -a
+  # shellcheck disable=SC1090
+  source "$ENV_FILE"
+  set +a
+fi
 
-  if [[ "$found" -eq 0 ]]; then
-    echo "파싱할 비텍스트 파일이 없습니다."
-  else
-    echo "=== 완료: ${found}개 파일 처리 ==="
+if [[ -n "$HTML_FILE" ]]; then
+  if [[ -x "$HTML_PARSER" ]] || "$PYTHON_BIN" -c "import bs4" &>/dev/null 2>&1; then
+    local_basename="${HTML_FILE%.*}"
+    local_out="${local_basename}.parsed.md"
+    echo "[ENGINE] parse-html.py (data.go.kr 전용)"
+    "$PYTHON_BIN" "$HTML_PARSER" "$HTML_FILE" "$local_out"
+    exit $?
   fi
 fi
+
+if [[ -n "$IMAGE_FILE" ]]; then
+  local_basename="${IMAGE_FILE%.*}"
+  local_out="${local_basename}.parsed.md"
+  echo "[ENGINE] parse-image.py (direct GPT vision)"
+  "$PYTHON_BIN" "$IMAGE_PARSER" "$IMAGE_FILE" "$local_out"
+  exit $?
+fi
+
+if [[ -n "$HWP_FILE" ]]; then
+  local_basename="${HWP_FILE%.*}"
+  local_out="${local_basename}.parsed.md"
+  echo "[ENGINE] parse-hwp.py"
+  "$PYTHON_BIN" "$HWP_PARSER" "$HWP_FILE" "$local_out"
+  exit $?
+fi
+
+if [[ -n "$TEXT_FILE" ]]; then
+  local_basename="${TEXT_FILE%.*}"
+  local_out="${local_basename}.parsed.md"
+  echo "[ENGINE] parse-text.py"
+  "$PYTHON_BIN" "$TEXT_PARSER" "$TEXT_FILE" "$local_out"
+  exit $?
+fi
+if ! "$PYTHON_BIN" -c "import docling" &>/dev/null; then
+  echo "[ERROR] docling을 찾을 수 없습니다."
+  echo "  먼저 ./scripts/setup.sh 를 실행하세요."
+  exit 1
+fi
+
+# 환경변수 전달
+export DOCLING_OPENAI_BASE_URL="${DOCLING_OPENAI_BASE_URL:-${MARKER_OPENAI_BASE_URL:-${CLIPROXY_BASE_URL:-http://127.0.0.1:8317/v1}}}"
+export DOCLING_OPENAI_API_KEY="${DOCLING_OPENAI_API_KEY:-${MARKER_OPENAI_API_KEY:-${CLIPROXY_API_KEY:-marker-local}}}"
+export DOCLING_OPENAI_MODEL="${DOCLING_OPENAI_MODEL:-${MARKER_OPENAI_MODEL:-gpt-5.4-mini}}"
+export DOCLING_LLM_TIMEOUT="${DOCLING_LLM_TIMEOUT:-${MARKER_LLM_TIMEOUT:-300}}"
+exec "$PYTHON_BIN" "$SCRIPT" "${ARGS[@]+"${ARGS[@]}"}"

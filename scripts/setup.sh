@@ -3,7 +3,7 @@
 #
 # 사용법:
 #   ./scripts/setup.sh          # 기본 설치
-#   ./scripts/setup.sh --skip-python   # Python/markitdown 설치 생략 (QMD만 셋업)
+#   ./scripts/setup.sh --skip-python   # Python/Docling 설치 생략 (QMD만 셋업)
 #   ./scripts/setup.sh --skip-qmd      # QMD 셋업 생략
 #   ./scripts/setup.sh --skip-models   # 모델 다운로드 생략 (빠른 셋업)
 #
@@ -11,7 +11,7 @@
 #
 # 설치 항목:
 #   1. 시스템 의존성 (poppler, ffmpeg, tesseract, exiftool 등)
-#   2. Python venv + markitdown (비텍스트 파싱, PDF 제외)
+#   2. Python venv + Docling (비텍스트 파싱 — PDF, DOCX, PPTX, XLSX, 이미지 등)
 #   3. QMD 검색 엔진 (모델 다운로드 + collection 생성 + 인덱싱)
 #   4. 디렉토리 구조 확인/생성
 #   5. 설정 파일 확인 (Claude Code MCP, manifest, index)
@@ -181,7 +181,7 @@ else
   fi
 fi
 
-# ffmpeg (markitdown 오디오 변환에 필요)
+# ffmpeg (오디오 변환에 필요)
 if command -v ffmpeg &>/dev/null; then
   echo "  [OK] ffmpeg: $(ffmpeg -version 2>&1 | head -1 | awk '{print $3}')"
 else
@@ -247,11 +247,11 @@ if ! command -v curl &>/dev/null; then
   pkg_install curl curl curl || echo "  [WARN] curl 수동 설치 필요"
 fi
 
-# ── 2. Python + markitdown ────────────────────────────
+# ── 2. Python + Docling ──────────────────────────────
 if $SKIP_PYTHON; then
   next_step "Python (건너뜀: --skip-python)"
 else
-  next_step "Python + markitdown"
+  next_step "Python + Docling"
 
   # Python 3.10+ 탐색
   PYTHON=""
@@ -378,15 +378,38 @@ else
   venv_activate
   "$(venv_python)" -m pip install --upgrade pip --quiet
 
-  # markitdown (DOCX, PPTX, XLSX, HTML, 오디오 등 변환)
-  if "$(venv_python)" -c "import markitdown" &>/dev/null; then
-    INSTALLED_VERSION=$("$(venv_python)" -m pip show markitdown 2>/dev/null | grep "^Version:" | awk '{print $2}')
-    echo "  [OK] markitdown v${INSTALLED_VERSION}"
+  # Docling (PDF, DOCX, PPTX, XLSX, 이미지 등 통합 변환)
+  if "$(venv_python)" -c "import docling" &>/dev/null; then
+    INSTALLED_VERSION=$("$(venv_python)" -m pip show docling 2>/dev/null | grep "^Version:" | awk '{print $2}')
+    echo "  [OK] docling v${INSTALLED_VERSION}"
   else
-    echo "  [INSTALL] markitdown 설치 중..."
-    "$(venv_python)" -m pip install "markitdown[all]" --quiet
-    echo "  [OK] markitdown 설치 완료"
+    echo "  [INSTALL] docling 설치 중..."
+    if [[ "$OS_TYPE" == "macos" ]]; then
+      "$(venv_python)" -m pip install "docling[ocrmac]" --quiet
+    else
+      "$(venv_python)" -m pip install docling --quiet
+    fi
+    echo "  [OK] docling 설치 완료"
   fi
+
+  # httpx (LLM 후처리용)
+  if ! "$(venv_python)" -c "import httpx" &>/dev/null; then
+    "$(venv_python)" -m pip install httpx --quiet
+    echo "  [OK] httpx 설치 완료"
+  else
+    echo "  [OK] httpx"
+  fi
+
+  # HTML/HWP 보조 파서 의존성
+  EXTRA_PY_PKGS=(beautifulsoup4 markdownify olefile)
+  for pkg in "${EXTRA_PY_PKGS[@]}"; do
+    if ! "$(venv_python)" -m pip show "$pkg" &>/dev/null; then
+      "$(venv_python)" -m pip install "$pkg" --quiet
+      echo "  [OK] $pkg 설치 완료"
+    else
+      echo "  [OK] $pkg"
+    fi
+  done
 fi
 
 # ── 3. QMD 검색 엔진 ──────────────────────────────────
