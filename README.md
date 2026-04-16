@@ -75,6 +75,96 @@ DOCLING_OPENAI_MODEL=gpt-5.4-mini
 직접 export하지 않아도 되며, GPT 인증이 만료되면 `parse-image.py`는 OCR fallback 대신 재로그인 안내를 출력합니다.
 필요하면 `.env.example`을 `.env`로 복사해 시작하세요.
 
+### CLIPROXY를 Docker로 실행하기
+로컬에 CLIPROXY 서버를 띄워 `scripts/parse-raw.sh`, `parse-image.py`, `parse-hwp.py`, `parse_docling.py`가 같은 엔드포인트를 사용하도록 맞출 수 있습니다.
+
+1. `.env.example`을 복사해 `.env`를 만들고 `CLIPROXY_API_KEY`를 원하는 bearer 값으로 수정합니다.
+
+```bash
+cp .env.example .env
+$EDITOR .env
+```
+
+2. 로컬 전용 설정/인증/로그 디렉토리를 준비합니다. (`tools/` 아래는 기본적으로 gitignored)
+
+```bash
+mkdir -p tools/cliproxy/auth tools/cliproxy/logs
+
+cat > tools/cliproxy/config.yaml <<'EOF'
+port: 8317
+auth-dir: "~/.cli-proxy-api"
+request-retry: 3
+quota-exceeded:
+  switch-project: true
+  switch-preview-model: true
+api-keys:
+  - "replace-with-your-local-proxy-bearer"
+EOF
+```
+
+`api-keys` 값은 `.env`의 `CLIPROXY_API_KEY`와 동일하게 맞추는 것을 권장합니다.
+
+3. Docker로 CLIPROXY 서버를 실행합니다.
+
+```bash
+docker run -d \
+  --name cliproxy-api \
+  --restart unless-stopped \
+  -p 8317:8317 \
+  -v "$(pwd)/tools/cliproxy/config.yaml:/CLIProxyAPI/config.yaml" \
+  -v "$(pwd)/tools/cliproxy/auth:/root/.cli-proxy-api" \
+  -v "$(pwd)/tools/cliproxy/logs:/CLIProxyAPI/logs" \
+  eceasy/cli-proxy-api:latest
+```
+
+이미 같은 이름의 컨테이너가 있으면 먼저 정리한 뒤 다시 실행합니다.
+
+```bash
+docker rm -f cliproxy-api
+```
+
+4. Codex OAuth 로그인을 수행합니다.
+
+```bash
+docker exec -it cliproxy-api sh -lc '/CLIProxyAPI/CLIProxyAPI -codex-login -config /CLIProxyAPI/config.yaml'
+```
+
+브라우저 대신 디바이스 코드 플로우를 쓰려면 아래 명령을 사용합니다.
+
+```bash
+docker exec -it cliproxy-api sh -lc '/CLIProxyAPI/CLIProxyAPI -codex-device-login -config /CLIProxyAPI/config.yaml'
+```
+
+로그인 정보는 `tools/cliproxy/auth/`에 저장되므로 컨테이너를 재시작해도 유지됩니다.
+
+5. 모델 목록과 실제 completion 호출로 동작을 확인합니다.
+
+```bash
+export CLIPROXY_API_KEY="$(awk -F= '/^CLIPROXY_API_KEY=/{print $2}' .env | tail -n1)"
+
+curl -H "Authorization: Bearer ${CLIPROXY_API_KEY}" \
+  http://127.0.0.1:8317/v1/models
+
+curl -H "Authorization: Bearer ${CLIPROXY_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -X POST http://127.0.0.1:8317/v1/chat/completions \
+  --data '{
+    "model": "gpt-5.4-mini",
+    "messages": [{"role": "user", "content": "Reply with exactly: ok"}],
+    "max_tokens": 5
+  }'
+```
+
+정상이라면 `/v1/models`는 사용 가능한 모델 목록을, `/v1/chat/completions`는 `ok` 응답을 반환합니다.
+
+자주 쓰는 운영 명령:
+
+```bash
+docker logs -f cliproxy-api
+docker restart cliproxy-api
+docker stop cliproxy-api
+```
+
 ## 시작 방법
 1. Obsidian에서 이 폴더를 vault로 연다.
 2. 회의/슬랙/전사/초안은 먼저 `raw/` 아래에 저장한다.
