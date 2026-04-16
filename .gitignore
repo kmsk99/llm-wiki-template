@@ -12,6 +12,9 @@
 # Python venv
 .venv/
 
+# Local env / CLIPROXY secrets
+.env
+
 # CLIProxyAPI (config.example.yaml만 커밋)
 tools/*
 !tools/config.example.yaml
