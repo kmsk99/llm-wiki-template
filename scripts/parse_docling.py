@@ -277,7 +277,8 @@ def dedup_merged_cells(md: str) -> str:
 # 단일 파일 파싱
 # ---------------------------------------------------------------------------
 SUPPORTED_EXTS = {
-    ".pdf", ".docx", ".pptx", ".xlsx", ".xls",
+    # .pdf는 scripts/parse-pdf.py (opendataloader-pdf + CLIPROXY)로 위임
+    ".docx", ".pptx", ".xlsx", ".xls",
     ".png", ".jpg", ".jpeg", ".gif", ".tiff", ".bmp",
     ".html", ".htm", ".epub", ".csv",
 }

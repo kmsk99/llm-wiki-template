@@ -378,7 +378,7 @@ else
   venv_activate
   "$(venv_python)" -m pip install --upgrade pip --quiet
 
-  # Docling (PDF, DOCX, PPTX, XLSX, 이미지 등 통합 변환)
+  # Docling (DOCX, PPTX, XLSX, 이미지 등 통합 변환 — PDF는 opendataloader-pdf가 전담)
   if "$(venv_python)" -c "import docling" &>/dev/null; then
     INSTALLED_VERSION=$("$(venv_python)" -m pip show docling 2>/dev/null | grep "^Version:" | awk '{print $2}')
     echo "  [OK] docling v${INSTALLED_VERSION}"
@@ -390,6 +390,57 @@ else
       "$(venv_python)" -m pip install docling --quiet
     fi
     echo "  [OK] docling 설치 완료"
+  fi
+
+  # Java 11+ 확인 (opendataloader-pdf JAR 실행용)
+  if command -v java &>/dev/null; then
+    JAVA_MAJOR=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}' | awk -F '.' '{print ($1=="1" ? $2 : $1)}')
+    if [[ -n "$JAVA_MAJOR" && "$JAVA_MAJOR" =~ ^[0-9]+$ && "$JAVA_MAJOR" -ge 11 ]]; then
+      echo "  [OK] Java ${JAVA_MAJOR}"
+    else
+      echo "  [WARN] Java 11+ 필요 (현재: $(java -version 2>&1 | head -1))"
+    fi
+  else
+    echo "  [INSTALL] Java (Temurin 21) 설치 중..."
+    case "$OS_TYPE" in
+      macos)
+        brew install --cask temurin --quiet 2>/dev/null || brew install --cask temurin || echo "  [WARN] Java 수동 설치 필요: https://adoptium.net"
+        ;;
+      linux|wsl)
+        case "$PKG_MANAGER" in
+          apt)    sudo apt-get install -y default-jre -qq ;;
+          dnf)    sudo dnf install -y java-21-openjdk -q ;;
+          yum)    sudo yum install -y java-21-openjdk -q ;;
+          pacman) sudo pacman -S --noconfirm jre-openjdk ;;
+          *)      echo "  [WARN] Java 수동 설치 필요: https://adoptium.net" ;;
+        esac
+        ;;
+      windows)
+        case "$PKG_MANAGER" in
+          winget) winget install --silent EclipseAdoptium.Temurin.21.JRE ;;
+          choco)  choco install temurin21 -y --no-progress ;;
+          scoop)  scoop install temurin21-jre ;;
+          *)      echo "  [WARN] Java 수동 설치 필요: https://adoptium.net" ;;
+        esac
+        ;;
+    esac
+  fi
+
+  # opendataloader-pdf[hybrid] (PDF 전용 — Java JAR + Docling 하이브리드 수식 서버)
+  HYBRID_READY=true
+  for dep in fastapi uvicorn; do
+    if ! "$(venv_python)" -c "import $dep" &>/dev/null; then
+      HYBRID_READY=false
+      break
+    fi
+  done
+  if "$(venv_python)" -m pip show opendataloader-pdf &>/dev/null && $HYBRID_READY; then
+    ODL_VERSION=$("$(venv_python)" -m pip show opendataloader-pdf 2>/dev/null | grep "^Version:" | awk '{print $2}')
+    echo "  [OK] opendataloader-pdf v${ODL_VERSION} (hybrid ready)"
+  else
+    echo "  [INSTALL] opendataloader-pdf[hybrid] 설치 중 (수식 LaTeX 추출용)..."
+    "$(venv_python)" -m pip install "opendataloader-pdf[hybrid]" --quiet
+    echo "  [OK] opendataloader-pdf[hybrid] 설치 완료"
   fi
 
   # httpx (LLM 후처리용)
