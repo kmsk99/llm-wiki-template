@@ -1,7 +1,7 @@
 # Graph Report - /Users/mason/project/personal/llm-wiki-template  (2026-04-18)
 
 ## Corpus Check
-- 11 files · ~15,781 words
+- 11 files · ~15,848 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -39,10 +39,10 @@
   /Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py → /Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py
 - `env_or_dotenv()` --calls--> `extract_hwpx_preview_image_text()`  [INFERRED]
   /Users/mason/project/personal/llm-wiki-template/scripts/env_defaults.py → /Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py
-- `main()` --calls--> `parse_args()`  [INFERRED]
-  /Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py → /Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py
-- `hash_file()` --calls--> `sha256()`  [INFERRED]
-  /Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py → /Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py
+- `parse_args()` --calls--> `main()`  [INFERRED]
+  /Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py → /Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py
+- `sha256()` --calls--> `hash_file()`  [INFERRED]
+  /Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py → /Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py
 
 ## Communities
 

@@ -1511,9 +1511,9 @@
       "file_type": "rationale",
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
       "source_location": "L32",
-      "id": "template_upgrade_rationale_32",
       "community": 0,
-      "norm_label": "raised when a target cannot be upgraded safely."
+      "norm_label": "raised when a target cannot be upgraded safely.",
+      "id": "template_upgrade_rationale_32"
     }
   ],
   "links": [
@@ -2928,8 +2928,8 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
       "source_location": "L128",
       "weight": 1.0,
-      "_src": "template_upgrade_hash_file",
-      "_tgt": "repair_parsed_artifacts_sha256",
+      "_src": "repair_parsed_artifacts_sha256",
+      "_tgt": "template_upgrade_hash_file",
       "source": "repair_parsed_artifacts_sha256",
       "target": "template_upgrade_hash_file"
     },
@@ -2940,8 +2940,8 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
       "source_location": "L136",
       "weight": 1.0,
-      "_src": "template_upgrade_hash_tree",
-      "_tgt": "repair_parsed_artifacts_sha256",
+      "_src": "repair_parsed_artifacts_sha256",
+      "_tgt": "template_upgrade_hash_tree",
       "source": "repair_parsed_artifacts_sha256",
       "target": "template_upgrade_hash_tree"
     },
@@ -2952,8 +2952,8 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
       "source_location": "L146",
       "weight": 1.0,
-      "_src": "template_upgrade_text_digest",
-      "_tgt": "repair_parsed_artifacts_sha256",
+      "_src": "repair_parsed_artifacts_sha256",
+      "_tgt": "template_upgrade_text_digest",
       "source": "repair_parsed_artifacts_sha256",
       "target": "template_upgrade_text_digest"
     },
@@ -4080,8 +4080,8 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
       "source_location": "L570",
       "weight": 1.0,
-      "_src": "template_upgrade_main",
-      "_tgt": "parse_pdf_parse_args",
+      "_src": "parse_pdf_parse_args",
+      "_tgt": "template_upgrade_main",
       "source": "parse_pdf_parse_args",
       "target": "template_upgrade_main"
     },
