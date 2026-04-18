@@ -79,11 +79,11 @@ Karpathy LLM Wiki 패턴(raw → wiki → output)으로 운영한다.
 `./scripts/setup.sh` 하나로 모든 의존성이 설치된다 (macOS, Linux, Windows 지원).
 
 설치 항목:
-1. 시스템 의존성 (poppler, ffmpeg, Node.js, curl)
+1. 시스템 의존성 (poppler, ffmpeg, curl)
 2. Python 3.12 + Docling + 보조 파서 (자동 설치)
-3. QMD 검색 엔진 (GGUF 모델 3종 + collection + 인덱싱)
+3. Graphify 지식 그래프 도구 설치
 4. 디렉토리 구조
-5. 설정 파일 (Claude Code MCP, manifest, index)
+5. 설정 파일 (Claude Code hooks, manifest, index)
 
 ## 권장 작업 흐름
 

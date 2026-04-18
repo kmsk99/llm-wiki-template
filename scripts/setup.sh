@@ -3,18 +3,16 @@
 #
 # 사용법:
 #   ./scripts/setup.sh          # 기본 설치
-#   ./scripts/setup.sh --skip-python   # Python/Docling 설치 생략 (QMD만 셋업)
-#   ./scripts/setup.sh --skip-qmd      # QMD 셋업 생략
-#   ./scripts/setup.sh --skip-models   # 모델 다운로드 생략 (빠른 셋업)
+#   ./scripts/setup.sh --skip-python   # 기존 Python/venv 환경을 그대로 사용
 #
 # 지원 플랫폼: macOS, Linux (Ubuntu/Debian, Fedora/RHEL), Windows (WSL/Git Bash/MSYS2)
 #
 # 설치 항목:
 #   1. 시스템 의존성 (poppler, ffmpeg, tesseract, exiftool 등)
 #   2. Python venv + Docling (비텍스트 파싱 — PDF, DOCX, PPTX, XLSX, 이미지 등)
-#   3. QMD 검색 엔진 (모델 다운로드 + collection 생성 + 인덱싱)
+#   3. Graphify 지식 그래프 도구
 #   4. 디렉토리 구조 확인/생성
-#   5. 설정 파일 확인 (Claude Code MCP, manifest, index)
+#   5. 설정 파일 확인 (Claude Code hooks, manifest, index)
 
 set -euo pipefail
 
@@ -141,14 +139,10 @@ venv_python() {
 
 # ── Flags ──────────────────────────────────────────────
 SKIP_PYTHON=false
-SKIP_QMD=false
-SKIP_MODELS=false
 
 for arg in "$@"; do
   case "$arg" in
     --skip-python)   SKIP_PYTHON=true ;;
-    --skip-qmd)      SKIP_QMD=true ;;
-    --skip-models)   SKIP_MODELS=true ;;
     -h|--help)
       sed -n '2,12p' "$0"
       exit 0
@@ -218,26 +212,6 @@ else
     echo "  [WARN] exiftool 수동 설치 필요"
     echo "    macOS: brew install exiftool"
     echo "    Linux: apt install libimage-exiftool-perl"
-  fi
-fi
-
-# Node.js (QMD에 필요)
-if command -v node &>/dev/null; then
-  echo "  [OK] Node.js: $(node --version)"
-else
-  echo "  [INSTALL] Node.js 설치 중..."
-  if [[ "$OS_TYPE" == "windows" ]]; then
-    if pkg_install Node.js nodejs nodejs; then
-      echo "  [OK] Node.js 설치 완료"
-    else
-      echo "  [WARN] Node.js 수동 설치 필요: https://nodejs.org"
-    fi
-  else
-    if pkg_install node nodejs nodejs; then
-      echo "  [OK] Node.js 설치 완료"
-    else
-      echo "  [WARN] Node.js 수동 설치 필요: https://nodejs.org"
-    fi
   fi
 fi
 
@@ -463,79 +437,19 @@ else
   done
 fi
 
-# ── 3. QMD 검색 엔진 ──────────────────────────────────
-if $SKIP_QMD; then
-  next_step "QMD (건너뜀: --skip-qmd)"
+# ── 3. Graphify ───────────────────────────────────────
+if $SKIP_PYTHON; then
+  next_step "Graphify (건너뜀: --skip-python)"
 else
-  next_step "QMD 검색 엔진"
+  next_step "Graphify 지식 그래프"
 
-  # qmd CLI 확인
-  if ! command -v qmd &>/dev/null; then
-    echo "  [INSTALL] qmd 설치 중 (npm)..."
-    if command -v npm &>/dev/null; then
-      npm install -g @tobilu/qmd --quiet 2>/dev/null || npm install -g @tobilu/qmd
-      echo "  [OK] qmd 설치 완료"
-    else
-      echo "  [ERROR] npm이 설치되어 있지 않습니다. qmd를 설치할 수 없습니다."
-      echo "    npm install -g @tobilu/qmd"
-      SKIP_QMD=true
-    fi
+  if "$(venv_python)" -m pip show graphifyy &>/dev/null; then
+    GRAPHIFY_VERSION=$("$(venv_python)" -m pip show graphifyy 2>/dev/null | grep "^Version:" | awk '{print $2}')
+    echo "  [OK] graphifyy v${GRAPHIFY_VERSION}"
   else
-    echo "  [OK] qmd CLI: $(command -v qmd)"
-  fi
-
-  if ! $SKIP_QMD; then
-    # QMD 모델 다운로드 (embedding + reranking + generation, ~2GB)
-    if $SKIP_MODELS; then
-      echo "  [SKIP] QMD 모델 다운로드 (--skip-models)"
-    else
-      QMD_MODEL_DIR="${HOME}/.cache/qmd/models"
-      if [[ "$OS_TYPE" == "windows" ]]; then
-        QMD_MODEL_DIR="${LOCALAPPDATA:-$HOME/AppData/Local}/qmd/models"
-      fi
-      GGUF_COUNT=$(find "$QMD_MODEL_DIR" -name "*.gguf" -type f 2>/dev/null | wc -l | tr -d ' ')
-      if [[ -d "$QMD_MODEL_DIR" ]] && [[ "$GGUF_COUNT" -ge 3 ]]; then
-        echo "  [OK] QMD 모델 캐시 존재 (${GGUF_COUNT}/3 GGUF)"
-      else
-        echo "  [DOWNLOAD] QMD 모델 다운로드 중 (embedding + reranking + generation)..."
-        echo "  (첫 실행 시 ~2GB 다운로드, 몇 분 소요)"
-        qmd pull 2>&1 | sed 's/^/  /' || echo "  [WARN] QMD 모델 다운로드 실패. qmd pull로 수동 다운로드하세요."
-      fi
-    fi
-
-    # wiki collection
-    if qmd collection show wiki 2>/dev/null | grep -q "Path:"; then
-      echo "  [OK] collection 'wiki' 존재"
-    else
-      echo "  [CREATE] collection 'wiki' 생성 중..."
-      qmd collection add wiki "$REPO_ROOT/wiki"
-      echo "  [OK] collection 'wiki' 생성 완료"
-    fi
-
-    # raw collection
-    if qmd collection show raw 2>/dev/null | grep -q "Path:"; then
-      echo "  [OK] collection 'raw' 존재"
-    else
-      echo "  [CREATE] collection 'raw' 생성 중..."
-      qmd collection add raw "$REPO_ROOT/raw"
-      echo "  [OK] collection 'raw' 생성 완료"
-    fi
-
-    # output collection
-    if qmd collection show output 2>/dev/null | grep -q "Path:"; then
-      echo "  [OK] collection 'output' 존재"
-    else
-      echo "  [CREATE] collection 'output' 생성 중..."
-      qmd collection add output "$REPO_ROOT/output"
-      echo "  [OK] collection 'output' 생성 완료"
-    fi
-
-    # 인덱싱 + 임베딩
-    echo "  [INDEX] 인덱스 업데이트 중..."
-    qmd update 2>/dev/null || true
-    echo "  [EMBED] 벡터 임베딩 생성 중..."
-    qmd embed 2>/dev/null || true
-    echo "  [OK] QMD 검색 준비 완료"
+    echo "  [INSTALL] graphifyy[mcp] 설치 중..."
+    "$(venv_python)" -m pip install "graphifyy[mcp]" --quiet
+    echo "  [OK] graphifyy 설치 완료"
   fi
 fi
 
@@ -578,22 +492,28 @@ fi
 # .claude/settings.json 확인
 CLAUDE_SETTINGS="$REPO_ROOT/.claude/settings.json"
 if [[ -f "$CLAUDE_SETTINGS" ]]; then
-  if grep -q '"qmd"' "$CLAUDE_SETTINGS"; then
-    echo "  [OK] Claude Code MCP 설정 (qmd)"
+  if grep -q 'graphify' "$CLAUDE_SETTINGS"; then
+    echo "  [OK] Claude Code hook 설정 (graphify)"
   else
-    echo "  [WARN] .claude/settings.json에 qmd MCP 설정이 없습니다"
+    echo "  [WARN] .claude/settings.json에 graphify hook 설정이 없습니다"
   fi
 else
   echo "  [CREATE] .claude/settings.json 생성"
   mkdir -p "$REPO_ROOT/.claude"
   cat > "$CLAUDE_SETTINGS" <<'JSON'
 {
-  "mcpServers": {
-    "qmd": {
-      "command": "qmd",
-      "args": ["mcp"],
-      "env": {}
-    }
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Glob|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f graphify-out/graph.json ] && echo '{"hookSpecificOutput":{"hookEventName":"PreToolUse","additionalContext":"graphify: Knowledge graph exists. Read graphify-out/GRAPH_REPORT.md for god nodes and community structure before searching raw files."}}' || true"
+          }
+        ]
+      }
+    ]
   }
 }
 JSON
@@ -635,3 +555,5 @@ echo "  /project:catalog raw/파일.md                  # raw 소스 등록"
 echo "  /project:ingest raw/파일.md                   # wiki로 승격"
 echo "  /project:query 질문                           # 위키에 질문"
 echo "  /project:lint                                # 건강검진"
+
+echo "  graphify . --update                          # 그래프 갱신"
