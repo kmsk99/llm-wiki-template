@@ -1,0 +1,47 @@
+{
+  "manifest_version": 1,
+  "replace_paths": [
+    ".agents/skills",
+    ".claude/commands",
+    "SCHEMA.md",
+    "prompts",
+    "templates",
+    "scripts/env_defaults.py",
+    "scripts/parse-html.py",
+    "scripts/parse-hwp.py",
+    "scripts/parse-image.py",
+    "scripts/parse-pdf.py",
+    "scripts/parse-raw.sh",
+    "scripts/parse-text.py",
+    "scripts/parse_docling.py",
+    "scripts/repair_parsed_artifacts.py",
+    "scripts/setup.sh",
+    "scripts/template_upgrade.py",
+    "scripts/template_upgrade_manifest.json"
+  ],
+  "json_merges": [
+    {
+      "path": ".claude/settings.json",
+      "strategy": "deep_merge_unique"
+    }
+  ],
+  "block_merges": [
+    {
+      "path": ".gitignore",
+      "source_path": ".gitignore",
+      "start_marker": "# >>> llm-wiki-template graphify >>>",
+      "end_marker": "# <<< llm-wiki-template graphify <<<"
+    }
+  ],
+  "exclude_paths": [
+    "raw",
+    "wiki",
+    "output",
+    "graphify-out",
+    ".omx",
+    ".omc",
+    ".venv",
+    ".obsidian",
+    "tools"
+  ]
+}

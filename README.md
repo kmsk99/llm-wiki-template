@@ -49,6 +49,29 @@ git init
 ./scripts/setup.sh -h              # 도움말
 ```
 
+## 템플릿 최신화 일괄 적용
+
+이 템플릿을 사용하는 다른 프로젝트는 업데이터로 한 번에 최신화할 수 있습니다.
+
+```bash
+# 기본값은 dry-run
+python3 scripts/template_upgrade.py ~/work/wiki-a ~/work/wiki-b
+
+# 실제 적용
+python3 scripts/template_upgrade.py ~/work/wiki-a ~/work/wiki-b --apply
+
+# 기존 프로젝트의 관리 대상 파일을 강제로 덮어쓸 때
+python3 scripts/template_upgrade.py ~/work/wiki-a --apply --force
+```
+
+적용 범위:
+- 통째 교체: `.agents/skills/`, `.claude/commands/`, `SCHEMA.md`, `prompts/`, `templates/`, 주요 `scripts/`
+- 병합: `.claude/settings.json`, `.gitignore`의 Graphify 관리 블록
+- 제외: `raw/`, `wiki/`, `output/`, `graphify-out/`, `.omx/`, `.omc/`, `.venv/`, `.obsidian/`, `tools/`
+
+적용 후 각 대상 프로젝트에는 `.llmwiki-template-lock.json`이 기록되어 템플릿 루트/커밋/매니페스트 버전을 추적합니다.
+기존 관리 대상 파일에 로컬 수정이 있으면 기본값으로 중단하며, 검토 후 `--force`로 덮어쓸 수 있습니다.
+
 ### 비텍스트 파일 파싱
 PDF, Excel, DOCX, PPTX, HWP/HWPX, 이미지, HTML 등 비텍스트 raw 파일을 Markdown으로 변환합니다.
 - PDF(텍스트 레이어) → pdftotext + LLM Markdown 정리

@@ -23,6 +23,10 @@ tools/*
 *_meta.json
 *_debug*
 
+
+# >>> llm-wiki-template graphify >>>
 # Graphify — commit graph outputs, ignore extraction cache + interpreter pointer
 graphify-out/cache/
 graphify-out/.graphify_python
+*.pyc
+# <<< llm-wiki-template graphify <<<

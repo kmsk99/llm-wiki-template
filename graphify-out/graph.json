@@ -9,7 +9,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_parse_stack.py",
       "source_location": "L1",
       "id": "users_mason_project_personal_llm_wiki_template_tests_test_parse_stack_py",
-      "community": 6,
+      "community": 2,
       "norm_label": "test_parse_stack.py"
     },
     {
@@ -18,7 +18,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_parse_stack.py",
       "source_location": "L12",
       "id": "test_parse_stack_load_module",
-      "community": 6,
+      "community": 2,
       "norm_label": "load_module()"
     },
     {
@@ -27,7 +27,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_parse_stack.py",
       "source_location": "L28",
       "id": "test_parse_stack_envdefaultstests",
-      "community": 6,
+      "community": 2,
       "norm_label": "envdefaultstests"
     },
     {
@@ -36,7 +36,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_parse_stack.py",
       "source_location": "L29",
       "id": "test_parse_stack_envdefaultstests_test_env_or_dotenv_reads_dotenv_when_env_missing",
-      "community": 6,
+      "community": 2,
       "norm_label": ".test_env_or_dotenv_reads_dotenv_when_env_missing()"
     },
     {
@@ -45,7 +45,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_parse_stack.py",
       "source_location": "L36",
       "id": "test_parse_stack_imageparsertests",
-      "community": 7,
+      "community": 2,
       "norm_label": "imageparsertests"
     },
     {
@@ -54,7 +54,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_parse_stack.py",
       "source_location": "L37",
       "id": "test_parse_stack_imageparsertests_test_build_markdown_uses_ocr_fallback_when_llm_fails",
-      "community": 7,
+      "community": 2,
       "norm_label": ".test_build_markdown_uses_ocr_fallback_when_llm_fails()"
     },
     {
@@ -63,7 +63,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_parse_stack.py",
       "source_location": "L49",
       "id": "test_parse_stack_imageparsertests_test_build_markdown_skips_ocr_fallback_on_gpt_auth_failure",
-      "community": 7,
+      "community": 2,
       "norm_label": ".test_build_markdown_skips_ocr_fallback_on_gpt_auth_failure()"
     },
     {
@@ -72,7 +72,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_parse_stack.py",
       "source_location": "L62",
       "id": "test_parse_stack_hwpparsertests",
-      "community": 6,
+      "community": 2,
       "norm_label": "hwpparsertests"
     },
     {
@@ -81,7 +81,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_parse_stack.py",
       "source_location": "L63",
       "id": "test_parse_stack_hwpparsertests_test_sniff_hwp_format_detects_hwpx_zip",
-      "community": 6,
+      "community": 2,
       "norm_label": ".test_sniff_hwp_format_detects_hwpx_zip()"
     },
     {
@@ -90,7 +90,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_parse_stack.py",
       "source_location": "L71",
       "id": "test_parse_stack_repairscripttests",
-      "community": 1,
+      "community": 3,
       "norm_label": "repairscripttests"
     },
     {
@@ -99,7 +99,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_parse_stack.py",
       "source_location": "L72",
       "id": "test_parse_stack_repairscripttests_test_cleaned_filename_hint_strips_size_suffix",
-      "community": 1,
+      "community": 3,
       "norm_label": ".test_cleaned_filename_hint_strips_size_suffix()"
     },
     {
@@ -108,8 +108,143 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_parse_stack.py",
       "source_location": "L75",
       "id": "test_parse_stack_repairscripttests_test_repair_filename_removes_duplicate_mojibake_file",
-      "community": 1,
+      "community": 3,
       "norm_label": ".test_repair_filename_removes_duplicate_mojibake_file()"
+    },
+    {
+      "label": "test_template_upgrade.py",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L1",
+      "id": "users_mason_project_personal_llm_wiki_template_tests_test_template_upgrade_py",
+      "community": 5,
+      "norm_label": "test_template_upgrade.py"
+    },
+    {
+      "label": "load_module()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L11",
+      "id": "test_template_upgrade_load_module",
+      "community": 5,
+      "norm_label": "load_module()"
+    },
+    {
+      "label": "TemplateUpgradeTests",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L24",
+      "id": "test_template_upgrade_templateupgradetests",
+      "community": 5,
+      "norm_label": "templateupgradetests"
+    },
+    {
+      "label": ".setUp()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L25",
+      "id": "test_template_upgrade_templateupgradetests_setup",
+      "community": 5,
+      "norm_label": ".setup()"
+    },
+    {
+      "label": ".tearDown()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L90",
+      "id": "test_template_upgrade_templateupgradetests_teardown",
+      "community": 5,
+      "norm_label": ".teardown()"
+    },
+    {
+      "label": ".test_dry_run_does_not_modify_target()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L93",
+      "id": "test_template_upgrade_templateupgradetests_test_dry_run_does_not_modify_target",
+      "community": 5,
+      "norm_label": ".test_dry_run_does_not_modify_target()"
+    },
+    {
+      "label": ".test_apply_replaces_managed_paths_and_merges_settings()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L100",
+      "id": "test_template_upgrade_templateupgradetests_test_apply_replaces_managed_paths_and_merges_settings",
+      "community": 5,
+      "norm_label": ".test_apply_replaces_managed_paths_and_merges_settings()"
+    },
+    {
+      "label": ".test_apply_merges_same_matcher_hooks_into_one_entry()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L152",
+      "id": "test_template_upgrade_templateupgradetests_test_apply_merges_same_matcher_hooks_into_one_entry",
+      "community": 5,
+      "norm_label": ".test_apply_merges_same_matcher_hooks_into_one_entry()"
+    },
+    {
+      "label": ".test_second_apply_is_idempotent()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L181",
+      "id": "test_template_upgrade_templateupgradetests_test_second_apply_is_idempotent",
+      "community": 5,
+      "norm_label": ".test_second_apply_is_idempotent()"
+    },
+    {
+      "label": ".test_apply_refuses_to_overwrite_unmanaged_replace_path_without_force()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L189",
+      "id": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_unmanaged_replace_path_without_force",
+      "community": 5,
+      "norm_label": ".test_apply_refuses_to_overwrite_unmanaged_replace_path_without_force()"
+    },
+    {
+      "label": ".test_apply_refuses_to_overwrite_modified_managed_block_without_force()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L195",
+      "id": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_modified_managed_block_without_force",
+      "community": 5,
+      "norm_label": ".test_apply_refuses_to_overwrite_modified_managed_block_without_force()"
+    },
+    {
+      "label": ".test_apply_refuses_to_overwrite_unmanaged_existing_block_without_force()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L205",
+      "id": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_unmanaged_existing_block_without_force",
+      "community": 5,
+      "norm_label": ".test_apply_refuses_to_overwrite_unmanaged_existing_block_without_force()"
+    },
+    {
+      "label": ".test_invalid_target_json_raises_upgrade_error()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L214",
+      "id": "test_template_upgrade_templateupgradetests_test_invalid_target_json_raises_upgrade_error",
+      "community": 5,
+      "norm_label": ".test_invalid_target_json_raises_upgrade_error()"
+    },
+    {
+      "label": ".test_invalid_lockfile_raises_upgrade_error()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L221",
+      "id": "test_template_upgrade_templateupgradetests_test_invalid_lockfile_raises_upgrade_error",
+      "community": 5,
+      "norm_label": ".test_invalid_lockfile_raises_upgrade_error()"
+    },
+    {
+      "label": ".test_manifest_path_traversal_is_rejected()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L227",
+      "id": "test_template_upgrade_templateupgradetests_test_manifest_path_traversal_is_rejected",
+      "community": 5,
+      "norm_label": ".test_manifest_path_traversal_is_rejected()"
     },
     {
       "label": "parse-html.py",
@@ -117,7 +252,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-html.py",
       "source_location": "L1",
       "id": "users_mason_project_personal_llm_wiki_template_scripts_parse_html_py",
-      "community": 5,
+      "community": 8,
       "norm_label": "parse-html.py"
     },
     {
@@ -126,7 +261,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-html.py",
       "source_location": "L91",
       "id": "parse_html_clean_node",
-      "community": 5,
+      "community": 8,
       "norm_label": "clean_node()"
     },
     {
@@ -135,7 +270,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-html.py",
       "source_location": "L105",
       "id": "parse_html_normalized_text",
-      "community": 5,
+      "community": 8,
       "norm_label": "normalized_text()"
     },
     {
@@ -144,7 +279,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-html.py",
       "source_location": "L109",
       "id": "parse_html_candidate_score",
-      "community": 5,
+      "community": 8,
       "norm_label": "candidate_score()"
     },
     {
@@ -153,7 +288,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-html.py",
       "source_location": "L128",
       "id": "parse_html_best_node",
-      "community": 5,
+      "community": 8,
       "norm_label": "best_node()"
     },
     {
@@ -162,7 +297,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-html.py",
       "source_location": "L145",
       "id": "parse_html_iter_candidate_soups",
-      "community": 5,
+      "community": 8,
       "norm_label": "iter_candidate_soups()"
     },
     {
@@ -171,7 +306,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-html.py",
       "source_location": "L169",
       "id": "parse_html_best_node_from_html",
-      "community": 5,
+      "community": 8,
       "norm_label": "best_node_from_html()"
     },
     {
@@ -180,7 +315,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-html.py",
       "source_location": "L183",
       "id": "parse_html_meta_content",
-      "community": 5,
+      "community": 8,
       "norm_label": "meta_content()"
     },
     {
@@ -189,7 +324,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-html.py",
       "source_location": "L194",
       "id": "parse_html_title_from",
-      "community": 5,
+      "community": 8,
       "norm_label": "title_from()"
     },
     {
@@ -198,7 +333,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-html.py",
       "source_location": "L205",
       "id": "parse_html_fallback_markdown",
-      "community": 5,
+      "community": 8,
       "norm_label": "fallback_markdown()"
     },
     {
@@ -207,7 +342,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-html.py",
       "source_location": "L235",
       "id": "parse_html_main",
-      "community": 5,
+      "community": 8,
       "norm_label": "main()"
     },
     {
@@ -216,7 +351,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L1",
       "id": "users_mason_project_personal_llm_wiki_template_scripts_parse_docling_py",
-      "community": 3,
+      "community": 6,
       "norm_label": "parse_docling.py"
     },
     {
@@ -225,7 +360,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L49",
       "id": "parse_docling_build_ocr_options",
-      "community": 3,
+      "community": 6,
       "norm_label": "_build_ocr_options()"
     },
     {
@@ -234,7 +369,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L73",
       "id": "parse_docling_create_converter",
-      "community": 3,
+      "community": 6,
       "norm_label": "create_converter()"
     },
     {
@@ -243,7 +378,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L127",
       "id": "parse_docling_pdf_has_text_layer",
-      "community": 3,
+      "community": 6,
       "norm_label": "_pdf_has_text_layer()"
     },
     {
@@ -252,7 +387,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L143",
       "id": "parse_docling_llm_format_markdown",
-      "community": 3,
+      "community": 6,
       "norm_label": "_llm_format_markdown()"
     },
     {
@@ -261,7 +396,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L199",
       "id": "parse_docling_dedup_table_row",
-      "community": 3,
+      "community": 6,
       "norm_label": "_dedup_table_row()"
     },
     {
@@ -270,7 +405,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L210",
       "id": "parse_docling_dedup_merged_cells",
-      "community": 3,
+      "community": 6,
       "norm_label": "dedup_merged_cells()"
     },
     {
@@ -279,7 +414,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L287",
       "id": "parse_docling_parse_file",
-      "community": 3,
+      "community": 6,
       "norm_label": "parse_file()"
     },
     {
@@ -288,7 +423,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L353",
       "id": "parse_docling_scan_directory",
-      "community": 3,
+      "community": 6,
       "norm_label": "scan_directory()"
     },
     {
@@ -297,7 +432,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L381",
       "id": "parse_docling_main",
-      "community": 3,
+      "community": 6,
       "norm_label": "main()"
     },
     {
@@ -305,7 +440,7 @@
       "file_type": "rationale",
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L128",
-      "community": 3,
+      "community": 6,
       "norm_label": "pdftotext\u1105\u1169 pdf \u1110\u1166\u11a8\u1109\u1173\u1110\u1173 \u1105\u1166\u110b\u1175\u110b\u1165 \u110e\u116e\u110e\u116e\u11af. \u1110\u1166\u11a8\u1109\u1173\u1110\u1173\u1100\u1161 \u110b\u1175\u11bb\u110b\u1173\u1106\u1167\u11ab \u1107\u1161\u11ab\u1112\u116a\u11ab, \u110b\u1165\u11b9\u110b\u1173\u1106\u1167\u11ab none.",
       "id": "parse_docling_rationale_128"
     },
@@ -314,7 +449,7 @@
       "file_type": "rationale",
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L144",
-      "community": 3,
+      "community": 6,
       "norm_label": "\u110e\u116e\u110e\u116e\u11af\u1103\u116c\u11ab raw \u1110\u1166\u11a8\u1109\u1173\u1110\u1173\u1105\u1173\u11af llm\u110b\u1173\u1105\u1169 \u1101\u1161\u11af\u1101\u1173\u11b7\u1112\u1161\u11ab markdown\u110b\u1173\u1105\u1169 \u110c\u1165\u11bc\u1105\u1175.",
       "id": "parse_docling_rationale_144"
     },
@@ -323,7 +458,7 @@
       "file_type": "rationale",
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L200",
-      "community": 3,
+      "community": 6,
       "norm_label": "\u110b\u1167\u11ab\u1109\u1169\u11a8\u110b\u1173\u1105\u1169 \u1103\u1169\u11bc\u110b\u1175\u11af\u1112\u1161\u11ab \u1109\u1166\u11af \u1100\u1161\u11b9\u110b\u1173\u11af \u1112\u1161\u1102\u1161\u1105\u1169 \u110e\u116e\u11a8\u1109\u1169.",
       "id": "parse_docling_rationale_200"
     },
@@ -332,7 +467,7 @@
       "file_type": "rationale",
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L211",
-      "community": 3,
+      "community": 6,
       "norm_label": "markdown \u1110\u1166\u110b\u1175\u1107\u1173\u11af\u110b\u1166\u1109\u1165 \u1107\u1167\u11bc\u1112\u1161\u11b8 \u1109\u1166\u11af\u1105\u1169 \u110b\u1175\u11ab\u1112\u1161\u11ab \u110f\u1165\u11af\u1105\u1165\u11b7 \u110c\u116e\u11bc\u1107\u1169\u11a8\u110b\u1173\u11af \u110c\u1166\u1100\u1165.",
       "id": "parse_docling_rationale_211"
     },
@@ -341,7 +476,7 @@
       "file_type": "rationale",
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L293",
-      "community": 3,
+      "community": 6,
       "norm_label": "\u1103\u1161\u11ab\u110b\u1175\u11af \u1111\u1161\u110b\u1175\u11af\u110b\u1173\u11af docling\u110b\u1173\u1105\u1169 \u1107\u1167\u11ab\u1112\u116a\u11ab. \u1109\u1165\u11bc\u1100\u1169\u11bc \u1109\u1175 true \u1107\u1161\u11ab\u1112\u116a\u11ab.",
       "id": "parse_docling_rationale_293"
     },
@@ -350,7 +485,7 @@
       "file_type": "rationale",
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse_docling.py",
       "source_location": "L359",
-      "community": 3,
+      "community": 6,
       "norm_label": "raw/ \u1103\u1175\u1105\u1166\u11a8\u1110\u1169\u1105\u1175\u1105\u1173\u11af \u110c\u1162\u1100\u1171 \u1109\u1173\u110f\u1162\u11ab\u1112\u1161\u110b\u1167 \u1107\u1175\u1110\u1166\u11a8\u1109\u1173\u1110\u1173 \u1111\u1161\u110b\u1175\u11af\u110b\u1173\u11af \u1111\u1161\u1109\u1175\u11bc. \u110e\u1165\u1105\u1175 \u1100\u1165\u11ab\u1109\u116e \u1107\u1161\u11ab\u1112\u116a\u11ab.",
       "id": "parse_docling_rationale_359"
     },
@@ -360,7 +495,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L1",
       "id": "users_mason_project_personal_llm_wiki_template_scripts_repair_parsed_artifacts_py",
-      "community": 1,
+      "community": 3,
       "norm_label": "repair_parsed_artifacts.py"
     },
     {
@@ -369,7 +504,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L24",
       "id": "repair_parsed_artifacts_parse_args",
-      "community": 1,
+      "community": 3,
       "norm_label": "parse_args()"
     },
     {
@@ -378,7 +513,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L32",
       "id": "repair_parsed_artifacts_display_path",
-      "community": 1,
+      "community": 3,
       "norm_label": "display_path()"
     },
     {
@@ -387,7 +522,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L39",
       "id": "repair_parsed_artifacts_parse_output_path",
-      "community": 1,
+      "community": 3,
       "norm_label": "parse_output_path()"
     },
     {
@@ -396,7 +531,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L47",
       "id": "repair_parsed_artifacts_looks_mojibake",
-      "community": 1,
+      "community": 3,
       "norm_label": "looks_mojibake()"
     },
     {
@@ -405,7 +540,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L51",
       "id": "repair_parsed_artifacts_cleaned_filename_hint",
-      "community": 1,
+      "community": 3,
       "norm_label": "cleaned_filename_hint()"
     },
     {
@@ -414,7 +549,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L55",
       "id": "repair_parsed_artifacts_sha256",
-      "community": 1,
+      "community": 0,
       "norm_label": "sha256()"
     },
     {
@@ -423,7 +558,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L59",
       "id": "repair_parsed_artifacts_needs_parse_refresh",
-      "community": 1,
+      "community": 3,
       "norm_label": "needs_parse_refresh()"
     },
     {
@@ -432,7 +567,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L66",
       "id": "repair_parsed_artifacts_run_parse",
-      "community": 1,
+      "community": 3,
       "norm_label": "run_parse()"
     },
     {
@@ -441,7 +576,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L79",
       "id": "repair_parsed_artifacts_remove_with_parsed",
-      "community": 1,
+      "community": 3,
       "norm_label": "remove_with_parsed()"
     },
     {
@@ -450,7 +585,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L93",
       "id": "repair_parsed_artifacts_rename_with_parsed",
-      "community": 1,
+      "community": 3,
       "norm_label": "rename_with_parsed()"
     },
     {
@@ -459,7 +594,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L110",
       "id": "repair_parsed_artifacts_canonical_duplicate",
-      "community": 1,
+      "community": 3,
       "norm_label": "canonical_duplicate()"
     },
     {
@@ -468,7 +603,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L124",
       "id": "repair_parsed_artifacts_repair_filename",
-      "community": 1,
+      "community": 3,
       "norm_label": "repair_filename()"
     },
     {
@@ -477,7 +612,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L141",
       "id": "repair_parsed_artifacts_iter_raw_files",
-      "community": 1,
+      "community": 3,
       "norm_label": "iter_raw_files()"
     },
     {
@@ -486,7 +621,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/repair_parsed_artifacts.py",
       "source_location": "L147",
       "id": "repair_parsed_artifacts_main",
-      "community": 1,
+      "community": 3,
       "norm_label": "main()"
     },
     {
@@ -495,7 +630,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/env_defaults.py",
       "source_location": "L1",
       "id": "users_mason_project_personal_llm_wiki_template_scripts_env_defaults_py",
-      "community": 6,
+      "community": 2,
       "norm_label": "env_defaults.py"
     },
     {
@@ -504,7 +639,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/env_defaults.py",
       "source_location": "L12",
       "id": "env_defaults_read_dotenv_value",
-      "community": 6,
+      "community": 2,
       "norm_label": "read_dotenv_value()"
     },
     {
@@ -513,7 +648,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/env_defaults.py",
       "source_location": "L31",
       "id": "env_defaults_env_or_dotenv",
-      "community": 6,
+      "community": 2,
       "norm_label": "env_or_dotenv()"
     },
     {
@@ -522,7 +657,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L1",
       "id": "users_mason_project_personal_llm_wiki_template_scripts_parse_hwp_py",
-      "community": 0,
+      "community": 1,
       "norm_label": "parse-hwp.py"
     },
     {
@@ -531,7 +666,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L51",
       "id": "parse_hwp_parse_args",
-      "community": 0,
+      "community": 1,
       "norm_label": "parse_args()"
     },
     {
@@ -540,7 +675,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L58",
       "id": "parse_hwp_sniff_hwp_format",
-      "community": 0,
+      "community": 1,
       "norm_label": "sniff_hwp_format()"
     },
     {
@@ -549,7 +684,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L70",
       "id": "parse_hwp_collapse_blank_lines",
-      "community": 0,
+      "community": 1,
       "norm_label": "collapse_blank_lines()"
     },
     {
@@ -558,7 +693,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L85",
       "id": "parse_hwp_sanitize_text",
-      "community": 0,
+      "community": 1,
       "norm_label": "sanitize_text()"
     },
     {
@@ -567,7 +702,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L89",
       "id": "parse_hwp_extract_html_text",
-      "community": 0,
+      "community": 1,
       "norm_label": "extract_html_text()"
     },
     {
@@ -576,7 +711,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L102",
       "id": "parse_hwp_extract_hwpx_text_python_hwpx",
-      "community": 0,
+      "community": 1,
       "norm_label": "extract_hwpx_text_python_hwpx()"
     },
     {
@@ -585,7 +720,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L113",
       "id": "parse_hwp_iter_hwpx_section_names",
-      "community": 0,
+      "community": 1,
       "norm_label": "iter_hwpx_section_names()"
     },
     {
@@ -594,7 +729,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L118",
       "id": "parse_hwp_extract_hwpx_text_zip",
-      "community": 0,
+      "community": 1,
       "norm_label": "extract_hwpx_text_zip()"
     },
     {
@@ -603,7 +738,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L134",
       "id": "parse_hwp_extract_hwpx_preview_text",
-      "community": 0,
+      "community": 1,
       "norm_label": "extract_hwpx_preview_text()"
     },
     {
@@ -612,7 +747,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L151",
       "id": "parse_hwp_extract_hwpx_preview_image_text",
-      "community": 0,
+      "community": 1,
       "norm_label": "extract_hwpx_preview_image_text()"
     },
     {
@@ -621,7 +756,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L203",
       "id": "parse_hwp_extract_hwpx_text",
-      "community": 0,
+      "community": 1,
       "norm_label": "extract_hwpx_text()"
     },
     {
@@ -630,7 +765,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L216",
       "id": "parse_hwp_paragraph_text_from_chars",
-      "community": 0,
+      "community": 1,
       "norm_label": "paragraph_text_from_chars()"
     },
     {
@@ -639,7 +774,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L228",
       "id": "parse_hwp_extract_hwp_text",
-      "community": 0,
+      "community": 1,
       "norm_label": "extract_hwp_text()"
     },
     {
@@ -648,7 +783,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L241",
       "id": "parse_hwp_extract_hwp_text_libhwp",
-      "community": 0,
+      "community": 1,
       "norm_label": "extract_hwp_text_libhwp()"
     },
     {
@@ -657,7 +792,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L260",
       "id": "parse_hwp_extract_hwp_text_hwp5txt",
-      "community": 0,
+      "community": 1,
       "norm_label": "extract_hwp_text_hwp5txt()"
     },
     {
@@ -666,7 +801,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L277",
       "id": "parse_hwp_extract_hwp_preview_text",
-      "community": 0,
+      "community": 1,
       "norm_label": "extract_hwp_preview_text()"
     },
     {
@@ -675,7 +810,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L301",
       "id": "parse_hwp_build_markdown",
-      "community": 0,
+      "community": 1,
       "norm_label": "build_markdown()"
     },
     {
@@ -684,7 +819,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-hwp.py",
       "source_location": "L327",
       "id": "parse_hwp_main",
-      "community": 0,
+      "community": 1,
       "norm_label": "main()"
     },
     {
@@ -693,7 +828,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-image.py",
       "source_location": "L1",
       "id": "users_mason_project_personal_llm_wiki_template_scripts_parse_image_py",
-      "community": 4,
+      "community": 7,
       "norm_label": "parse-image.py"
     },
     {
@@ -702,7 +837,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-image.py",
       "source_location": "L48",
       "id": "parse_image_parse_args",
-      "community": 4,
+      "community": 7,
       "norm_label": "parse_args()"
     },
     {
@@ -711,7 +846,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-image.py",
       "source_location": "L60",
       "id": "parse_image_load_image_metadata",
-      "community": 4,
+      "community": 7,
       "norm_label": "load_image_metadata()"
     },
     {
@@ -720,7 +855,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-image.py",
       "source_location": "L114",
       "id": "parse_image_mime_type_for",
-      "community": 4,
+      "community": 7,
       "norm_label": "mime_type_for()"
     },
     {
@@ -729,7 +864,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-image.py",
       "source_location": "L118",
       "id": "parse_image_build_data_url",
-      "community": 4,
+      "community": 7,
       "norm_label": "build_data_url()"
     },
     {
@@ -738,7 +873,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-image.py",
       "source_location": "L123",
       "id": "parse_image_strip_code_fences",
-      "community": 4,
+      "community": 7,
       "norm_label": "strip_code_fences()"
     },
     {
@@ -747,7 +882,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-image.py",
       "source_location": "L134",
       "id": "parse_image_extract_message_text",
-      "community": 4,
+      "community": 7,
       "norm_label": "extract_message_text()"
     },
     {
@@ -756,7 +891,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-image.py",
       "source_location": "L152",
       "id": "parse_image_call_gpt_vision",
-      "community": 4,
+      "community": 7,
       "norm_label": "call_gpt_vision()"
     },
     {
@@ -765,7 +900,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-image.py",
       "source_location": "L195",
       "id": "parse_image_get_tesseract_lang",
-      "community": 4,
+      "community": 7,
       "norm_label": "get_tesseract_lang()"
     },
     {
@@ -774,7 +909,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-image.py",
       "source_location": "L223",
       "id": "parse_image_run_tesseract",
-      "community": 4,
+      "community": 7,
       "norm_label": "run_tesseract()"
     },
     {
@@ -783,7 +918,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-image.py",
       "source_location": "L257",
       "id": "parse_image_is_auth_error",
-      "community": 4,
+      "community": 7,
       "norm_label": "is_auth_error()"
     },
     {
@@ -792,7 +927,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-image.py",
       "source_location": "L264",
       "id": "parse_image_build_markdown",
-      "community": 4,
+      "community": 7,
       "norm_label": "build_markdown()"
     },
     {
@@ -801,7 +936,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-image.py",
       "source_location": "L313",
       "id": "parse_image_main",
-      "community": 4,
+      "community": 7,
       "norm_label": "main()"
     },
     {
@@ -810,7 +945,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L1",
       "id": "users_mason_project_personal_llm_wiki_template_scripts_parse_pdf_py",
-      "community": 2,
+      "community": 4,
       "norm_label": "parse-pdf.py"
     },
     {
@@ -819,7 +954,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L70",
       "id": "parse_pdf_parse_args",
-      "community": 2,
+      "community": 4,
       "norm_label": "parse_args()"
     },
     {
@@ -828,7 +963,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L108",
       "id": "parse_pdf_port_open",
-      "community": 2,
+      "community": 4,
       "norm_label": "_port_open()"
     },
     {
@@ -837,7 +972,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L116",
       "id": "parse_pdf_find_hybrid_bin",
-      "community": 2,
+      "community": 4,
       "norm_label": "_find_hybrid_bin()"
     },
     {
@@ -846,7 +981,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L130",
       "id": "parse_pdf_hybrid_server",
-      "community": 2,
+      "community": 4,
       "norm_label": "hybrid_server()"
     },
     {
@@ -855,7 +990,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L184",
       "id": "parse_pdf_run_opendataloader",
-      "community": 2,
+      "community": 4,
       "norm_label": "run_opendataloader()"
     },
     {
@@ -864,7 +999,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L239",
       "id": "parse_pdf_mime_type_for",
-      "community": 2,
+      "community": 4,
       "norm_label": "mime_type_for()"
     },
     {
@@ -873,7 +1008,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L243",
       "id": "parse_pdf_build_data_url",
-      "community": 2,
+      "community": 4,
       "norm_label": "build_data_url()"
     },
     {
@@ -882,7 +1017,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L248",
       "id": "parse_pdf_strip_code_fences",
-      "community": 2,
+      "community": 4,
       "norm_label": "strip_code_fences()"
     },
     {
@@ -891,7 +1026,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L259",
       "id": "parse_pdf_extract_message_text",
-      "community": 2,
+      "community": 4,
       "norm_label": "extract_message_text()"
     },
     {
@@ -900,7 +1035,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L278",
       "id": "parse_pdf_caption_image",
-      "community": 2,
+      "community": 4,
       "norm_label": "caption_image()"
     },
     {
@@ -909,7 +1044,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L316",
       "id": "parse_pdf_rewrite_markdown",
-      "community": 2,
+      "community": 4,
       "norm_label": "rewrite_markdown()"
     },
     {
@@ -918,7 +1053,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L367",
       "id": "parse_pdf_main",
-      "community": 2,
+      "community": 4,
       "norm_label": "main()"
     },
     {
@@ -926,7 +1061,7 @@
       "file_type": "rationale",
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L133",
-      "community": 2,
+      "community": 4,
       "norm_label": "\u1112\u1161\u110b\u1175\u1107\u1173\u1105\u1175\u1103\u1173 \u1109\u1165\u1107\u1165\u1105\u1173\u11af \u1109\u1162\u11bc\u1109\u1165\u11bc/\u110c\u1162\u1109\u1161\u110b\u116d\u11bc. yield \u1105\u1169 base url \u110c\u1165\u11ab\u1103\u1161\u11af.",
       "id": "parse_pdf_rationale_133"
     },
@@ -935,7 +1070,7 @@
       "file_type": "rationale",
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L191",
-      "community": 2,
+      "community": 4,
       "norm_label": "opendataloader-pdf \u1109\u1175\u11af\u1112\u1162\u11bc. \u1109\u1162\u11bc\u1109\u1165\u11bc\u1103\u116c\u11ab .md \u1100\u1167\u11bc\u1105\u1169 \u1107\u1161\u11ab\u1112\u116a\u11ab.",
       "id": "parse_pdf_rationale_191"
     },
@@ -944,7 +1079,7 @@
       "file_type": "rationale",
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L323",
-      "community": 2,
+      "community": 4,
       "norm_label": "\u110b\u1175\u1106\u1175\u110c\u1175 \u1105\u1175\u11bc\u110f\u1173\u1105\u1173\u11af \u110f\u1162\u11b8\u1109\u1167\u11ab\u110b\u1173\u1105\u1169 \u110e\u1175\u1112\u116a\u11ab. (\u1109\u1162 markdown, \u110e\u1165\u1105\u1175 \u1109\u116e, \u1109\u1175\u11af\u1111\u1162 \u1109\u116e) \u1107\u1161\u11ab\u1112\u116a\u11ab.",
       "id": "parse_pdf_rationale_323"
     },
@@ -954,7 +1089,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-text.py",
       "source_location": "L1",
       "id": "users_mason_project_personal_llm_wiki_template_scripts_parse_text_py",
-      "community": 7,
+      "community": 2,
       "norm_label": "parse-text.py"
     },
     {
@@ -963,7 +1098,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-text.py",
       "source_location": "L10",
       "id": "parse_text_read_text_file",
-      "community": 7,
+      "community": 2,
       "norm_label": "read_text_file()"
     },
     {
@@ -972,7 +1107,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-text.py",
       "source_location": "L20",
       "id": "parse_text_read_doc_file",
-      "community": 7,
+      "community": 2,
       "norm_label": "read_doc_file()"
     },
     {
@@ -981,7 +1116,7 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-text.py",
       "source_location": "L38",
       "id": "parse_text_build_markdown",
-      "community": 7,
+      "community": 2,
       "norm_label": "build_markdown()"
     },
     {
@@ -990,8 +1125,395 @@
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-text.py",
       "source_location": "L51",
       "id": "parse_text_main",
-      "community": 7,
+      "community": 2,
       "norm_label": "main()"
+    },
+    {
+      "label": "template_upgrade.py",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L1",
+      "id": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "community": 0,
+      "norm_label": "template_upgrade.py"
+    },
+    {
+      "label": "Operation",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L24",
+      "id": "template_upgrade_operation",
+      "community": 0,
+      "norm_label": "operation"
+    },
+    {
+      "label": "UpgradeError",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L31",
+      "id": "template_upgrade_upgradeerror",
+      "community": 0,
+      "norm_label": "upgradeerror"
+    },
+    {
+      "label": "RuntimeError",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "id": "runtimeerror",
+      "community": 4,
+      "norm_label": "runtimeerror"
+    },
+    {
+      "label": "utc_now_iso()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L35",
+      "id": "template_upgrade_utc_now_iso",
+      "community": 0,
+      "norm_label": "utc_now_iso()"
+    },
+    {
+      "label": "load_manifest()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L39",
+      "id": "template_upgrade_load_manifest",
+      "community": 0,
+      "norm_label": "load_manifest()"
+    },
+    {
+      "label": "canonical_json()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L46",
+      "id": "template_upgrade_canonical_json",
+      "community": 0,
+      "norm_label": "canonical_json()"
+    },
+    {
+      "label": "deep_merge_preserve_existing()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L50",
+      "id": "template_upgrade_deep_merge_preserve_existing",
+      "community": 0,
+      "norm_label": "deep_merge_preserve_existing()"
+    },
+    {
+      "label": "merge_named_hook_lists()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L73",
+      "id": "template_upgrade_merge_named_hook_lists",
+      "community": 0,
+      "norm_label": "merge_named_hook_lists()"
+    },
+    {
+      "label": "merge_claude_settings()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L107",
+      "id": "template_upgrade_merge_claude_settings",
+      "community": 0,
+      "norm_label": "merge_claude_settings()"
+    },
+    {
+      "label": "hash_file()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L127",
+      "id": "template_upgrade_hash_file",
+      "community": 0,
+      "norm_label": "hash_file()"
+    },
+    {
+      "label": "hash_tree()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L135",
+      "id": "template_upgrade_hash_tree",
+      "community": 0,
+      "norm_label": "hash_tree()"
+    },
+    {
+      "label": "text_digest()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L145",
+      "id": "template_upgrade_text_digest",
+      "community": 0,
+      "norm_label": "text_digest()"
+    },
+    {
+      "label": "path_digest()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L149",
+      "id": "template_upgrade_path_digest",
+      "community": 0,
+      "norm_label": "path_digest()"
+    },
+    {
+      "label": "paths_equal()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L157",
+      "id": "template_upgrade_paths_equal",
+      "community": 0,
+      "norm_label": "paths_equal()"
+    },
+    {
+      "label": "resolve_under()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L163",
+      "id": "template_upgrade_resolve_under",
+      "community": 0,
+      "norm_label": "resolve_under()"
+    },
+    {
+      "label": "remove_path()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L171",
+      "id": "template_upgrade_remove_path",
+      "community": 0,
+      "norm_label": "remove_path()"
+    },
+    {
+      "label": "copy_path()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L178",
+      "id": "template_upgrade_copy_path",
+      "community": 0,
+      "norm_label": "copy_path()"
+    },
+    {
+      "label": "extract_block()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L190",
+      "id": "template_upgrade_extract_block",
+      "community": 0,
+      "norm_label": "extract_block()"
+    },
+    {
+      "label": "extract_block_from_file()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L200",
+      "id": "template_upgrade_extract_block_from_file",
+      "community": 0,
+      "norm_label": "extract_block_from_file()"
+    },
+    {
+      "label": "merge_block()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L213",
+      "id": "template_upgrade_merge_block",
+      "community": 0,
+      "norm_label": "merge_block()"
+    },
+    {
+      "label": "load_json_file()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L227",
+      "id": "template_upgrade_load_json_file",
+      "community": 0,
+      "norm_label": "load_json_file()"
+    },
+    {
+      "label": "dump_json_file()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L234",
+      "id": "template_upgrade_dump_json_file",
+      "community": 0,
+      "norm_label": "dump_json_file()"
+    },
+    {
+      "label": "git_commit()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L239",
+      "id": "template_upgrade_git_commit",
+      "community": 0,
+      "norm_label": "git_commit()"
+    },
+    {
+      "label": "ensure_target_dir()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L252",
+      "id": "template_upgrade_ensure_target_dir",
+      "community": 0,
+      "norm_label": "ensure_target_dir()"
+    },
+    {
+      "label": "validate_manifest_paths()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L259",
+      "id": "template_upgrade_validate_manifest_paths",
+      "community": 0,
+      "norm_label": "validate_manifest_paths()"
+    },
+    {
+      "label": "load_lockfile()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L280",
+      "id": "template_upgrade_load_lockfile",
+      "community": 0,
+      "norm_label": "load_lockfile()"
+    },
+    {
+      "label": "replace_conflict_message()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L287",
+      "id": "template_upgrade_replace_conflict_message",
+      "community": 0,
+      "norm_label": "replace_conflict_message()"
+    },
+    {
+      "label": "merge_conflict_message()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L301",
+      "id": "template_upgrade_merge_conflict_message",
+      "community": 0,
+      "norm_label": "merge_conflict_message()"
+    },
+    {
+      "label": "block_conflict_message()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L312",
+      "id": "template_upgrade_block_conflict_message",
+      "community": 0,
+      "norm_label": "block_conflict_message()"
+    },
+    {
+      "label": "current_block_hash()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L334",
+      "id": "template_upgrade_current_block_hash",
+      "community": 0,
+      "norm_label": "current_block_hash()"
+    },
+    {
+      "label": "preflight_writes()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L339",
+      "id": "template_upgrade_preflight_writes",
+      "community": 0,
+      "norm_label": "preflight_writes()"
+    },
+    {
+      "label": "sync_replace_path()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L386",
+      "id": "template_upgrade_sync_replace_path",
+      "community": 0,
+      "norm_label": "sync_replace_path()"
+    },
+    {
+      "label": "sync_json_merge()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L399",
+      "id": "template_upgrade_sync_json_merge",
+      "community": 0,
+      "norm_label": "sync_json_merge()"
+    },
+    {
+      "label": "sync_block_merge()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L415",
+      "id": "template_upgrade_sync_block_merge",
+      "community": 0,
+      "norm_label": "sync_block_merge()"
+    },
+    {
+      "label": "build_lock_payload()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L439",
+      "id": "template_upgrade_build_lock_payload",
+      "community": 0,
+      "norm_label": "build_lock_payload()"
+    },
+    {
+      "label": "write_lockfile()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L460",
+      "id": "template_upgrade_write_lockfile",
+      "community": 0,
+      "norm_label": "write_lockfile()"
+    },
+    {
+      "label": "upgrade_target()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L481",
+      "id": "template_upgrade_upgrade_target",
+      "community": 5,
+      "norm_label": "upgrade_target()"
+    },
+    {
+      "label": "summarize_status()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L542",
+      "id": "template_upgrade_summarize_status",
+      "community": 0,
+      "norm_label": "summarize_status()"
+    },
+    {
+      "label": "print_report()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L548",
+      "id": "template_upgrade_print_report",
+      "community": 0,
+      "norm_label": "print_report()"
+    },
+    {
+      "label": "build_parser()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L558",
+      "id": "template_upgrade_build_parser",
+      "community": 0,
+      "norm_label": "build_parser()"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L568",
+      "id": "template_upgrade_main",
+      "community": 0,
+      "norm_label": "main()"
+    },
+    {
+      "label": "Raised when a target cannot be upgraded safely.",
+      "file_type": "rationale",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L32",
+      "id": "template_upgrade_rationale_32",
+      "community": 0,
+      "norm_label": "raised when a target cannot be upgraded safely."
     }
   ],
   "links": [
@@ -1198,6 +1720,294 @@
       "_tgt": "repair_parsed_artifacts_repair_filename",
       "source": "test_parse_stack_repairscripttests_test_repair_filename_removes_duplicate_mojibake_file",
       "target": "repair_parsed_artifacts_repair_filename"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_tests_test_template_upgrade_py",
+      "_tgt": "test_template_upgrade_load_module",
+      "source": "users_mason_project_personal_llm_wiki_template_tests_test_template_upgrade_py",
+      "target": "test_template_upgrade_load_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_tests_test_template_upgrade_py",
+      "_tgt": "test_template_upgrade_templateupgradetests",
+      "source": "users_mason_project_personal_llm_wiki_template_tests_test_template_upgrade_py",
+      "target": "test_template_upgrade_templateupgradetests",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests",
+      "_tgt": "test_template_upgrade_templateupgradetests_setup",
+      "source": "test_template_upgrade_templateupgradetests",
+      "target": "test_template_upgrade_templateupgradetests_setup",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L90",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests",
+      "_tgt": "test_template_upgrade_templateupgradetests_teardown",
+      "source": "test_template_upgrade_templateupgradetests",
+      "target": "test_template_upgrade_templateupgradetests_teardown",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L93",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests",
+      "_tgt": "test_template_upgrade_templateupgradetests_test_dry_run_does_not_modify_target",
+      "source": "test_template_upgrade_templateupgradetests",
+      "target": "test_template_upgrade_templateupgradetests_test_dry_run_does_not_modify_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L100",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests",
+      "_tgt": "test_template_upgrade_templateupgradetests_test_apply_replaces_managed_paths_and_merges_settings",
+      "source": "test_template_upgrade_templateupgradetests",
+      "target": "test_template_upgrade_templateupgradetests_test_apply_replaces_managed_paths_and_merges_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L152",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests",
+      "_tgt": "test_template_upgrade_templateupgradetests_test_apply_merges_same_matcher_hooks_into_one_entry",
+      "source": "test_template_upgrade_templateupgradetests",
+      "target": "test_template_upgrade_templateupgradetests_test_apply_merges_same_matcher_hooks_into_one_entry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L181",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests",
+      "_tgt": "test_template_upgrade_templateupgradetests_test_second_apply_is_idempotent",
+      "source": "test_template_upgrade_templateupgradetests",
+      "target": "test_template_upgrade_templateupgradetests_test_second_apply_is_idempotent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L189",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests",
+      "_tgt": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_unmanaged_replace_path_without_force",
+      "source": "test_template_upgrade_templateupgradetests",
+      "target": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_unmanaged_replace_path_without_force",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L195",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests",
+      "_tgt": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_modified_managed_block_without_force",
+      "source": "test_template_upgrade_templateupgradetests",
+      "target": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_modified_managed_block_without_force",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L205",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests",
+      "_tgt": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_unmanaged_existing_block_without_force",
+      "source": "test_template_upgrade_templateupgradetests",
+      "target": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_unmanaged_existing_block_without_force",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L214",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests",
+      "_tgt": "test_template_upgrade_templateupgradetests_test_invalid_target_json_raises_upgrade_error",
+      "source": "test_template_upgrade_templateupgradetests",
+      "target": "test_template_upgrade_templateupgradetests_test_invalid_target_json_raises_upgrade_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L221",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests",
+      "_tgt": "test_template_upgrade_templateupgradetests_test_invalid_lockfile_raises_upgrade_error",
+      "source": "test_template_upgrade_templateupgradetests",
+      "target": "test_template_upgrade_templateupgradetests_test_invalid_lockfile_raises_upgrade_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L227",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests",
+      "_tgt": "test_template_upgrade_templateupgradetests_test_manifest_path_traversal_is_rejected",
+      "source": "test_template_upgrade_templateupgradetests",
+      "target": "test_template_upgrade_templateupgradetests_test_manifest_path_traversal_is_rejected",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L94",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests_test_dry_run_does_not_modify_target",
+      "_tgt": "template_upgrade_upgrade_target",
+      "source": "test_template_upgrade_templateupgradetests_test_dry_run_does_not_modify_target",
+      "target": "template_upgrade_upgrade_target"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L127",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests_test_apply_replaces_managed_paths_and_merges_settings",
+      "_tgt": "template_upgrade_upgrade_target",
+      "source": "test_template_upgrade_templateupgradetests_test_apply_replaces_managed_paths_and_merges_settings",
+      "target": "template_upgrade_upgrade_target"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L172",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests_test_apply_merges_same_matcher_hooks_into_one_entry",
+      "_tgt": "template_upgrade_upgrade_target",
+      "source": "test_template_upgrade_templateupgradetests_test_apply_merges_same_matcher_hooks_into_one_entry",
+      "target": "template_upgrade_upgrade_target"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L182",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests_test_second_apply_is_idempotent",
+      "_tgt": "template_upgrade_upgrade_target",
+      "source": "test_template_upgrade_templateupgradetests_test_second_apply_is_idempotent",
+      "target": "template_upgrade_upgrade_target"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L193",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_unmanaged_replace_path_without_force",
+      "_tgt": "template_upgrade_upgrade_target",
+      "source": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_unmanaged_replace_path_without_force",
+      "target": "template_upgrade_upgrade_target"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L196",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_modified_managed_block_without_force",
+      "_tgt": "template_upgrade_upgrade_target",
+      "source": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_modified_managed_block_without_force",
+      "target": "template_upgrade_upgrade_target"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L212",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_unmanaged_existing_block_without_force",
+      "_tgt": "template_upgrade_upgrade_target",
+      "source": "test_template_upgrade_templateupgradetests_test_apply_refuses_to_overwrite_unmanaged_existing_block_without_force",
+      "target": "template_upgrade_upgrade_target"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L219",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests_test_invalid_target_json_raises_upgrade_error",
+      "_tgt": "template_upgrade_upgrade_target",
+      "source": "test_template_upgrade_templateupgradetests_test_invalid_target_json_raises_upgrade_error",
+      "target": "template_upgrade_upgrade_target"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L225",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests_test_invalid_lockfile_raises_upgrade_error",
+      "_tgt": "template_upgrade_upgrade_target",
+      "source": "test_template_upgrade_templateupgradetests_test_invalid_lockfile_raises_upgrade_error",
+      "target": "template_upgrade_upgrade_target"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/tests/test_template_upgrade.py",
+      "source_location": "L232",
+      "weight": 1.0,
+      "_src": "test_template_upgrade_templateupgradetests_test_manifest_path_traversal_is_rejected",
+      "_tgt": "template_upgrade_upgrade_target",
+      "source": "test_template_upgrade_templateupgradetests_test_manifest_path_traversal_is_rejected",
+      "target": "template_upgrade_upgrade_target"
     },
     {
       "relation": "contains",
@@ -2110,6 +2920,42 @@
       "source": "repair_parsed_artifacts_sha256",
       "target": "repair_parsed_artifacts_canonical_duplicate",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L128",
+      "weight": 1.0,
+      "_src": "template_upgrade_hash_file",
+      "_tgt": "repair_parsed_artifacts_sha256",
+      "source": "repair_parsed_artifacts_sha256",
+      "target": "template_upgrade_hash_file"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L136",
+      "weight": 1.0,
+      "_src": "template_upgrade_hash_tree",
+      "_tgt": "repair_parsed_artifacts_sha256",
+      "source": "repair_parsed_artifacts_sha256",
+      "target": "template_upgrade_hash_tree"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L146",
+      "weight": 1.0,
+      "_src": "template_upgrade_text_digest",
+      "_tgt": "repair_parsed_artifacts_sha256",
+      "source": "repair_parsed_artifacts_sha256",
+      "target": "template_upgrade_text_digest"
     },
     {
       "relation": "calls",
@@ -3229,6 +4075,18 @@
     },
     {
       "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L570",
+      "weight": 1.0,
+      "_src": "template_upgrade_main",
+      "_tgt": "parse_pdf_parse_args",
+      "source": "parse_pdf_parse_args",
+      "target": "template_upgrade_main"
+    },
+    {
+      "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
       "source_location": "L137",
@@ -3250,6 +4108,18 @@
       "source": "parse_pdf_find_hybrid_bin",
       "target": "parse_pdf_hybrid_server",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
+      "source_location": "L123",
+      "weight": 1.0,
+      "_src": "parse_pdf_find_hybrid_bin",
+      "_tgt": "runtimeerror",
+      "source": "parse_pdf_find_hybrid_bin",
+      "target": "runtimeerror"
     },
     {
       "relation": "calls",
@@ -3276,6 +4146,18 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
+      "source_location": "L161",
+      "weight": 1.0,
+      "_src": "parse_pdf_hybrid_server",
+      "_tgt": "runtimeerror",
+      "source": "parse_pdf_hybrid_server",
+      "target": "runtimeerror"
+    },
+    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
@@ -3286,6 +4168,18 @@
       "source": "parse_pdf_run_opendataloader",
       "target": "parse_pdf_rationale_191",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/parse-pdf.py",
+      "source_location": "L199",
+      "weight": 1.0,
+      "_src": "parse_pdf_run_opendataloader",
+      "_tgt": "runtimeerror",
+      "source": "parse_pdf_run_opendataloader",
+      "target": "runtimeerror"
     },
     {
       "relation": "calls",
@@ -3429,6 +4323,1350 @@
       "_tgt": "parse_text_build_markdown",
       "source": "parse_text_build_markdown",
       "target": "parse_text_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_operation",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_operation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_upgradeerror",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_upgradeerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_utc_now_iso",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_utc_now_iso",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_load_manifest",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_load_manifest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_canonical_json",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_canonical_json",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_deep_merge_preserve_existing",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_deep_merge_preserve_existing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L73",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_merge_named_hook_lists",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_merge_named_hook_lists",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L107",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_merge_claude_settings",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_merge_claude_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L127",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_hash_file",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_hash_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L135",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_hash_tree",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_hash_tree",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L145",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_text_digest",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_text_digest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L149",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_path_digest",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_path_digest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L157",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_paths_equal",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_paths_equal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L163",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_resolve_under",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_resolve_under",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L171",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_remove_path",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_remove_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L178",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_copy_path",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_copy_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L190",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_extract_block",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_extract_block",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L200",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_extract_block_from_file",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_extract_block_from_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L213",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_merge_block",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_merge_block",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L227",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_load_json_file",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_load_json_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L234",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_dump_json_file",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_dump_json_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L239",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_git_commit",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_git_commit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L252",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_ensure_target_dir",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_ensure_target_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L259",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_validate_manifest_paths",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_validate_manifest_paths",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L280",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_load_lockfile",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_load_lockfile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L287",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_replace_conflict_message",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_replace_conflict_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L301",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_merge_conflict_message",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_merge_conflict_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L312",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_block_conflict_message",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_block_conflict_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L334",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_current_block_hash",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_current_block_hash",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L339",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_preflight_writes",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_preflight_writes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L386",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_sync_replace_path",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_sync_replace_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L399",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_sync_json_merge",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_sync_json_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L415",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_sync_block_merge",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_sync_block_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L439",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_build_lock_payload",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_build_lock_payload",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L460",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_write_lockfile",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_write_lockfile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L481",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_upgrade_target",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_upgrade_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L542",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_summarize_status",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_summarize_status",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L548",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_print_report",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_print_report",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L558",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_build_parser",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_build_parser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L568",
+      "weight": 1.0,
+      "_src": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "_tgt": "template_upgrade_main",
+      "source": "users_mason_project_personal_llm_wiki_template_scripts_template_upgrade_py",
+      "target": "template_upgrade_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L392",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_replace_path",
+      "_tgt": "template_upgrade_operation",
+      "source": "template_upgrade_operation",
+      "target": "template_upgrade_sync_replace_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L408",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_json_merge",
+      "_tgt": "template_upgrade_operation",
+      "source": "template_upgrade_operation",
+      "target": "template_upgrade_sync_json_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L431",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_block_merge",
+      "_tgt": "template_upgrade_operation",
+      "source": "template_upgrade_operation",
+      "target": "template_upgrade_sync_block_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L474",
+      "weight": 1.0,
+      "_src": "template_upgrade_write_lockfile",
+      "_tgt": "template_upgrade_operation",
+      "source": "template_upgrade_operation",
+      "target": "template_upgrade_write_lockfile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_src": "template_upgrade_upgradeerror",
+      "_tgt": "runtimeerror",
+      "source": "template_upgrade_upgradeerror",
+      "target": "runtimeerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_src": "template_upgrade_load_manifest",
+      "_tgt": "template_upgrade_upgradeerror",
+      "source": "template_upgrade_upgradeerror",
+      "target": "template_upgrade_load_manifest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L167",
+      "weight": 1.0,
+      "_src": "template_upgrade_resolve_under",
+      "_tgt": "template_upgrade_upgradeerror",
+      "source": "template_upgrade_upgradeerror",
+      "target": "template_upgrade_resolve_under",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L194",
+      "weight": 1.0,
+      "_src": "template_upgrade_extract_block",
+      "_tgt": "template_upgrade_upgradeerror",
+      "source": "template_upgrade_upgradeerror",
+      "target": "template_upgrade_extract_block",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L231",
+      "weight": 1.0,
+      "_src": "template_upgrade_load_json_file",
+      "_tgt": "template_upgrade_upgradeerror",
+      "source": "template_upgrade_upgradeerror",
+      "target": "template_upgrade_load_json_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L254",
+      "weight": 1.0,
+      "_src": "template_upgrade_ensure_target_dir",
+      "_tgt": "template_upgrade_upgradeerror",
+      "source": "template_upgrade_upgradeerror",
+      "target": "template_upgrade_ensure_target_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L355",
+      "weight": 1.0,
+      "_src": "template_upgrade_preflight_writes",
+      "_tgt": "template_upgrade_upgradeerror",
+      "source": "template_upgrade_upgradeerror",
+      "target": "template_upgrade_preflight_writes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L390",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_replace_path",
+      "_tgt": "template_upgrade_upgradeerror",
+      "source": "template_upgrade_upgradeerror",
+      "target": "template_upgrade_sync_replace_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L403",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_json_merge",
+      "_tgt": "template_upgrade_upgradeerror",
+      "source": "template_upgrade_upgradeerror",
+      "target": "template_upgrade_sync_json_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_src": "template_upgrade_rationale_32",
+      "_tgt": "template_upgrade_upgradeerror",
+      "source": "template_upgrade_upgradeerror",
+      "target": "template_upgrade_rationale_32",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L449",
+      "weight": 1.0,
+      "_src": "template_upgrade_build_lock_payload",
+      "_tgt": "template_upgrade_utc_now_iso",
+      "source": "template_upgrade_utc_now_iso",
+      "target": "template_upgrade_build_lock_payload",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L572",
+      "weight": 1.0,
+      "_src": "template_upgrade_main",
+      "_tgt": "template_upgrade_load_manifest",
+      "source": "template_upgrade_load_manifest",
+      "target": "template_upgrade_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_src": "template_upgrade_deep_merge_preserve_existing",
+      "_tgt": "template_upgrade_canonical_json",
+      "source": "template_upgrade_canonical_json",
+      "target": "template_upgrade_deep_merge_preserve_existing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_src": "template_upgrade_merge_named_hook_lists",
+      "_tgt": "template_upgrade_canonical_json",
+      "source": "template_upgrade_canonical_json",
+      "target": "template_upgrade_merge_named_hook_lists",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L407",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_json_merge",
+      "_tgt": "template_upgrade_canonical_json",
+      "source": "template_upgrade_canonical_json",
+      "target": "template_upgrade_sync_json_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L473",
+      "weight": 1.0,
+      "_src": "template_upgrade_write_lockfile",
+      "_tgt": "template_upgrade_canonical_json",
+      "source": "template_upgrade_canonical_json",
+      "target": "template_upgrade_write_lockfile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L98",
+      "weight": 1.0,
+      "_src": "template_upgrade_merge_named_hook_lists",
+      "_tgt": "template_upgrade_deep_merge_preserve_existing",
+      "source": "template_upgrade_deep_merge_preserve_existing",
+      "target": "template_upgrade_merge_named_hook_lists",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L114",
+      "weight": 1.0,
+      "_src": "template_upgrade_merge_claude_settings",
+      "_tgt": "template_upgrade_deep_merge_preserve_existing",
+      "source": "template_upgrade_deep_merge_preserve_existing",
+      "target": "template_upgrade_merge_claude_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L121",
+      "weight": 1.0,
+      "_src": "template_upgrade_merge_claude_settings",
+      "_tgt": "template_upgrade_merge_named_hook_lists",
+      "source": "template_upgrade_merge_named_hook_lists",
+      "target": "template_upgrade_merge_claude_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L406",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_json_merge",
+      "_tgt": "template_upgrade_merge_claude_settings",
+      "source": "template_upgrade_merge_claude_settings",
+      "target": "template_upgrade_sync_json_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L140",
+      "weight": 1.0,
+      "_src": "template_upgrade_hash_tree",
+      "_tgt": "template_upgrade_hash_file",
+      "source": "template_upgrade_hash_file",
+      "target": "template_upgrade_hash_tree",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L153",
+      "weight": 1.0,
+      "_src": "template_upgrade_path_digest",
+      "_tgt": "template_upgrade_hash_file",
+      "source": "template_upgrade_hash_file",
+      "target": "template_upgrade_path_digest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L154",
+      "weight": 1.0,
+      "_src": "template_upgrade_path_digest",
+      "_tgt": "template_upgrade_hash_tree",
+      "source": "template_upgrade_hash_tree",
+      "target": "template_upgrade_path_digest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L336",
+      "weight": 1.0,
+      "_src": "template_upgrade_current_block_hash",
+      "_tgt": "template_upgrade_text_digest",
+      "source": "template_upgrade_text_digest",
+      "target": "template_upgrade_current_block_hash",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L375",
+      "weight": 1.0,
+      "_src": "template_upgrade_preflight_writes",
+      "_tgt": "template_upgrade_text_digest",
+      "source": "template_upgrade_text_digest",
+      "target": "template_upgrade_preflight_writes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L511",
+      "weight": 1.0,
+      "_src": "template_upgrade_upgrade_target",
+      "_tgt": "template_upgrade_text_digest",
+      "source": "template_upgrade_text_digest",
+      "target": "template_upgrade_upgrade_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L160",
+      "weight": 1.0,
+      "_src": "template_upgrade_paths_equal",
+      "_tgt": "template_upgrade_path_digest",
+      "source": "template_upgrade_path_digest",
+      "target": "template_upgrade_paths_equal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L295",
+      "weight": 1.0,
+      "_src": "template_upgrade_replace_conflict_message",
+      "_tgt": "template_upgrade_path_digest",
+      "source": "template_upgrade_path_digest",
+      "target": "template_upgrade_replace_conflict_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L362",
+      "weight": 1.0,
+      "_src": "template_upgrade_preflight_writes",
+      "_tgt": "template_upgrade_path_digest",
+      "source": "template_upgrade_path_digest",
+      "target": "template_upgrade_preflight_writes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L503",
+      "weight": 1.0,
+      "_src": "template_upgrade_upgrade_target",
+      "_tgt": "template_upgrade_path_digest",
+      "source": "template_upgrade_path_digest",
+      "target": "template_upgrade_upgrade_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L288",
+      "weight": 1.0,
+      "_src": "template_upgrade_replace_conflict_message",
+      "_tgt": "template_upgrade_paths_equal",
+      "source": "template_upgrade_paths_equal",
+      "target": "template_upgrade_replace_conflict_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L391",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_replace_path",
+      "_tgt": "template_upgrade_paths_equal",
+      "source": "template_upgrade_paths_equal",
+      "target": "template_upgrade_sync_replace_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L269",
+      "weight": 1.0,
+      "_src": "template_upgrade_validate_manifest_paths",
+      "_tgt": "template_upgrade_resolve_under",
+      "source": "template_upgrade_resolve_under",
+      "target": "template_upgrade_validate_manifest_paths",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L352",
+      "weight": 1.0,
+      "_src": "template_upgrade_preflight_writes",
+      "_tgt": "template_upgrade_resolve_under",
+      "source": "template_upgrade_resolve_under",
+      "target": "template_upgrade_preflight_writes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L387",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_replace_path",
+      "_tgt": "template_upgrade_resolve_under",
+      "source": "template_upgrade_resolve_under",
+      "target": "template_upgrade_sync_replace_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L400",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_json_merge",
+      "_tgt": "template_upgrade_resolve_under",
+      "source": "template_upgrade_resolve_under",
+      "target": "template_upgrade_sync_json_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L424",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_block_merge",
+      "_tgt": "template_upgrade_resolve_under",
+      "source": "template_upgrade_resolve_under",
+      "target": "template_upgrade_sync_block_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L497",
+      "weight": 1.0,
+      "_src": "template_upgrade_upgrade_target",
+      "_tgt": "template_upgrade_resolve_under",
+      "source": "template_upgrade_resolve_under",
+      "target": "template_upgrade_upgrade_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L182",
+      "weight": 1.0,
+      "_src": "template_upgrade_copy_path",
+      "_tgt": "template_upgrade_remove_path",
+      "source": "template_upgrade_remove_path",
+      "target": "template_upgrade_copy_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L394",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_replace_path",
+      "_tgt": "template_upgrade_copy_path",
+      "source": "template_upgrade_copy_path",
+      "target": "template_upgrade_sync_replace_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L368",
+      "weight": 1.0,
+      "_src": "template_upgrade_preflight_writes",
+      "_tgt": "template_upgrade_extract_block",
+      "source": "template_upgrade_extract_block",
+      "target": "template_upgrade_preflight_writes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L425",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_block_merge",
+      "_tgt": "template_upgrade_extract_block",
+      "source": "template_upgrade_extract_block",
+      "target": "template_upgrade_sync_block_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L335",
+      "weight": 1.0,
+      "_src": "template_upgrade_current_block_hash",
+      "_tgt": "template_upgrade_extract_block_from_file",
+      "source": "template_upgrade_extract_block_from_file",
+      "target": "template_upgrade_current_block_hash",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L428",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_block_merge",
+      "_tgt": "template_upgrade_merge_block",
+      "source": "template_upgrade_merge_block",
+      "target": "template_upgrade_sync_block_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L284",
+      "weight": 1.0,
+      "_src": "template_upgrade_load_lockfile",
+      "_tgt": "template_upgrade_load_json_file",
+      "source": "template_upgrade_load_json_file",
+      "target": "template_upgrade_load_lockfile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L404",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_json_merge",
+      "_tgt": "template_upgrade_load_json_file",
+      "source": "template_upgrade_load_json_file",
+      "target": "template_upgrade_sync_json_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L469",
+      "weight": 1.0,
+      "_src": "template_upgrade_write_lockfile",
+      "_tgt": "template_upgrade_load_json_file",
+      "source": "template_upgrade_load_json_file",
+      "target": "template_upgrade_write_lockfile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L410",
+      "weight": 1.0,
+      "_src": "template_upgrade_sync_json_merge",
+      "_tgt": "template_upgrade_dump_json_file",
+      "source": "template_upgrade_dump_json_file",
+      "target": "template_upgrade_sync_json_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L476",
+      "weight": 1.0,
+      "_src": "template_upgrade_write_lockfile",
+      "_tgt": "template_upgrade_dump_json_file",
+      "source": "template_upgrade_dump_json_file",
+      "target": "template_upgrade_write_lockfile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L447",
+      "weight": 1.0,
+      "_src": "template_upgrade_build_lock_payload",
+      "_tgt": "template_upgrade_git_commit",
+      "source": "template_upgrade_git_commit",
+      "target": "template_upgrade_build_lock_payload",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L488",
+      "weight": 1.0,
+      "_src": "template_upgrade_upgrade_target",
+      "_tgt": "template_upgrade_ensure_target_dir",
+      "source": "template_upgrade_ensure_target_dir",
+      "target": "template_upgrade_upgrade_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L489",
+      "weight": 1.0,
+      "_src": "template_upgrade_upgrade_target",
+      "_tgt": "template_upgrade_validate_manifest_paths",
+      "source": "template_upgrade_validate_manifest_paths",
+      "target": "template_upgrade_upgrade_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L490",
+      "weight": 1.0,
+      "_src": "template_upgrade_upgrade_target",
+      "_tgt": "template_upgrade_load_lockfile",
+      "source": "template_upgrade_load_lockfile",
+      "target": "template_upgrade_upgrade_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L356",
+      "weight": 1.0,
+      "_src": "template_upgrade_preflight_writes",
+      "_tgt": "template_upgrade_replace_conflict_message",
+      "source": "template_upgrade_replace_conflict_message",
+      "target": "template_upgrade_preflight_writes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L362",
+      "weight": 1.0,
+      "_src": "template_upgrade_preflight_writes",
+      "_tgt": "template_upgrade_merge_conflict_message",
+      "source": "template_upgrade_merge_conflict_message",
+      "target": "template_upgrade_preflight_writes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L373",
+      "weight": 1.0,
+      "_src": "template_upgrade_preflight_writes",
+      "_tgt": "template_upgrade_block_conflict_message",
+      "source": "template_upgrade_block_conflict_message",
+      "target": "template_upgrade_preflight_writes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L376",
+      "weight": 1.0,
+      "_src": "template_upgrade_preflight_writes",
+      "_tgt": "template_upgrade_current_block_hash",
+      "source": "template_upgrade_current_block_hash",
+      "target": "template_upgrade_preflight_writes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L533",
+      "weight": 1.0,
+      "_src": "template_upgrade_upgrade_target",
+      "_tgt": "template_upgrade_current_block_hash",
+      "source": "template_upgrade_current_block_hash",
+      "target": "template_upgrade_upgrade_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L491",
+      "weight": 1.0,
+      "_src": "template_upgrade_upgrade_target",
+      "_tgt": "template_upgrade_preflight_writes",
+      "source": "template_upgrade_preflight_writes",
+      "target": "template_upgrade_upgrade_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L499",
+      "weight": 1.0,
+      "_src": "template_upgrade_upgrade_target",
+      "_tgt": "template_upgrade_sync_replace_path",
+      "source": "template_upgrade_sync_replace_path",
+      "target": "template_upgrade_upgrade_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L509",
+      "weight": 1.0,
+      "_src": "template_upgrade_upgrade_target",
+      "_tgt": "template_upgrade_sync_json_merge",
+      "source": "template_upgrade_sync_json_merge",
+      "target": "template_upgrade_upgrade_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L520",
+      "weight": 1.0,
+      "_src": "template_upgrade_upgrade_target",
+      "_tgt": "template_upgrade_sync_block_merge",
+      "source": "template_upgrade_sync_block_merge",
+      "target": "template_upgrade_upgrade_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L467",
+      "weight": 1.0,
+      "_src": "template_upgrade_write_lockfile",
+      "_tgt": "template_upgrade_build_lock_payload",
+      "source": "template_upgrade_build_lock_payload",
+      "target": "template_upgrade_write_lockfile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L538",
+      "weight": 1.0,
+      "_src": "template_upgrade_upgrade_target",
+      "_tgt": "template_upgrade_write_lockfile",
+      "source": "template_upgrade_write_lockfile",
+      "target": "template_upgrade_upgrade_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L578",
+      "weight": 1.0,
+      "_src": "template_upgrade_main",
+      "_tgt": "template_upgrade_upgrade_target",
+      "source": "template_upgrade_upgrade_target",
+      "target": "template_upgrade_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L550",
+      "weight": 1.0,
+      "_src": "template_upgrade_print_report",
+      "_tgt": "template_upgrade_summarize_status",
+      "source": "template_upgrade_summarize_status",
+      "target": "template_upgrade_print_report",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L583",
+      "weight": 1.0,
+      "_src": "template_upgrade_main",
+      "_tgt": "template_upgrade_print_report",
+      "source": "template_upgrade_print_report",
+      "target": "template_upgrade_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "/Users/mason/project/personal/llm-wiki-template/scripts/template_upgrade.py",
+      "source_location": "L569",
+      "weight": 1.0,
+      "_src": "template_upgrade_main",
+      "_tgt": "template_upgrade_build_parser",
+      "source": "template_upgrade_build_parser",
+      "target": "template_upgrade_main",
       "confidence_score": 1.0
     }
   ],
