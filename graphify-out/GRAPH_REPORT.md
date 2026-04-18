@@ -1,7 +1,7 @@
 # Graph Report - /Users/mason/project/personal/llm-wiki-template  (2026-04-18)
 
 ## Corpus Check
-- 9 files · ~13,329 words
+- 9 files · ~13,203 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary

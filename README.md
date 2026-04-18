@@ -196,10 +196,10 @@ docker stop cliproxy-api
 ├── templates/              # 문서 템플릿
 ├── prompts/                # 재사용 에이전트 프롬프트
 ├── .claude/
-│   ├── commands/           #   12개 위키 운영 스킬 (Claude Code)
+│   ├── commands/           #   11개 위키 운영 스킬 (Claude Code)
 │   └── settings.json       #   Claude Code hook 설정 (graphify 힌트)
 ├── .agents/
-│   └── skills/             #   12개 위키 운영 스킬 (Codex CLI)
+│   └── skills/             #   11개 위키 운영 스킬 (Codex CLI)
 ├── CLAUDE.md               # LLM 운영 지침
 ├── SCHEMA.md               # 전체 동작 명세 및 스킬 사용 가이드
 └── AGENTS.md               # 에이전트 작업 규칙
@@ -233,13 +233,12 @@ raw/  ──→  Ingest  ──→  wiki/  ──→  Generate  ──→  outpu
 
 ## 스킬 사용법
 
-12개 위키 운영 스킬이 두 에이전트 모두에서 사용 가능합니다.
+11개 위키 운영 스킬이 두 에이전트 모두에서 사용 가능합니다.
 
 | 스킬 | Claude Code | Codex CLI | 용도 |
 |------|------------|-----------|------|
 | catalog | `/project:catalog` | `$catalog` | raw 소스 등록 + 파싱 |
 | ingest | `/project:ingest` | `$ingest` | raw → wiki 승격 |
-| batch-ingest | `/project:batch-ingest` | `$batch-ingest` | 대량 파일 일괄 승격 |
 | query | `/project:query` | `$query` | 위키에 질문 |
 | lint | `/project:lint` | `$lint` | 위키 건강검진 |
 | supersede | `/project:supersede` | `$supersede` | 정보 대체 |
@@ -266,29 +265,6 @@ slash command를 외울 필요 없이 자연어로 요청하면 에이전트가 
 | **일상** (새 소스 추가 시) | `catalog` → `ingest` |
 | **주간** | `lint --fix` → `reindex` → `extract-actions` |
 | **월간** | `audit` → `score` → `generate report weekly` |
-
-### 대량 소스 처리 (Obsidian vault 등)
-
-1000건 이상의 파일을 한번에 처리할 때는 batch-ingest → 정제 워크플로우를 사용합니다:
-
-```
-1. batch-ingest (대량 승격)
-   └─ promote: 정제된 노트 → frontmatter만 추가하고 wiki/로 이동
-   └─ merge:   같은 주제 노트들 → 하나의 wiki 문서로 통합
-   └─ selective: 중요한 것만 선별 승격, 나머지 보류
-
-2. lint --fix (구조 문제 자동 수정)
-
-3. score (문서별 신뢰도 평가 → 낮은 품질 문서 식별)
-
-4. ingest (score가 낮은 문서만 선별하여 재정제)
-
-5. supersede (중복 문서 통합)
-
-6. reindex (최종 색인 정비)
-```
-
-promote로 올린 문서는 `status: draft`로 들어가므로, score로 걸러서 필요한 것만 재정제하면 됩니다.
 
 상세한 동작 명세는 [SCHEMA.md](SCHEMA.md)를 참조하세요.
 
