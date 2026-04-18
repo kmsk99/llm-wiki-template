@@ -22,10 +22,15 @@ $ARGUMENTS
 
 ## 실행 절차
 
-### Phase 1: 소스 수집
-1. 주제/범위에 해당하는 wiki 문서를 모두 찾는다.
-2. 관련 wiki/decisions/, wiki/playbooks/ 문서도 포함한다.
-3. 최근 변경된 문서를 우선 고려한다 (git log 활용).
+### Phase 1: 소스 수집 (Graphify 커뮤니티 기반)
+1. **Graphify에서 주제 클러스터를 먼저 식별한다:**
+   - `graphify-out/GRAPH_REPORT.md`의 Community Hubs를 훑어 주제와 가장 부합하는 커뮤니티를 선택한다.
+   - `/graphify explain "<주제>"`로 god node와 그 이웃 노드를 수집한다 — 이게 소스 후보 1차 셋이다.
+   - 그래프가 stale하면 먼저 `graphify . --update`.
+2. 커뮤니티에 속한 wiki 문서를 모두 찾아 실제로 읽는다 (god node 중심으로 우선순위).
+3. 관련 `wiki/decisions/`, `wiki/playbooks/` 문서를 포함한다 (Graphify가 같은 커뮤니티로 묶은 경우 자동 포함).
+4. 최근 변경된 문서를 우선 고려한다 (git log 활용).
+5. **목차 초안은 커뮤니티 구조를 재사용한다** — 커뮤니티 허브가 섹션, god node가 각 섹션의 리드 문단이 된다.
 
 ### Phase 2: 생성
 

@@ -13,14 +13,19 @@ $ARGUMENTS
 
 ## 실행 절차
 
-### Phase 1: 검색
-1. 질문의 키워드와 주제를 파악한다.
-2. wiki/ 전체에서 관련 문서를 검색한다:
-   - frontmatter `tags:` 매칭
-   - 파일명 매칭
-   - 본문 키워드 검색
-   - `wiki/index.md` 및 `wiki/index/` 맵에서 관련 섹션 탐색
-3. 관련 문서를 읽는다.
+### Phase 1: 검색 (Graphify 우선)
+
+**원칙: 의미는 Graphify, 문자는 Grep.** 주제·관계·구조 탐색은 항상 Graphify로 시작한다.
+
+1. 질문의 키워드와 핵심 개념을 파악한다.
+2. **Graphify 지식 그래프를 1차 탐색한다:**
+   - `graphify-out/GRAPH_REPORT.md`의 Community Hubs, God Nodes를 훑어 질문이 어느 커뮤니티/노드에 속하는지 판단한다.
+   - 의미 기반 질의: `/graphify query "<질문>"` 또는 `graphify query "<질문>"`
+   - 두 개념 간 연결 질문이면: `/graphify path "<A>" "<B>"`
+   - 특정 개념의 주변 탐색이면: `/graphify explain "<개념>"`
+   - **그래프가 stale하면** (wiki가 GRAPH_REPORT.md 타임스탬프 이후로 바뀐 경우) 먼저 `graphify . --update` 후 재질의한다.
+3. Graphify가 지목한 wiki 문서를 실제로 읽는다.
+4. **보조 검색 (필요 시에만):** 정확한 문자열·숫자·파일 경로 확인이 필요하면 Grep/Glob 사용. tags/파일명/index도 보조 입력으로 활용.
 
 ### Phase 2: 답변
 4. 위키에 있는 정보만으로 답변을 구성한다.

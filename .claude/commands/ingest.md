@@ -50,11 +50,22 @@ $ARGUMENTS
     - 모든 핵심 사실이 반영되었으면 → `완료`
     - 일부만 반영되었으면 → `부분` (비고에 사유 기록)
 
-### Phase 5: 보고
-14. 최종 보고를 출력한다:
+### Phase 5: 그래프 재빌드 (Graphify 연동, 필수)
+14. wiki/ 문서가 생성/갱신되었으므로 지식 그래프를 동기화한다:
+    ```bash
+    graphify . --update
+    ```
+    - 이 단계를 건너뛰면 이후 Query/Lint/Audit가 stale 그래프를 근거로 잘못된 답을 낸다.
+    - 증분 빌드이므로 비용은 낮다 (AST-only, 0 토큰).
+15. 재빌드 후 `graphify-out/GRAPH_REPORT.md`를 열어 신규 노드가 god node 또는 기존 커뮤니티에 편입되었는지 확인한다.
+    - 완전히 새로운 커뮤니티가 생겼다면 본문 또는 index에 cross-link를 보강할 기회다.
+
+### Phase 6: 보고
+16. 최종 보고를 출력한다:
     - 📄 변경/생성된 파일 목록
     - 📎 반영한 source
     - 🔗 새로 생성된 cross-link
+    - 🕸️ 그래프 재빌드 결과 (신규 노드 수, 편입 커뮤니티)
     - ⚠️ 발견된 모순 (contradictions.md에 기록됨)
     - ❓ Open question / TODO
 

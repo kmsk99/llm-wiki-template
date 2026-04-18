@@ -35,10 +35,16 @@ $ARGUMENTS
   - 90일 초과: 🔴 Stale
 - 🔴 Stale 문서는 archive 후보로 표시한다.
 
-### 5. 연결성 감사
-- 문서 간 cross-link 밀도를 측정한다 (평균 링크 수 / 문서).
-- 외부 링크가 0인 고립 문서를 찾는다.
-- 가장 많이 참조되는 허브 문서를 식별한다.
+### 5. 연결성 감사 (Graphify 지표 기반)
+- **우선 원천은 `graphify-out/GRAPH_REPORT.md`와 `graph.json`**이다. 그래프가 stale이면 `graphify . --update` 후 진행한다.
+- 수집할 정량 지표:
+  - 총 노드 수 · 엣지 수 · 커뮤니티 수
+  - 평균 엣지 수/노드 (목표: ≥ 2.0)
+  - 고립 노드 비율 (엣지 0~1): 10% 초과 시 🔴
+  - God Nodes Top 10 (가장 참조되는 허브)
+  - Low-cohesion 커뮤니티 (cohesion < 0.1): 문서 군이 느슨하게 묶여 있다는 신호
+  - Surprising connections: 리뷰가 필요한 AMBIGUOUS 엣지
+- 파일 링크 밀도(문서당 markdown 링크 수)는 보조 지표로 유지한다.
 
 ### 6. Output 정합성
 - output/ 문서가 참조하는 wiki 페이지가 모두 존재하는지 확인한다.

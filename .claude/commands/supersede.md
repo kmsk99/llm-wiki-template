@@ -36,14 +36,25 @@ $ARGUMENTS
    - `updated:` — 오늘 날짜
    - `source:` — 새 소스를 추가 (기존 소스도 유지)
 
-### Phase 3: 파급 효과 추적
+### Phase 3: 파급 효과 추적 (Graphify 경로 탐색)
 7. 변경된 사실을 참조하는 **다른 wiki 문서**를 찾는다.
+   - **Graphify 활용:** 대상 문서의 노드명으로 `graphify explain "<노드>"`을 실행해 직접 연결된 이웃 노드를 1차 후보로 수집한다.
+   - 두 개념 간 파급 경로가 궁금하면 `graphify path "<변경 대상>" "<의심 문서>"`로 확인한다.
+   - 그래프가 stale하면 (GRAPH_REPORT.md 타임스탬프가 오래됨) 먼저 `graphify . --update`.
 8. 해당 문서들도 갱신하거나, 갱신이 필요하다는 `TODO`를 남긴다.
 9. output/ 문서 중 영향받는 것이 있으면 표시한다.
 
 ### Phase 4: 기록
 10. 모순이 완전히 해소되었으면 `wiki/_meta/contradictions.md`에서 해당 항목을 제거한다.
 11. 부분적으로만 해소되었으면 상태를 갱신한다.
+
+### Phase 5: 그래프 재빌드 (필수)
+12. wiki/가 갱신되었으므로 지식 그래프를 동기화한다:
+    ```bash
+    graphify . --update
+    ```
+    - 재빌드 전까지는 Query/Audit가 옛 값을 근거로 답한다.
+13. 재빌드 후 변경된 노드의 엣지 변화(새 커뮤니티 편입, 고립 등)를 `GRAPH_REPORT.md`에서 확인한다.
 
 ## 출력
 

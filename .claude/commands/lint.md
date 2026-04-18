@@ -15,6 +15,7 @@ $ARGUMENTS
 
 ### 1. 고아 페이지 (Orphan Pages)
 - `wiki/index.md`나 다른 문서에서 링크되지 않는 페이지를 찾는다.
+- **Graphify 교차 확인:** `graphify-out/GRAPH_REPORT.md`와 `graph.json`에서 엣지 수가 0이거나 1인 노드를 함께 나열한다. 파일 링크가 있어도 그래프에서 고립된 노드는 **의미적 고아**로 분류한다.
 - 심각도: ⚠️ Warning
 
 ### 2. 깨진 링크 (Broken Links)
