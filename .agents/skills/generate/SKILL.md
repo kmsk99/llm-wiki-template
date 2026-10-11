@@ -3,7 +3,24 @@ name: generate
 description: "Wiki 지식을 기반으로 브리프, 온보딩, 리포트, 액션 아이템 등 output 문서를 생성한다."
 ---
 
+<!-- generated-by: scripts/sync_codex_skills.py -->
+
+> 정본은 볼트 루트의 `.claude/commands/generate.md`이고 이 파일은
+> `scripts/sync_codex_skills.py` 가 만든 복사본이라 직접 고치면 다음 동기화에
+> 덮여 사라진다.
+
 # Generate: Wiki → Output 파생 문서 생성
+
+## 공통 실행 규칙
+
+먼저 SCHEMA.md와 (있으면) PROJECT.md를 읽는다. Graphify는 선택 확장이며
+미설정 시 색인·파일 검색으로 진행한다. 아래의 그래프 재빌드·탐색 단계는
+Graphify를 활성화한 프로젝트에만 적용된다.
+wiki 쓰기 전 `.venv/bin/python scripts/lint_gate.py save /tmp/wiki-before.json`,
+쓰기 후 `.venv/bin/python scripts/lint_gate.py check /tmp/wiki-before.json`을 실행한다.
+Windows에서는 `.venv/Scripts/python.exe`를 사용한다. 기준점 파일명은 작업별로 구분한다.
+`verified: true`는 해당 문서에 대한 사용자의 명시적 확인 후 verify 절차로만 기록한다.
+본문의 의미가 바뀌면 기존 verified를 false로 되돌린다. 원자료 수정 대신 새 원자료를 추가한다.
 
 wiki/에 축적된 지식을 기반으로 output/ 디렉토리에 행동 지향 문서를 생성한다.
 
@@ -30,7 +47,7 @@ $ARGUMENTS
 ### Phase 1: 소스 수집 (Graphify 커뮤니티 기반)
 1. **Graphify에서 주제 클러스터를 먼저 식별한다:**
    - `graphify-out/GRAPH_REPORT.md`의 Community Hubs를 훑어 주제와 가장 부합하는 커뮤니티를 선택한다.
-   - `graphify explain "<주제>"`로 god node와 그 이웃 노드를 수집한다 — 이게 소스 후보 1차 셋이다.
+   - `/graphify explain "<주제>"`로 god node와 그 이웃 노드를 수집한다 — 이게 소스 후보 1차 셋이다.
    - 그래프가 stale하면 먼저 `graphify . --update`.
 2. 커뮤니티에 속한 wiki 문서를 모두 찾아 실제로 읽는다 (god node 중심으로 우선순위).
 3. 관련 `wiki/decisions/`, `wiki/playbooks/` 문서를 포함한다 (Graphify가 같은 커뮤니티로 묶은 경우 자동 포함).

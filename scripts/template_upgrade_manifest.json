@@ -1,11 +1,41 @@
 {
-  "manifest_version": 1,
+  "manifest_version": 2,
   "replace_paths": [
-    ".agents/skills",
-    ".claude/commands",
+    ".agents/skills/audit/SKILL.md",
+    ".agents/skills/catalog/SKILL.md",
+    ".agents/skills/extract-actions/SKILL.md",
+    ".agents/skills/generate/SKILL.md",
+    ".agents/skills/ingest/SKILL.md",
+    ".agents/skills/lint/SKILL.md",
+    ".agents/skills/query/SKILL.md",
+    ".agents/skills/reindex/SKILL.md",
+    ".agents/skills/score/SKILL.md",
+    ".agents/skills/supersede/SKILL.md",
+    ".agents/skills/trace-citation/SKILL.md",
+    ".claude/commands/audit.md",
+    ".claude/commands/catalog.md",
+    ".claude/commands/extract-actions.md",
+    ".claude/commands/generate.md",
+    ".claude/commands/ingest.md",
+    ".claude/commands/lint.md",
+    ".claude/commands/query.md",
+    ".claude/commands/reindex.md",
+    ".claude/commands/score.md",
+    ".claude/commands/supersede.md",
+    ".claude/commands/trace-citation.md",
+    ".claude/commands/verify.md",
     "SCHEMA.md",
-    "prompts",
-    "templates",
+    "prompts/README.md",
+    "prompts/raw-to-wiki.md",
+    "prompts/weekly-curation.md",
+    "templates/README.md",
+    "templates/decision-adr.md",
+    "templates/entity.md",
+    "templates/glossary-term.md",
+    "templates/index-map.md",
+    "templates/playbook.md",
+    "templates/raw-note.md",
+    "templates/wiki-page.md",
     "scripts/env_defaults.py",
     "scripts/parse-html.py",
     "scripts/parse-hwp.py",
@@ -17,7 +47,19 @@
     "scripts/repair_parsed_artifacts.py",
     "scripts/setup.sh",
     "scripts/template_upgrade.py",
-    "scripts/template_upgrade_manifest.json"
+    "scripts/template_upgrade_manifest.json",
+    "scripts/check_raw_immutable.py",
+    "scripts/check_secrets.py",
+    "scripts/sync_codex_skills.py",
+    "scripts/install_hooks.py",
+    "scripts/setup_core.py",
+    "scripts/requirements-core.txt",
+    "scripts/hooks/pre-commit",
+    "scripts/lint_wiki.py",
+    "scripts/lint_gate.py",
+    ".agents/skills/verify/SKILL.md",
+    "PROJECT.example.md",
+    "CORE.md"
   ],
   "json_merges": [
     {
@@ -31,6 +73,18 @@
       "source_path": ".gitignore",
       "start_marker": "# >>> llm-wiki-template graphify >>>",
       "end_marker": "# <<< llm-wiki-template graphify <<<"
+    },
+    {
+      "path": "AGENTS.md",
+      "source_path": "AGENTS.md",
+      "start_marker": "<!-- llm-wiki-template:core:start -->",
+      "end_marker": "<!-- llm-wiki-template:core:end -->"
+    },
+    {
+      "path": "CLAUDE.md",
+      "source_path": "CLAUDE.md",
+      "start_marker": "<!-- llm-wiki-template:core:start -->",
+      "end_marker": "<!-- llm-wiki-template:core:end -->"
     }
   ],
   "exclude_paths": [
@@ -42,6 +96,7 @@
     ".omc",
     ".venv",
     ".obsidian",
-    "tools"
+    "tools",
+    "PROJECT.md"
   ]
 }

@@ -14,6 +14,11 @@
 #   4. 디렉토리 구조 확인/생성
 #   5. 설정 파일 확인 (Claude Code hooks, manifest, index)
 
+# Lightweight core installation is independent of platform package managers.
+if [[ "${1:-}" == "--core" ]]; then
+  exec python3 "$(dirname "$0")/setup_core.py"
+fi
+
 set -euo pipefail
 
 # ── OS 감지 ────────────────────────────────────────────
@@ -557,3 +562,6 @@ echo "  /project:query 질문                           # 위키에 질문"
 echo "  /project:lint                                # 건강검진"
 
 echo "  graphify . --update                          # 그래프 갱신"
+
+# Install shared checks after the optional full parsing stack.
+python3 "$REPO_ROOT/scripts/setup_core.py"

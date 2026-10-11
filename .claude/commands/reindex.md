@@ -1,4 +1,20 @@
+---
+name: reindex
+description: "wiki/index.md와 주제별 맵을 현재 wiki 상태에 맞게 재구축한다."
+---
+
 # Reindex: 색인 재구축
+
+## 공통 실행 규칙
+
+먼저 SCHEMA.md와 (있으면) PROJECT.md를 읽는다. Graphify는 선택 확장이며
+미설정 시 색인·파일 검색으로 진행한다. 아래의 그래프 재빌드·탐색 단계는
+Graphify를 활성화한 프로젝트에만 적용된다.
+wiki 쓰기 전 `.venv/bin/python scripts/lint_gate.py save /tmp/wiki-before.json`,
+쓰기 후 `.venv/bin/python scripts/lint_gate.py check /tmp/wiki-before.json`을 실행한다.
+Windows에서는 `.venv/Scripts/python.exe`를 사용한다. 기준점 파일명은 작업별로 구분한다.
+`verified: true`는 해당 문서에 대한 사용자의 명시적 확인 후 verify 절차로만 기록한다.
+본문의 의미가 바뀌면 기존 verified를 false로 되돌린다. 원자료 수정 대신 새 원자료를 추가한다.
 
 `wiki/index.md`와 `wiki/index/` 하위 맵 문서를 현재 wiki 상태에 맞게 재구축한다.
 Ingest 후 자동으로 색인이 갱신되지만, 수동 문서 이동이나 대량 변경 후에는 이 스킬로 전체 색인을 재구축한다.

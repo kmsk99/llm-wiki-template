@@ -25,25 +25,36 @@ raw/                  wiki/                   output/
 ```sh
 git clone https://github.com/kmsk99/llm-wiki-template.git my-project-wiki
 cd my-project-wiki
-./scripts/setup.sh
+python3 scripts/setup_core.py
 ```
 
-셋업은 시스템 패키지, Python·Docling, Graphify를 설치하고 폴더·설정을 준비합니다. macOS, Linux, Windows의 WSL/Git Bash/MSYS2용 분기가 포함되어 있습니다. 플랫폼별 설치 방법과 선택 옵션은 [운영 가이드](GUIDE.md)를 참고하세요. LLM을 사용하는 파싱은 별도 인증·프록시 설정이 필요합니다.
+기본 설치는 Python 3.10 이상과 Git이 필요합니다. `.venv`에 PyYAML을 설치하고,
+스킬 사본과 원자료 보호·시크릿 검사 훅을 준비합니다. Graphify나 LLM 인증은 필요하지 않습니다.
+기존 커밋 훅이 있으면 보존하고 수동 연결 방법을 안내합니다.
 
-`CLAUDE.md`와 `AGENTS.md`를 프로젝트에 맞게 바꾸고, `raw/`에 첫 자료를 넣으세요. 에이전트에 다음처럼 요청할 수 있습니다.
+`PROJECT.example.md`를 `PROJECT.md`로 복사해 프로젝트 설정을 적고, `raw/`에 첫 자료를 넣으세요. 에이전트에 다음처럼 요청할 수 있습니다.
 
 > 새 회의록을 등록하고 위키에 반영해줘.
 >
 > 이 결정의 근거를 원문까지 찾아줘.
+
+## 기본 보호 장치
+
+- 원자료의 수정·삭제를 커밋 단계에서 차단하고 알려진 시크릿 패턴을 검사합니다.
+- 문서의 메타데이터·출처·링크를 검사하고, 편집 전후 새 오류를 비교합니다.
+- Claude Code·Codex·OMP가 동일한 스킬 정본을 사용하도록 동기화합니다.
+- AI의 근거 강도(`confidence`)와 사람의 확인(`verified`)을 구분합니다.
+
+[검사·업데이트 방법](CORE.md) · [선택 파서·Graphify 설치](GUIDE.md)
 
 ## 에이전트별 사용
 
 | 환경 | 스킬 위치 | 호출 예시 |
 | --- | --- | --- |
 | Claude Code | `.claude/commands/` | `/project:catalog`, `/project:ingest` |
-| Codex CLI | `.agents/skills/` | `$catalog`, `$ingest` |
+| Codex CLI · OMP | `.agents/skills/` | `$catalog`, `$ingest` |
 
-11개 운영 스킬의 상세 설명, 파싱 설정, 템플릿 업그레이드, Graphify 사용법은 [운영 가이드](GUIDE.md)에 있습니다.
+12개 운영 스킬의 상세 설명, 파싱 설정, 템플릿 업그레이드, Graphify 사용법은 [운영 가이드](GUIDE.md)에 있습니다.
 
 ## 폴더 안내
 

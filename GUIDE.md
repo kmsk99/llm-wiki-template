@@ -3,6 +3,9 @@
 Markdown 기반 지식 위키 템플릿입니다.
 Karpathy LLM Wiki 패턴(raw → wiki → output)으로 운영합니다.
 
+기본 설치·검사·안전한 업데이트는 [CORE.md](CORE.md)를 먼저 읽으세요.
+아래 파서·Graphify는 선택 확장입니다. 공통 규칙은 SCHEMA.md, 사용자 설정은 PROJECT.md입니다.
+
 ## 핵심 원칙
 - **raw/** 에 원자료를 먼저 쌓는다 (불변).
 - 검토 가능한 사실만 **wiki/** 로 승격한다 (Ingest).
@@ -20,7 +23,7 @@ Karpathy LLM Wiki 패턴(raw → wiki → output)으로 운영합니다.
 | Linux (Arch) | pacman |
 | Windows (WSL / Git Bash / MSYS2) | winget / choco / scoop |
 
-## 초기 셋업
+## 선택 확장 전체 셋업
 
 ```bash
 # 1. 이 템플릿을 복사하여 새 프로젝트를 만든다
@@ -65,7 +68,7 @@ python3 scripts/template_upgrade.py ~/work/wiki-a --apply --force
 ```
 
 적용 범위:
-- 통째 교체: `.agents/skills/`, `.claude/commands/`, `SCHEMA.md`, `prompts/`, `templates/`, 주요 `scripts/`
+- 파일별 교체: 매니페스트에 등록된 스킬·규약·프롬프트·템플릿·스크립트만 교체 (사용자 추가 파일 보존)
 - 병합: `.claude/settings.json`, `.gitignore`의 Graphify 관리 블록
 - 제외: `raw/`, `wiki/`, `output/`, `graphify-out/`, `.omx/`, `.omc/`, `.venv/`, `.obsidian/`, `tools/`
 
@@ -219,10 +222,10 @@ docker stop cliproxy-api
 ├── templates/              # 문서 템플릿
 ├── prompts/                # 재사용 에이전트 프롬프트
 ├── .claude/
-│   ├── commands/           #   11개 위키 운영 스킬 (Claude Code)
+│   ├── commands/           #   12개 위키 운영 스킬 (Claude Code)
 │   └── settings.json       #   Claude Code hook 설정 (graphify 힌트)
 ├── .agents/
-│   └── skills/             #   11개 위키 운영 스킬 (Codex CLI)
+│   └── skills/             #   12개 위키 운영 스킬 (Codex CLI)
 ├── CLAUDE.md               # LLM 운영 지침
 ├── SCHEMA.md               # 전체 동작 명세 및 스킬 사용 가이드
 └── AGENTS.md               # 에이전트 작업 규칙
@@ -256,7 +259,7 @@ raw/  ──→  Ingest  ──→  wiki/  ──→  Generate  ──→  outpu
 
 ## 스킬 사용법
 
-11개 위키 운영 스킬이 두 에이전트 모두에서 사용 가능합니다.
+12개 위키 운영 스킬이 두 에이전트 모두에서 사용 가능합니다.
 
 | 스킬 | Claude Code | Codex CLI | 용도 |
 |------|------------|-----------|------|
@@ -295,8 +298,8 @@ slash command를 외울 필요 없이 자연어로 요청하면 에이전트가 
 
 이 템플릿을 프로젝트에 맞게 수정하세요:
 
-1. **CLAUDE.md**: 프로젝트명과 운영 규칙을 변경
-2. **AGENTS.md**: 프로젝트 특화 규칙 추가
+1. **PROJECT.md**: PROJECT.example.md를 복사해 프로젝트명과 운영 규칙을 작성
+2. **AGENTS.md / CLAUDE.md**: 공통 관리 블록 밖에 필요한 진입 지침을 추가
 3. **wiki/entities/**: 하위 디렉토리를 프로젝트에 맞게 조정 (brands, customers 등)
 4. **raw/.manifest.md**: 프로젝트 첫 소스를 등록
 5. **.claude/settings.json**: graphify hook 메시지를 프로젝트에 맞게 수정

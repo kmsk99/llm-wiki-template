@@ -3,7 +3,24 @@ name: query
 description: "위키에 질문하고 답변을 받되, 발견한 통찰을 다시 위키에 기록하는 선순환 루프."
 ---
 
+<!-- generated-by: scripts/sync_codex_skills.py -->
+
+> 정본은 볼트 루트의 `.claude/commands/query.md`이고 이 파일은
+> `scripts/sync_codex_skills.py` 가 만든 복사본이라 직접 고치면 다음 동기화에
+> 덮여 사라진다.
+
 # Query: 질문 → 답변 → 위키 재기록
+
+## 공통 실행 규칙
+
+먼저 SCHEMA.md와 (있으면) PROJECT.md를 읽는다. Graphify는 선택 확장이며
+미설정 시 색인·파일 검색으로 진행한다. 아래의 그래프 재빌드·탐색 단계는
+Graphify를 활성화한 프로젝트에만 적용된다.
+wiki 쓰기 전 `.venv/bin/python scripts/lint_gate.py save /tmp/wiki-before.json`,
+쓰기 후 `.venv/bin/python scripts/lint_gate.py check /tmp/wiki-before.json`을 실행한다.
+Windows에서는 `.venv/Scripts/python.exe`를 사용한다. 기준점 파일명은 작업별로 구분한다.
+`verified: true`는 해당 문서에 대한 사용자의 명시적 확인 후 verify 절차로만 기록한다.
+본문의 의미가 바뀌면 기존 verified를 false로 되돌린다. 원자료 수정 대신 새 원자료를 추가한다.
 
 위키에 질문하고 답변을 받되, 답변 과정에서 발견한 통찰을 다시 위키에 기록하는 선순환 루프.
 
@@ -25,9 +42,9 @@ $ARGUMENTS
 1. 질문의 키워드와 핵심 개념을 파악한다.
 2. **Graphify 지식 그래프를 1차 탐색한다:**
    - `graphify-out/GRAPH_REPORT.md`의 Community Hubs, God Nodes를 훑어 질문이 어느 커뮤니티/노드에 속하는지 판단한다.
-   - 의미 기반 질의: `graphify query "<질문>"`
-   - 두 개념 간 연결 질문이면: `graphify path "<A>" "<B>"`
-   - 특정 개념의 주변 탐색이면: `graphify explain "<개념>"`
+   - 의미 기반 질의: `/graphify query "<질문>"` 또는 `graphify query "<질문>"`
+   - 두 개념 간 연결 질문이면: `/graphify path "<A>" "<B>"`
+   - 특정 개념의 주변 탐색이면: `/graphify explain "<개념>"`
    - **그래프가 stale하면** (wiki가 GRAPH_REPORT.md 타임스탬프 이후로 바뀐 경우) 먼저 `graphify . --update` 후 재질의한다.
 3. Graphify가 지목한 wiki 문서를 실제로 읽는다.
 4. **보조 검색 (필요 시에만):** 정확한 문자열·숫자·파일 경로 확인이 필요하면 Grep/Glob 사용. tags/파일명/index도 보조 입력으로 활용.

@@ -1,4 +1,20 @@
+---
+name: ingest
+description: "Raw 소스를 읽고 wiki 문서를 생성/갱신하는 핵심 파이프라인. raw → wiki 승격 시 사용."
+---
+
 # Ingest: Raw → Wiki 승격
+
+## 공통 실행 규칙
+
+먼저 SCHEMA.md와 (있으면) PROJECT.md를 읽는다. Graphify는 선택 확장이며
+미설정 시 색인·파일 검색으로 진행한다. 아래의 그래프 재빌드·탐색 단계는
+Graphify를 활성화한 프로젝트에만 적용된다.
+wiki 쓰기 전 `.venv/bin/python scripts/lint_gate.py save /tmp/wiki-before.json`,
+쓰기 후 `.venv/bin/python scripts/lint_gate.py check /tmp/wiki-before.json`을 실행한다.
+Windows에서는 `.venv/Scripts/python.exe`를 사용한다. 기준점 파일명은 작업별로 구분한다.
+`verified: true`는 해당 문서에 대한 사용자의 명시적 확인 후 verify 절차로만 기록한다.
+본문의 의미가 바뀌면 기존 verified를 false로 되돌린다. 원자료 수정 대신 새 원자료를 추가한다.
 
 새 raw 소스를 읽고 wiki/ 문서를 생성하거나 갱신하는 핵심 파이프라인.
 
@@ -56,7 +72,7 @@ $ARGUMENTS
     graphify . --update
     ```
     - 이 단계를 건너뛰면 이후 Query/Lint/Audit가 stale 그래프를 근거로 잘못된 답을 낸다.
-    - 증분 빌드이므로 비용은 낮다 (AST-only, 0 토큰).
+    - 변경된 문서의 의미 추출에는 선택한 provider의 비용이 발생할 수 있다.
 15. 재빌드 후 `graphify-out/GRAPH_REPORT.md`를 열어 신규 노드가 god node 또는 기존 커뮤니티에 편입되었는지 확인한다.
     - 완전히 새로운 커뮤니티가 생겼다면 본문 또는 index에 cross-link를 보강할 기회다.
 

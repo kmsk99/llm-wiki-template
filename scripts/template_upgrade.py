@@ -291,6 +291,18 @@ def replace_conflict_message(relative_path: str, source: Path, target: Path, loc
         return f'{relative_path}: existing unmanaged content differs from template'
     entry = lock_payload.get('files', {}).get(relative_path)
     if not entry:
+        # v1 managed whole directories. A matching parent digest proves that
+        # the target directory has not been locally modified since that apply.
+        for parent in Path(relative_path).parents:
+            if str(parent) == '.':
+                continue
+            old = lock_payload.get('files', {}).get(parent.as_posix())
+            if old:
+                ancestor = target
+                for _ in range(len(Path(relative_path).parts) - len(parent.parts)):
+                    ancestor = ancestor.parent
+                if path_digest(ancestor) == old.get('applied_hash'):
+                    return None
         return f'{relative_path}: existing content differs and has no lock entry'
     current_hash = path_digest(target)
     if current_hash != entry.get('applied_hash'):

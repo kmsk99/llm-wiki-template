@@ -5,6 +5,8 @@ status: draft
 updated: 2026-04-06
 tags: [decision, adr]
 source: []
+confidence: unverified
+verified: false
 ---
 
 # Context

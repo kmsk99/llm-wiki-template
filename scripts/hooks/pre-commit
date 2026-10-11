@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+ROOT=$(git rev-parse --show-toplevel)
+cd "$ROOT"
+PYTHON_BIN=python3
+if [ -x .venv/bin/python ]; then PYTHON_BIN=.venv/bin/python; fi
+if [ -x .venv/Scripts/python.exe ]; then PYTHON_BIN=.venv/Scripts/python.exe; fi
+"$PYTHON_BIN" scripts/check_raw_immutable.py --staged
+"$PYTHON_BIN" scripts/check_secrets.py
