@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -32,10 +33,10 @@ class CoreControls(unittest.TestCase):
         self.git('commit', '-qm', 'fixture')
 
     def git(self, *args):
-        return subprocess.run(['git', *args], cwd=self.root, text=True, capture_output=True, check=True)
+        return subprocess.run(['git', *args], cwd=self.root, text=True, encoding='utf-8', errors='replace', capture_output=True, check=True)
 
     def script(self, name, *args):
-        return subprocess.run([sys.executable, str(self.root/'scripts'/name), *map(str,args)], cwd=self.root, text=True, capture_output=True)
+        return subprocess.run([sys.executable, str(self.root/'scripts'/name), *map(str,args)], cwd=self.root, text=True, encoding='utf-8', errors='replace', capture_output=True)
 
     def page(self, extra='', body=''):
         p=self.root/'wiki/example.md'
@@ -87,6 +88,17 @@ class CoreControls(unittest.TestCase):
         result=subprocess.run(['git','commit','-qm','should fail'],cwd=self.root,capture_output=True)
         self.assertNotEqual(result.returncode,0)
 
+    def test_managed_hook_uses_lf_line_endings(self):
+        self.assertEqual(self.script('install_hooks.py').returncode,0)
+        hook=self.root/'.git/hooks/pre-commit'
+        self.assertNotIn(b'\r',hook.read_bytes())
+
+    def test_hook_scripts_print_korean_on_legacy_console_encoding(self):
+        env={**os.environ,'PYTHONIOENCODING':'cp1252','PYTHONUTF8':'0'}
+        result=subprocess.run([sys.executable,str(self.root/'scripts/install_hooks.py')],cwd=self.root,capture_output=True,env=env)
+        self.assertEqual(result.returncode,0,result.stderr.decode('utf-8','replace'))
+        self.assertIn('훅',result.stdout.decode('utf-8'))
+
     def test_lint_metadata_links_and_sources(self):
         p=self.page('verified: true\n', '[broken](missing.md)\n[[Missing Wiki]]\n')
         p.write_text(p.read_text().replace('source: []','source: [raw/not-found.md]'))
@@ -115,7 +127,7 @@ class CoreControls(unittest.TestCase):
         self.assertEqual(self.script('lint_gate.py','check',baseline).returncode,0)
         p.write_text(p.read_text()+'\n[new](new.md)')
         self.assertEqual(self.script('lint_gate.py','check',baseline).returncode,1)
-        data=json.loads(baseline.read_text());data['root']='/different';baseline.write_text(json.dumps(data))
+        data=json.loads(baseline.read_text(encoding='utf-8'));data['root']='/different';baseline.write_text(json.dumps(data),encoding='utf-8')
         self.assertEqual(self.script('lint_gate.py','check',baseline).returncode,2)
 
     def test_sync_detects_drift_and_keeps_unmanaged_files(self):
@@ -147,7 +159,7 @@ class RealUpgrade(unittest.TestCase):
             self.assertEqual(before,{str(p.relative_to(target)):p.read_bytes() for p in target.rglob('*') if p.is_file()})
             template_upgrade.upgrade_target(REPO,target,manifest,apply=True)
             for name,data in before.items():
-                if name=='AGENTS.md': self.assertIn(data.decode(),(target/name).read_text())
+                if name=='AGENTS.md': self.assertIn(data.decode().replace('\r\n','\n'),(target/name).read_text(encoding='utf-8'))
                 else: self.assertEqual((target/name).read_bytes(),data)
             template_upgrade.upgrade_target(REPO,target,manifest,apply=True)
             (target/'SCHEMA.md').write_text('user edit')
