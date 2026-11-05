@@ -17,7 +17,7 @@ Windows에서는 `.venv/Scripts/python.exe`를 사용한다. 기준점 파일명
 본문의 의미가 바뀌면 기존 verified를 false로 되돌린다. 원자료 수정 대신 새 원자료를 추가한다.
 
 wiki/ 전체의 구조적 건강도를 점검하고 문제를 보고한다.
-주 1회 정기 실행을 권장한다 (SCHEMA.md 참조). 더 포괄적인 점검은 `/project:audit`를 사용한다.
+주 1회 정기 실행을 권장한다 (SCHEMA.md 참조). 더 포괄적인 점검은 `/audit`를 사용한다.
 
 ## 입력
 

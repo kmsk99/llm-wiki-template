@@ -27,7 +27,7 @@ $ARGUMENTS
 유형:
 - `brief` — 의사결정 브리프, 인사이트 요약 → `output/briefs/`
 - `onboarding` — 신규 입사자 온보딩 가이드 → `output/onboarding/`
-- `actions` — wiki 지식을 종합하여 실행 항목 도출 → `output/action-items/` (기존 마커 수집은 `/project:extract-actions` 사용)
+- `actions` — wiki 지식을 종합하여 실행 항목 도출 → `output/action-items/` (기존 마커 수집은 `/extract-actions` 사용)
 - `report` — 주간/월간 리포트 → `output/reports/`
 
 예시:

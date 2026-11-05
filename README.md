@@ -51,7 +51,7 @@ python3 scripts/setup_core.py
 
 | 환경 | 스킬 위치 | 호출 예시 |
 | --- | --- | --- |
-| Claude Code | `.claude/commands/` | `/project:catalog`, `/project:ingest` |
+| Claude Code | `.claude/commands/` | `/catalog`, `/ingest` |
 | Codex CLI · OMP | `.agents/skills/` | `$catalog`, `$ingest` |
 
 12개 운영 스킬의 상세 설명, 파싱 설정, 템플릿 업그레이드, Graphify 사용법은 [운영 가이드](GUIDE.md)에 있습니다.

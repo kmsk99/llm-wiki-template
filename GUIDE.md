@@ -194,9 +194,9 @@ docker stop cliproxy-api
 2. 회의/슬랙/전사/초안은 먼저 `raw/` 아래에 저장한다.
    - PDF, Excel 등 비텍스트 파일도 `raw/`에 저장한다.
 3. Claude Code 또는 Codex CLI에서 스킬로 위키를 운영한다:
-   - `/project:catalog` (Claude) / `$catalog` (Codex) → raw 소스 등록 + 비텍스트 파싱
-   - `/project:ingest` (Claude) / `$ingest` (Codex) → wiki로 승격
-   - `/project:query` (Claude) / `$query` (Codex) → 위키에 질문
+   - `/catalog` (Claude) / `$catalog` (Codex) → raw 소스 등록 + 비텍스트 파싱
+   - `/ingest` (Claude) / `$ingest` (Codex) → wiki로 승격
+   - `/query` (Claude) / `$query` (Codex) → 위키에 질문
 4. 수동으로 문서를 작성할 때는 `templates/`의 템플릿을 사용한다.
 5. 상세 동작 명세는 [SCHEMA.md](SCHEMA.md) 참조.
 
@@ -263,17 +263,17 @@ raw/  ──→  Ingest  ──→  wiki/  ──→  Generate  ──→  outpu
 
 | 스킬 | Claude Code | Codex CLI | 용도 |
 |------|------------|-----------|------|
-| catalog | `/project:catalog` | `$catalog` | raw 소스 등록 + 파싱 |
-| ingest | `/project:ingest` | `$ingest` | raw → wiki 승격 |
-| query | `/project:query` | `$query` | 위키에 질문 |
-| lint | `/project:lint` | `$lint` | 위키 건강검진 |
-| supersede | `/project:supersede` | `$supersede` | 정보 대체 |
-| score | `/project:score` | `$score` | 신뢰도 평가 |
-| generate | `/project:generate` | `$generate` | output 문서 생성 |
-| extract-actions | `/project:extract-actions` | `$extract-actions` | TODO/미해결 수집 |
-| audit | `/project:audit` | `$audit` | 종합 감사 |
-| reindex | `/project:reindex` | `$reindex` | 색인 재구축 |
-| trace-citation | `/project:trace-citation` | `$trace-citation` | 출처 역추적 |
+| catalog | `/catalog` | `$catalog` | raw 소스 등록 + 파싱 |
+| ingest | `/ingest` | `$ingest` | raw → wiki 승격 |
+| query | `/query` | `$query` | 위키에 질문 |
+| lint | `/lint` | `$lint` | 위키 건강검진 |
+| supersede | `/supersede` | `$supersede` | 정보 대체 |
+| score | `/score` | `$score` | 신뢰도 평가 |
+| generate | `/generate` | `$generate` | output 문서 생성 |
+| extract-actions | `/extract-actions` | `$extract-actions` | TODO/미해결 수집 |
+| audit | `/audit` | `$audit` | 종합 감사 |
+| reindex | `/reindex` | `$reindex` | 색인 재구축 |
+| trace-citation | `/trace-citation` | `$trace-citation` | 출처 역추적 |
 
 ### 자연어로도 작동합니다
 
@@ -379,7 +379,7 @@ Claude Code 세션에서 자연스럽게 호출하세요. 대규모 코퍼스(>2
 ## 검색
 
 ### Claude Code (권장)
-- `/project:query <질문>` — 위키에 질문 (답변 + 위키 강화)
+- `/query <질문>` — 위키에 질문 (답변 + 위키 강화)
 - `graphify-out/GRAPH_REPORT.md`와 `/graphify query|path|explain`를 우선 사용
 - 정확한 문자열/경로 검색만 Grep/Glob으로 보완
 

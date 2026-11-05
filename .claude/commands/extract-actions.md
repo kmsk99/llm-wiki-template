@@ -17,7 +17,7 @@ Windows에서는 `.venv/Scripts/python.exe`를 사용한다. 기준점 파일명
 본문의 의미가 바뀌면 기존 verified를 false로 되돌린다. 원자료 수정 대신 새 원자료를 추가한다.
 
 wiki 문서에 이미 존재하는 미해결 마커(TODO, Open question, FIXME 등)를 **스캔하여 수집**한다.
-`/project:generate actions`와의 차이: generate는 wiki 지식을 종합하여 새로운 실행 항목을 도출하는 반면, extract-actions는 기존 문서에 흩어진 마커를 모아 정리한다.
+`/generate actions`와의 차이: generate는 wiki 지식을 종합하여 새로운 실행 항목을 도출하는 반면, extract-actions는 기존 문서에 흩어진 마커를 모아 정리한다.
 
 ## 입력
 
