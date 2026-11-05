@@ -10,6 +10,10 @@ python3 scripts/setup_core.py
 Windows에서는 python3 대신 설치된 Python 명령을 사용하세요. 이후 명령의
 `.venv/bin/python`은 Windows에서 `.venv/Scripts/python.exe`입니다.
 
+Windows에서는 [Git for Windows](https://git-scm.com/download/win)가 필요합니다. 커밋 훅과
+Claude Code 훅, `scripts/parse-raw.sh`가 Git Bash의 셸을 사용합니다. 스킬 문서의
+`.venv/bin/python`과 `python3`도 같은 방식으로 바꿔 실행합니다.
+
 ## 검사
 
 ```sh
