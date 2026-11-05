@@ -9,6 +9,7 @@ Strategy:
 
 from __future__ import annotations
 
+import sys
 import argparse
 import json
 import os
@@ -333,4 +334,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    for _stream in (sys.stdout, sys.stderr):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
     raise SystemExit(main())

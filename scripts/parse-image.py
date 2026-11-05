@@ -9,6 +9,7 @@ Fallback order:
 
 from __future__ import annotations
 
+import sys
 import argparse
 import base64
 import json
@@ -329,4 +330,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    for _stream in (sys.stdout, sys.stderr):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
     raise SystemExit(main())

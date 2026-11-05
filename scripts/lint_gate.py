@@ -17,10 +17,10 @@ def main():
     a=p.parse_args(); root=a.root.resolve()
     now=snapshot(root)
     if a.action=='save':
-        a.baseline.write_text(json.dumps({'version':1,'root':str(root),'errors':sorted(now)},ensure_ascii=False,indent=2)+'\n')
+        a.baseline.write_text(json.dumps({'version':1,'root':str(root),'errors':sorted(now)},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
         print(f'기준점 저장: 오류 {len(now)}건'); return 0
     try:
-        old=json.loads(a.baseline.read_text())
+        old=json.loads(a.baseline.read_text(encoding='utf-8'))
         if old.get('version')!=1 or old.get('root')!=str(root): raise ValueError('다른 저장소 또는 형식의 기준점')
         before={tuple(x) for x in old['errors']}
     except (OSError,ValueError,KeyError,TypeError) as e:
@@ -29,4 +29,7 @@ def main():
     for row in new: print(' · '.join(row))
     print(f'새 오류 {len(new)}건')
     return int(bool(new))
-if __name__=='__main__': sys.exit(main())
+if __name__=='__main__':
+    for _stream in (sys.stdout, sys.stderr):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    sys.exit(main())

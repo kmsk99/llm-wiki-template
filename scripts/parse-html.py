@@ -261,6 +261,8 @@ def main(src: str, out: str) -> int:
 
 
 if __name__ == '__main__':
+    for _stream in (sys.stdout, sys.stderr):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
     if len(sys.argv) != 3:
         print('Usage: parse-html.py <src.html> <out.md>', file=sys.stderr)
         raise SystemExit(2)

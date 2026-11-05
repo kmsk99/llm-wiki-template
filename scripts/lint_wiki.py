@@ -129,4 +129,7 @@ def main():
     if not args.json:
         for e in result['errors']: print(f"{e['file']} · {e['item']} · {e['detail']}")
     return 1 if result['errors'] else 0
-if __name__=='__main__': sys.exit(main())
+if __name__=='__main__':
+    for _stream in (sys.stdout, sys.stderr):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    sys.exit(main())

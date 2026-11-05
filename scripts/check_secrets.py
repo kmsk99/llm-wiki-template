@@ -4,9 +4,12 @@ import sys
 import re
 import subprocess
 
+for _stream in (sys.stdout, sys.stderr):
+    _stream.reconfigure(encoding="utf-8", errors="replace")
+
 # Staged files (Added, Copied, Modified)
 cmd = ["git", "diff", "--cached", "--name-only", "-z", "--diff-filter=ACM"]
-res = subprocess.run(cmd, capture_output=True, text=True, check=True)
+res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", check=True)
 staged_files = [f for f in res.stdout.split("\0") if f]
 
 if not staged_files:
@@ -30,7 +33,7 @@ for filepath in staged_files:
     # Skip symlinks, deleted files, binary files
     try:
         diff_cmd = ["git", "diff", "--cached", "-U0", "--", filepath]
-        diff_res = subprocess.run(diff_cmd, capture_output=True, text=True, check=True)
+        diff_res = subprocess.run(diff_cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", check=True)
     except Exception:
         print(f"❌ Secret scan could not read staged diff: {filepath}")
         sys.exit(1)

@@ -97,7 +97,7 @@ def scan(apply: bool) -> tuple[list[str], int, int]:
         drift.append(f"{'없음' if have is None else '오래됨'}: {name}")
         if apply:
             target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_text(want, encoding="utf-8")
+            target.write_text(want, encoding="utf-8", newline="\n")
             wrote += 1
 
     # 정본에서 사라진 생성 파일만 정리하고 별도 리소스는 보존한다.
@@ -142,4 +142,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    for _stream in (sys.stdout, sys.stderr):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
     sys.exit(main())

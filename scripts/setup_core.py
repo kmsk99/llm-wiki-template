@@ -19,4 +19,7 @@ def main():
     ]:
         subprocess.run(command, cwd=ROOT, check=True)
     print("기본 설치 완료. .venv의 Python으로 검사 명령을 실행하세요.")
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    for _stream in (sys.stdout, sys.stderr):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    main()

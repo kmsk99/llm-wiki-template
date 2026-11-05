@@ -31,11 +31,11 @@ def changed(mode: str) -> list[tuple[str, str]]:
         # 둘을 합쳐야 staged 변조를 작업 트리에서만 되돌려도 누락되지 않는다.
         staged = changed("staged")
         result = subprocess.run(cmd + ["--", "raw/"], cwd=REPO,
-                                capture_output=True, text=True, check=True)
+                                capture_output=True, text=True, encoding="utf-8", errors="replace", check=True)
         fields = result.stdout.rstrip("\0").split("\0") if result.stdout else []
         return staged + list(zip(fields[::2], fields[1::2]))
     out = subprocess.run(cmd + ["--", "raw/"], cwd=REPO,
-                         capture_output=True, text=True, check=True).stdout
+                         capture_output=True, text=True, encoding="utf-8", errors="replace", check=True).stdout
     rows = []
     fields = out.rstrip("\0").split("\0") if out else []
     for status, path in zip(fields[::2], fields[1::2]):
@@ -83,4 +83,6 @@ raw/ 는 불변 원자료다. 추가는 되지만 수정·삭제·이름변경�
 
 
 if __name__ == "__main__":
+    for _stream in (sys.stdout, sys.stderr):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
     sys.exit(main())
